@@ -5,44 +5,15 @@ const useServer = SCRIPT_URL.startsWith('https://script.google.com');
 let currentUserRole = '';
 let activeRestoreTab = 'pemasukan';
 const adminTableState = {
-	datasiswa: {
-		activeTab: 'aktif',
-		query: '',
-		filterKelas: 'All',
-		page: 1
-	},
-	pemasukan: {
-		page: 1,
-		query: ''
-	},
-	bantuan: {
-		page: 1,
-		query: ''
-	},
-	pengeluaran: {
-		page: 1,
-		query: ''
-	},
-	'pengeluaran-non': {
-		page: 1,
-		query: ''
-	},
-	infaq: {
-		page: 1,
-		query: ''
-	},
-	user: {
-		page: 1,
-		query: ''
-	},
-	restore: {
-		page: 1,
-		query: ''
-	},
-	tarif: {
-		page: 1,
-		query: ''
-	}
+	datasiswa: { activeTab: 'aktif', query: '', filterKelas: 'All', page: 1 },
+	pemasukan: { page: 1, query: '' },
+	tarif: { page: 1, query: '' },
+	bantuan: { page: 1, query: '' },
+	infaq: { page: 1, query: '' },
+	pengeluaran: { page: 1, query: '' },
+	'pengeluaran-non': { page: 1, query: '' },
+	restore: { page: 1, query: '' },
+	user: { page: 1, query: '' },
 };
 
 function getItemsPerPage() {
@@ -241,7 +212,8 @@ dbMaster = {
 	tahunAjaran: ['2025/2026', '2026/2027'],
 	jenisKelas: ['X E1', 'X IPA', 'X E2', 'X IPS', 'XI F1', 'XI IPA', 'XI F2', 'XI IPS', 'XII IPA', 'XII IPS']
 };
-dbAdmin = [{
+dbAdmin = [
+	{
 		id: 1,
 		username: 'admin',
 		password: '123',
@@ -337,7 +309,7 @@ dbInfaq = [{
 dbMasterTarif = [
 	// Tarif SPP Bulanan
 	{
-		id: 'T-1',
+		id: 'TRF-1',
 		tahun: '2025/2026',
 		target: 'SEMUA KELAS',
 		jenis: 'SPP Juli',
@@ -345,7 +317,7 @@ dbMasterTarif = [
 		isDeleted: false
 	},
 	{
-		id: 'T-2',
+		id: 'TRF-2',
 		tahun: '2025/2026',
 		target: 'SEMUA KELAS',
 		jenis: 'SPP Agustus',
@@ -353,7 +325,7 @@ dbMasterTarif = [
 		isDeleted: false
 	},
 	{
-		id: 'T-3',
+		id: 'TRF-3',
 		tahun: '2025/2026',
 		target: 'SEMUA KELAS',
 		jenis: 'SPP September',
@@ -361,7 +333,7 @@ dbMasterTarif = [
 		isDeleted: false
 	},
 	{
-		id: 'T-4',
+		id: 'TRF-4',
 		tahun: '2025/2026',
 		target: 'SEMUA KELAS',
 		jenis: 'SPP Oktober',
@@ -369,7 +341,7 @@ dbMasterTarif = [
 		isDeleted: false
 	},
 	{
-		id: 'T-5',
+		id: 'TRF-5',
 		tahun: '2025/2026',
 		target: 'SEMUA KELAS',
 		jenis: 'SPP November',
@@ -377,7 +349,7 @@ dbMasterTarif = [
 		isDeleted: false
 	},
 	{
-		id: 'T-6',
+		id: 'TRF-6',
 		tahun: '2025/2026',
 		target: 'SEMUA KELAS',
 		jenis: 'SPP Desember',
@@ -385,7 +357,7 @@ dbMasterTarif = [
 		isDeleted: false
 	},
 	{
-		id: 'T-7',
+		id: 'TRF-7',
 		tahun: '2025/2026',
 		target: 'SEMUA KELAS',
 		jenis: 'SPP Januari',
@@ -393,7 +365,7 @@ dbMasterTarif = [
 		isDeleted: false
 	},
 	{
-		id: 'T-8',
+		id: 'TRF-8',
 		tahun: '2025/2026',
 		target: 'SEMUA KELAS',
 		jenis: 'SPP Februari',
@@ -403,7 +375,7 @@ dbMasterTarif = [
 
 	// Tarif Khusus
 	{
-		id: 'T-9',
+		id: 'TRF-9',
 		tahun: '2025/2026',
 		target: 'X IPA',
 		jenis: 'Daftar Ulang',
@@ -411,7 +383,7 @@ dbMasterTarif = [
 		isDeleted: false
 	},
 	{
-		id: 'T-10',
+		id: 'TRF-10',
 		tahun: '2025/2026',
 		target: 'NIS 1090',
 		jenis: 'Biaya Mutasi',
@@ -421,7 +393,7 @@ dbMasterTarif = [
 
 	// Tarif Ujian (Masuk dalam Kalkulasi Widget)
 	{
-		id: 'T-11',
+		id: 'TRF-11',
 		tahun: '2025/2026',
 		target: 'SEMUA KELAS',
 		jenis: 'PTS 1',
@@ -429,7 +401,7 @@ dbMasterTarif = [
 		isDeleted: false
 	},
 	{
-		id: 'T-12',
+		id: 'TRF-12',
 		tahun: '2025/2026',
 		target: 'SEMUA KELAS',
 		jenis: 'PAS 1',
@@ -611,6 +583,7 @@ function populateLocalData(data) {
 	dbPengeluaran = data.pengeluaran;
 	dbPengeluaranNon = data.pengeluaranNon;
 	dbInfaq = data.infaq;
+	dbMasterTarif = data.tarif;
 	initDropdowns();
 }
 
@@ -675,7 +648,6 @@ function switchAdminTab(tab) {
 	const indexTab = daftarTab.indexOf(tab);
 
 	const btnColor = warnaNav[indexTab % warnaNav.length] || 'bg-gray-500';
-	// const btnColor = (tab === 'dashboard' ? 'bg-blue-500' : (tab === 'datasiswa' ? 'bg-sky-500' : (tab === 'pemasukan' ? 'bg-cyan-500' : (tab === 'bantuan' ? 'bg-teal-500' : (tab === 'infaq' ? 'bg-emerald-500' : (tab === 'pengeluaran' ? 'bg-orange-500' : (tab === 'pengeluaran-non' ? 'bg-amber-500' : (tab === 'user' ? 'bg-purple-600' : (tab === 'restore' ? 'bg-rose-500' : 'bg-state-500')))))))));
 	document.getElementById(`nav-${tab}`).className = `w-full flex items-center px-4 py-3 rounded-lg ${btnColor} text-white transition-colors`;
 	document.getElementById('admin-page-title').innerText = titles[tab];
 
@@ -694,8 +666,9 @@ function updateRestoreBadges() {
 	const countPengeluaran = dbPengeluaran.filter(t => t.isDeleted).length;
 	const countPengeluaranNon = dbPengeluaranNon.filter(t => t.isDeleted).length;
 	const countInfaq = dbInfaq.filter(t => t.isDeleted).length;
+	const countTarif = dbMasterTarif.filter(t => t.isDeleted).length;
 
-	const totalDeleted = countPemasukan + countBantuan + countPengeluaran + countPengeluaranNon + countInfaq;
+	const totalDeleted = countPemasukan + countBantuan + countPengeluaran + countPengeluaranNon + countInfaq + countTarif;
 
 	document.getElementById('badge-res-pemasukan').innerText = countPemasukan;
 	document.getElementById('badge-res-pemasukan').classList.toggle('hidden', countPemasukan === 0);
@@ -711,6 +684,9 @@ function updateRestoreBadges() {
 
 	document.getElementById('badge-res-infaq').innerText = countInfaq;
 	document.getElementById('badge-res-infaq').classList.toggle('hidden', countInfaq === 0);
+
+	document.getElementById('badge-res-tarif').innerText = countTarif;
+	document.getElementById('badge-res-tarif').classList.toggle('hidden', countTarif === 0);
 
 	const navBadge = document.getElementById('nav-badge-restore');
 	if (navBadge) {
@@ -889,124 +865,94 @@ function getPaginatedData(dataArray, type, filterFn) {
 	};
 }
 
-// function loadAdminDataSiswaTable() {
-// 	const tbody = document.getElementById('table-admin-datasiswa');
-// 	tbody.innerHTML = '';
-// 	let filteredData = dbSiswa.filter(s => {
-// 		const q = adminTableState.datasiswa.query;
-// 		const fKelas = adminTableState.datasiswa.filterKelas;
-// 		return (!q || String(s.nis).toLowerCase().includes(q) || String(s.nama).toLowerCase().includes(q)) && (fKelas === 'All' || s.kelas === fKelas);
-// 	});
-// 	const itemsPerPage = getItemsPerPage();
-// 	const tItems = filteredData.length;
-// 	const tPages = Math.ceil(tItems / itemsPerPage) || 1;
-// 	if (adminTableState.datasiswa.page > tPages) adminTableState.datasiswa.page = tPages;
-// 	if (adminTableState.datasiswa.page < 1) adminTableState.datasiswa.page = 1;
-// 	const startIdx = (adminTableState.datasiswa.page - 1) * itemsPerPage;
-// 	const pData = filteredData.slice(startIdx, startIdx + itemsPerPage);
-// 	if (pData.length === 0) {
-// 		tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-gray-500">Data siswa tidak ditemukan</td></tr>`;
-// 	} else {
-// 		pData.forEach(s => {
-// 			let lpBadge = s.lp === 'L' ? `<span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-bold">L</span>` : `<span class="bg-pink-100 text-pink-700 px-2 py-0.5 rounded text-xs font-bold">P</span>`;
-// 			tbody.innerHTML += `<tr class="hover:bg-gray-50"><td class="p-4 font-medium text-gray-600">${s.nis}</td><td class="p-4 font-bold text-gray-800">${s.nama}</td><td class="p-4 text-center">${lpBadge}</td><td class="p-4 text-gray-600"><span class="bg-gray-100 border border-gray-200 px-2.5 py-1 rounded-md text-xs font-medium">${s.kelas}</span></td></tr>`;
-// 		});
-// 	}
-// 	updatePaginationUI('datasiswa', tItems, pData.length);
-// }
-
-// --- RENDER TABLE ADMIN DENGAN PAGINATION ---
-function loadAdminDataSiswaTable() { 
+function loadAdminDataSiswaTable() {
 	const tbody = document.getElementById('table-admin-datasiswa');
-	tbody.innerHTML = ''; 
 	let isAktif = adminTableState.datasiswa.activeTab === 'aktif'; 
-	
-	let { pData, tItems } = getPaginatedData(dbSiswa, 'datasiswa', s => { 
+
+	const { pData, tItems, startIdx } = getPaginatedData(dbSiswa, 'datasiswa', s => { 
 		const q = adminTableState.datasiswa.query; const fKelas = adminTableState.datasiswa.filterKelas; 
 		let isMatchQuery = (!q || String(s.nis).toLowerCase().includes(q) || String(s.nama).toLowerCase().includes(q)); 
 		let isMatchKelas = (fKelas === 'All' || s.kelas === fKelas); 
-		let isNon = String(s.kelas).toUpperCase().includes('LULUS') || String(s.kelas).toUpperCase().includes('KELUAR'); 
+		let sKls = String(s.kelas).toUpperCase();
+		let isNon = sKls.includes('LULUS') || sKls.includes('KELUAR'); 
 		let isMatchTab = isAktif ? !isNon : isNon; 
 		return isMatchQuery && isMatchKelas && isMatchTab; 
-	}); 
-	
-	if(pData.length === 0) { 
-		tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">Data tidak ditemukan</td></tr>`; 
-	} else {
-		// Mapping warna bulan
-		const warnaBulan = {
-			Juli: 'bg-red-100 text-red-700',
-			Agustus: 'bg-orange-100 text-orange-700',
-			September: 'bg-amber-100 text-amber-700',
-			Oktober: 'bg-yellow-100 text-yellow-700',
-			November: 'bg-lime-100 text-lime-700',
-			Desember: 'bg-green-100 text-green-700',
-			Januari: 'bg-emerald-100 text-emerald-700',
-			Februari: 'bg-teal-100 text-teal-700',
-			Maret: 'bg-cyan-100 text-cyan-700',
-			April: 'bg-sky-100 text-sky-700',
-			Mei: 'bg-blue-100 text-blue-700',
-			Juni: 'bg-indigo-100 text-indigo-700'
-		};
+	});
 
-		const colorNames = [
-			'red','orange','amber','yellow','lime','green','emerald','teal','cyan','sky','blue','indigo','purple','pink','rose'
-		];
+	// Mapping warna bulan
+	const warnaBulan = {
+		Juli: 'bg-red-100 text-red-700',
+		Agustus: 'bg-orange-100 text-orange-700',
+		September: 'bg-amber-100 text-amber-700',
+		Oktober: 'bg-yellow-100 text-yellow-700',
+		November: 'bg-lime-100 text-lime-700',
+		Desember: 'bg-green-100 text-green-700',
+		Januari: 'bg-emerald-100 text-emerald-700',
+		Februari: 'bg-teal-100 text-teal-700',
+		Maret: 'bg-cyan-100 text-cyan-700',
+		April: 'bg-sky-100 text-sky-700',
+		Mei: 'bg-blue-100 text-blue-700',
+		Juni: 'bg-indigo-100 text-indigo-700'
+	};
+
+	const colorNames = [
+		'red','orange','amber','yellow','lime','green','emerald','teal','cyan','sky','blue','indigo','purple','pink','rose'
+	];
+
+	// Optimasi: Mapping warna tahun dilakukan di luar loop agar tidak membebani browser per-baris
+	const uniqueTahun = [...new Set(pData.map(s => s.tahunMasuk))];
+	const warnaTahun = {};
+	uniqueTahun.forEach((tahun, index) => {
+		const color = colorNames[index % colorNames.length];
+		warnaTahun[tahun] = `bg-${color}-100 text-${color}-700 border-${color}-200`;
+	});
+
+	buildTableRow(tbody, pData, 'datasiswa', s => {
+		let lpBadge = s.lp === 'L' ? `<span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-bold">L</span>` : `<span class="bg-pink-100 text-pink-700 px-2 py-0.5 rounded text-xs font-bold">P</span>`;
 		
-		pData.forEach(s => { 
-			let lpBadge = s.lp === 'L' ? `<span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-bold">L</span>` : `<span class="bg-pink-100 text-pink-700 px-2 py-0.5 rounded text-xs font-bold">P</span>`;
-			// Ambil warna berdasarkan bulan
-			let warna = warnaBulan[s.bulanMulai] || 'bg-gray-100 text-gray-700';
-			// Badge bulan
-			let bulanBadge = `
-				<span class="${warna} px-2 py-0.5 rounded text-xs font-bold">
-					${s.bulanMulai}
-				</span>
-			`;
-			// BADGE KELAS
-			let warnaKelasBadge = '';
-			if (['X E1', 'X IPA'].includes(s.kelas)) {warnaKelasBadge = 'bg-green-100 text-green-700 border-green-200';} 
-			else if (['X E2', 'X IPS'].includes(s.kelas)) {warnaKelasBadge = 'bg-emerald-100 text-purple-700 border-purple-200';}
-			else if (['XI F1', 'XI IPA'].includes(s.kelas)) {warnaKelasBadge = 'bg-amber-100 text-amber-700 border-amber-200';}
-			else if (['XI F2', 'XI IPS'].includes(s.kelas)) {warnaKelasBadge = 'bg-yellow-100 text-yellow-700 border-yellow-200';}
-			else if (['XII IPA'].includes(s.kelas)) {warnaKelasBadge = 'bg-red-100 text-red-700 border-red-200';}
-			else if (['XII IPS'].includes(s.kelas)) {warnaKelasBadge = 'bg-rose-100 text-rose-700 border-rose-200';}
-			else {warnaKelasBadge = 'bg-gray-100 text-gray-700 border-gray-200';}
+		// Ambil warna berdasarkan bulan
+		let warna = warnaBulan[s.bulanMulai] || 'bg-gray-100 text-gray-700';
+		let bulanBadge = `
+			<span class="${warna} px-2 py-0.5 rounded text-xs font-bold">
+				${s.bulanMulai}
+			</span>
+		`;
+		
+		// BADGE KELAS
+		let warnaKelasBadge = '';
+		if (['X E1', 'X IPA'].includes(s.kelas)) {warnaKelasBadge = 'bg-green-100 text-green-700 border-green-200';} 
+		else if (['X E2', 'X IPS'].includes(s.kelas)) {warnaKelasBadge = 'bg-emerald-100 text-purple-700 border-purple-200';}
+		else if (['XI F1', 'XI IPA'].includes(s.kelas)) {warnaKelasBadge = 'bg-amber-100 text-amber-700 border-amber-200';}
+		else if (['XI F2', 'XI IPS'].includes(s.kelas)) {warnaKelasBadge = 'bg-yellow-100 text-yellow-700 border-yellow-200';}
+		else if (['XII IPA'].includes(s.kelas)) {warnaKelasBadge = 'bg-red-100 text-red-700 border-red-200';}
+		else if (['XII IPS'].includes(s.kelas)) {warnaKelasBadge = 'bg-rose-100 text-rose-700 border-rose-200';}
+		else {warnaKelasBadge = 'bg-gray-100 text-gray-700 border-gray-200';}
 
-			let kelasBadge = `
-				<span class="${warnaKelasBadge} border px-2.5 py-1 rounded-md text-xs font-bold">
-					${s.kelas}
-				</span>
-			`;
+		let kelasBadge = `
+			<span class="${warnaKelasBadge} border px-2.5 py-1 rounded-md text-xs font-bold">
+				${s.kelas}
+			</span>
+		`;
 
-			const uniqueTahun = [...new Set(pData.map(s => s.tahunMasuk))];
-			const warnaTahun = {};
-			uniqueTahun.forEach((tahun, index) => {
-				const color = colorNames[index % colorNames.length];
-				warnaTahun[tahun] =
-					`bg-${color}-100 text-${color}-700 border-${color}-200`;
-			});
-			let tahunClass =
-				warnaTahun[s.tahunMasuk] ||
-				'bg-gray-100 text-gray-700 border-gray-200';
+		// Badge Tahun
+		let tahunClass = warnaTahun[s.tahunMasuk] || 'bg-gray-100 text-gray-700 border-gray-200';
+		let tahunBadge = `
+			<span class="${tahunClass} border px-2 py-1 rounded-md text-xs font-bold">
+				${s.tahunMasuk}
+			</span>
+		`;
+		
+		tbody.innerHTML += `
+		<tr class="hover:bg-gray-50">
+			<td class="p-4 font-medium text-gray-600">${s.nis}</td>
+			<td class="p-4 font-bold text-gray-800">${s.nama}</td>
+			<td class="p-4 text-center">${lpBadge}</td>
+			<td class="p-4 text-center">${tahunBadge}</td>
+			<td class="p-4 text-center">${bulanBadge}</td>
+			<td class="p-4 text-center">${kelasBadge}</td>
+		</tr>`; 
+	});
 
-			let tahunBadge = `
-				<span class="${tahunClass} border px-2 py-1 rounded-md text-xs font-bold">
-					${s.tahunMasuk}
-				</span>
-			`;
-			tbody.innerHTML += 
-			`<tr class="hover:bg-gray-50">
-				<td class="p-4 font-medium text-gray-600">${s.nis}</td>
-				<td class="p-4 font-bold text-gray-800">${s.nama}</td>
-				<td class="p-4 text-center">${lpBadge}</td>
-				<td class="p-4 text-center">${tahunBadge}</td>
-				<td class="p-4 text-center">${bulanBadge}</td>
-				<td class="p-4 text-center">${kelasBadge}</td>
-			</tr>`; 
-		}); 
-	}
-	
 	updatePaginationUI('datasiswa', tItems, pData.length);
 }
 
@@ -1118,28 +1064,32 @@ function loadAdminUserTable() {
 	updatePaginationUI('user', tItems, pData.length);
 }
 
+// HIGHLIGHT: Perombakan fungsi loadAdminTarifTable menggunakan buildTableRow
 function loadAdminTarifTable() { 
 	const tbody = document.getElementById('table-admin-tarif');
-	tbody.innerHTML = ''; 
 	const q = adminTableState.tarif.query; 
 	
-	let { pData, tItems } = getPaginatedData(dbMasterTarif, 'tarif', t => !t.isDeleted && (!q || String(t.tahun).toLowerCase().includes(q) || String(t.target).toLowerCase().includes(q) || String(t.jenis).toLowerCase().includes(q))); 
+	const { pData, tItems, startIdx } = getPaginatedData(
+		dbMasterTarif, 
+		'tarif', 
+		t => !t.isDeleted && (!q || String(t.tahun).toLowerCase().includes(q) || String(t.target).toLowerCase().includes(q) || String(t.jenis).toLowerCase().includes(q))
+	); 
 	
-	if(pData.length === 0) { 
-		tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">Tarif tidak ditemukan</td></tr>`; 
-	} else { 
-		pData.forEach(t => { 
-			tbody.innerHTML += 
-			`<tr class="hover:bg-gray-50">
-				<td class="p-4 text-gray-800 font-medium">${t.tahun}</td>
-				<td class="p-4"><span class="bg-purple-100 text-purple-800 px-2.5 py-1 rounded-md text-xs font-bold border border-purple-200">${t.target}</span></td>
-				<td class="p-4 text-gray-800 font-medium">${t.jenis}</td>
-				<td class="p-4 font-bold text-right text-gray-800">${formatRp(t.nominal)}</td>
-				<td class="p-4 text-center"><button onclick="deleteTarif('${t.id}')" class="text-red-500 hover:text-red-700"><i class="ph ph-trash text-lg"></i></button></td>
-			</tr>`; 
-		}); 
-	}
-	updatePaginationUI('tarif', tItems, pData.length);
+	buildTableRow(tbody, pData, 'tarif', t => {
+		let statusSync = t.id && String(t.id).includes('TEMP-') ? '<i class="ph ph-spinner-gap animate-spin text-orange-500 ml-2" title="Menyinkronkan..."></i>' : '';
+		let btnEdit = `<button type="button" onclick="editData('tarif', '${t.id}')" class="text-blue-500 hover:text-blue-700 mr-2"><i class="ph ph-pencil-simple text-lg"></i></button>`;
+		let btnDelete = `<button type="button" onclick="deleteData('tarif', '${t.id}')" class="text-red-500 hover:text-red-700"><i class="ph ph-trash text-lg"></i></button>`;
+		
+		tbody.innerHTML += `<tr class="hover:bg-gray-50">
+			<td class="p-4 text-gray-800 font-medium flex items-center">${t.tahun} ${statusSync}</td>
+			<td class="p-4"><span class="bg-purple-100 text-purple-800 px-2.5 py-1 rounded-md text-xs font-bold border border-purple-200">${t.target}</span></td>
+			<td class="p-4 text-gray-800 font-medium">${t.jenis}</td>
+			<td class="p-4 font-bold text-right text-gray-800">${formatRp(t.nominal)}</td>
+			<td class="p-4 text-center">${btnEdit}${btnDelete}</td>
+		</tr>`;
+	});
+	
+	updatePaginationUI('tarif', tItems, pData.length); 
 }
 
 // ==========================================
@@ -1147,7 +1097,7 @@ function loadAdminTarifTable() {
 // ==========================================
 function switchRestoreTab(tab) {
 	activeRestoreTab = tab;
-	const tabs = ['pemasukan', 'bantuan', 'infaq', 'pengeluaran', 'pengeluaran-non'];
+	const tabs = ['pemasukan', 'bantuan', 'infaq', 'pengeluaran', 'pengeluaran-non', 'tarif'];
 	tabs.forEach(t => {
 		const el = document.getElementById(`rtab-${t}`);
 		if (t === tab) {
@@ -1169,6 +1119,7 @@ function loadRestoreTable() {
 	else if (activeRestoreTab === 'infaq') dbArray = dbInfaq;
 	else if (activeRestoreTab === 'pengeluaran') dbArray = dbPengeluaran;
 	else if (activeRestoreTab === 'pengeluaran-non') dbArray = dbPengeluaranNon;
+	else if (activeRestoreTab === 'tarif') dbArray = dbMasterTarif;
 
 	const {
 		pData,
@@ -1206,6 +1157,9 @@ function restoreData(tipe, id) {
 	} else if (tipe === 'infaq') {
 		targetDb = dbInfaq;
 		renderFn = loadAdminInfaqTable;
+	} else if (tipe === 'tarif') {
+		targetDb = dbMasterTarif;
+		renderFn = loadAdminTarifTable;
 	}
 
 	const idx = targetDb.findIndex(t => String(t.id) === String(id));
@@ -1328,6 +1282,14 @@ function editData(tipe, id) {
 		document.getElementById('infaq-jenis').value = trx.jenis;
 		document.getElementById('infaq-keterangan').value = trx.keterangan;
 		document.getElementById('infaq-nominal').value = trx.nominal;
+	} else if (tipe === 'tarif') {
+		const trx = dbMasterTarif.find(t => String(t.id) === strId);
+		if(!trx) return;
+		document.getElementById('edit-id-tarif').value = trx.id;
+		document.getElementById('tarif-tahun').value = trx.tahun;
+		document.getElementById('tarif-target').value = trx.target;
+		document.getElementById('tarif-jenis').value = trx.jenis;
+		document.getElementById('tarif-nominal').value = trx.nominal;
 	} else if (tipe === 'user') {
 		const trx = dbAdmin.find(t => String(t.id) === strId);
 		if (!trx) return;
@@ -1514,6 +1476,21 @@ function submitInfaq(e) {
 	document.getElementById('infaq-tgl-transaksi').valueAsDate = new Date();
 }
 
+// HIGHLIGHT: Perombakan fungsi submitTarif memanggil processOptimisticSave
+function submitTarif(e) { 
+	e.preventDefault(); 
+	const editId = document.getElementById('edit-id-tarif').value;
+	let data = { 
+		id: editId || `TRF-${Date.now()}`, 
+		isEdit: !!editId,
+		tahun: document.getElementById('tarif-tahun').value, 
+		target: document.getElementById('tarif-target').value.toUpperCase(), 
+		jenis: document.getElementById('tarif-jenis').value, 
+		nominal: parseInt(document.getElementById('tarif-nominal').value) 
+	}; 
+	processOptimisticSave('tarif', dbMasterTarif, data, loadAdminTarifTable);
+}
+
 function submitUser(e) {
 	e.preventDefault();
 	const editId = document.getElementById('edit-id-user').value;
@@ -1590,6 +1567,9 @@ function confirmDelete() {
 	} else if (tipe === 'user') {
 		targetDb = dbAdmin;
 		renderFn = loadAdminUserTable;
+	} else if (tipe === 'tarif') { 
+		targetDb = dbMasterTarif; 
+		renderFn = loadAdminTarifTable; 
 	}
 
 	const idx = targetDb.findIndex(t => String(t.id) === String(id));

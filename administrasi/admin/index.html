@@ -27,6 +27,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
@@ -52,7 +53,7 @@
         .hide-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         /* Style Tabel Laporan */
         .table-rekap { width: 100%; border-collapse: collapse; font-size: 11px; }
-        .table-rekap th, .table-rekap td { border: 1px solid #d1d5db; padding: 6px; }
+        .table-rekap th, .table-rekap td { border: 1px solid #d1d5db; padding: 6px; vertical-align: middle; }
         .table-rekap th { background-color: #f3f4f6; font-weight: bold; text-align: center; }
         .bg-lunas { background-color: #d1fae5; color: #047857; font-weight: bold; text-align: center;}
         .text-tunggak { color: #dc2626; font-weight: bold; text-align: right;}
@@ -742,6 +743,9 @@
                         </button>
                         <button onclick="switchRestoreTab('pengeluaran-non')" id="rtab-pengeluaran-non" class="flex-none px-6 py-3 text-sm font-semibold border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors flex items-center">
                             Non Ops <span id="badge-res-pengeluaran-non" class="ml-2 bg-rose-500 text-white text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
+                        </button>
+                        <button onclick="switchRestoreTab('tarif')" id="rtab-tarif" class="flex-none px-6 py-3 text-sm font-semibold border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors flex items-center">
+                            Tarif <span id="badge-res-tarif" class="ml-2 bg-rose-500 text-white text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
                         </button>
                     </div>
                     
