@@ -48,6 +48,14 @@
             .print-table th, .print-table td { border: 1px solid black; padding: 4px 8px; }
             .border-b-2-black { border-bottom: 2px solid black; }
         }
+        .hide-scroll::-webkit-scrollbar { height: 4px; }
+        .hide-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        /* Style Tabel Laporan */
+        .table-rekap { width: 100%; border-collapse: collapse; font-size: 11px; }
+        .table-rekap th, .table-rekap td { border: 1px solid #d1d5db; padding: 6px; }
+        .table-rekap th { background-color: #f3f4f6; font-weight: bold; text-align: center; }
+        .bg-lunas { background-color: #d1fae5; color: #047857; font-weight: bold; text-align: center;}
+        .text-tunggak { color: #dc2626; font-weight: bold; text-align: right;}
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans h-screen overflow-hidden">
@@ -154,9 +162,13 @@
                 <p class="text-blue-200 text-sm mt-1">Sistem Administrasi MA Bi'rul Ulum</p>
                 <p class="text-blue-200 text-sm mt-1">Tahun Pelajaran <span id="tahun-ppdb"></span></p>
             </div>
+            <div class="flex border-b">
+                <button onclick="setLoginTab('siswa')" id="tab-siswa" class="flex-1 py-3 text-center font-semibold text-blue-600 border-b-2 border-blue-600 transition-colors">Login Siswa</button>
+                <button onclick="setLoginTab('admin')" id="tab-admin" class="flex-1 py-3 text-center font-semibold text-gray-400 border-b-2 border-transparent transition-colors">Login Admin</button>
+            </div>
             <div class="p-8">
                 <!-- Form Siswa -->
-                <form id="form-login-siswa" onsubmit="handleLoginSiswa(event)" class="space-y-4 hidden">
+                <form id="form-login-siswa" onsubmit="handleLoginSiswa(event)" class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Induk Siswa (NIS)</label>
                         <div class="relative">
@@ -169,7 +181,7 @@
                     </button>
                 </form>
                 <!-- Form Admin -->
-                <form id="form-login-admin" onsubmit="handleLoginAdmin(event)" class="space-y-4">
+                <form id="form-login-admin" onsubmit="handleLoginAdmin(event)" class="space-y-4 hidden">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
                         <div class="relative">
@@ -208,10 +220,16 @@
                 <button onclick="switchAdminTab('dashboard')" id="nav-dashboard" class="w-full flex items-center px-4 py-3 rounded-lg bg-blue-600 text-white transition-colors"><i class="ph ph-squares-four text-xl mr-3"></i> Dashboard</button>
                 <button onclick="switchAdminTab('datasiswa')" id="nav-datasiswa" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-slate-800 text-gray-400 hover:text-white transition-colors"><i class="ph ph-users text-xl mr-3"></i> Data Siswa</button>
                 <button onclick="switchAdminTab('pemasukan')" id="nav-pemasukan" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-slate-800 text-gray-400 hover:text-white transition-colors"><i class="ph ph-download-simple text-xl mr-3"></i> Pemasukan Siswa</button>
+                <button onclick="switchAdminTab('cetak')" id="nav-cetak" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-slate-800 text-gray-400 hover:text-white transition-colors"><i class="ph ph-printer text-xl mr-3"></i> Cetak Laporan</button>
                 <button onclick="switchAdminTab('bantuan')" id="nav-bantuan" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-slate-800 text-gray-400 hover:text-white transition-colors"><i class="ph ph-bank text-xl mr-3"></i> Dana Bantuan</button>
                 <button onclick="switchAdminTab('infaq')" id="nav-infaq" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-slate-800 text-gray-400 hover:text-white transition-colors"><i class="ph ph-hand-heart text-xl mr-3"></i> Kas Infaq</button>
                 <button onclick="switchAdminTab('pengeluaran')" id="nav-pengeluaran" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-slate-800 text-gray-400 hover:text-white transition-colors"><i class="ph ph-upload-simple text-xl mr-3"></i> Operasional</button>
                 <button onclick="switchAdminTab('pengeluaran-non')" id="nav-pengeluaran-non" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-slate-800 text-gray-400 hover:text-white transition-colors"><i class="ph ph-buildings text-xl mr-3"></i> Non Operasional</button>
+                <div class="" id="nav-tarif-container">
+                    <button onclick="switchAdminTab('tarif')" id="nav-tarif" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-slate-800 text-gray-400 hover:text-white transition-colors">
+                        <i class="ph ph-tag text-xl mr-3"></i> Master Tarif
+                    </button>
+                </div>
                 <div class="" id="nav-restore-container">
                     <button onclick="switchAdminTab('restore')" id="nav-restore" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-slate-800 text-gray-400 hover:text-white transition-colors">
                         <i class="ph ph-trash text-xl mr-3"></i> Restore Data
@@ -313,7 +331,7 @@
             </div>
 
             <!-- TAB DATA SISWA -->
-            <div id="admin-view-datasiswa" class="hidden flex-1 overflow-y-auto p-4 md:p-8 flex-col gap-4 md:gap-8">
+            <!-- <div id="admin-view-datasiswa" class="hidden flex-1 overflow-y-auto p-4 md:p-8 flex-col gap-4 md:gap-8">
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden h-full flex flex-col">
                     <div class="p-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <h3 class="text-lg font-semibold text-gray-800">Direktori Data Siswa</h3>
@@ -336,6 +354,48 @@
                         </div>
                     </div>
                 </div>
+            </div> -->
+            <div id="admin-view-datasiswa" class="flex-1 overflow-y-auto p-4 md:p-8 flex-col gap-4 flex block">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full">
+                    <div class="p-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">Database Siswa Aktif/Non Aktif</h3>
+                            <div class="flex mt-3 space-x-4 border-b border-gray-200">
+                                <!-- HIGHLIGHT: Tombol Pemisah Aktif/Nonaktif -->
+                                <button onclick="setTabSiswa('aktif')" id="tab-siswa-aktif" class="text-sm font-bold border-b-2 border-sky-600 text-sky-600 pb-2 transition-colors">Siswa Aktif</button>
+                                <button onclick="setTabSiswa('nonaktif')" id="tab-siswa-nonaktif" class="text-sm font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700 pb-2 transition-colors">Siswa Non-Aktif (Lulus/Keluar)</button>
+                            </div>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto mt-4 sm:mt-0">
+                            <!-- HIGHLIGHT: Dropdown Kelas Otomatis Berubah -->
+                            <select id="filter-kelas" onchange="handleFilterKelas()" class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 bg-white min-w-[150px]"></select>
+                            <input type="text" id="search-datasiswa" onkeyup="handleSearch('datasiswa')" placeholder="Cari NIS atau Nama..." class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500">
+                        </div>
+                    </div>
+                    <div class="flex-1 overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-50 text-gray-500 text-sm border-b">
+                                    <th class="p-4">NIS</th>
+                                    <th class="p-4">Nama Lengkap</th>
+                                    <th class="p-4 text-center">L/P</th>
+                                    <th class="p-4 text-center">Tahun Masuk</th>
+                                    <th class="p-4 text-center">Bulan Tagihan</th>
+                                    <th class="p-4 text-center">Kelas / Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-admin-datasiswa" class="text-sm divide-y divide-gray-100"></tbody>
+                        </table>
+                    </div>
+                    <!-- HIGHLIGHT: Area Info Pagination -->
+                    <div class="p-4 border-t border-gray-100 flex justify-between items-center bg-gray-50 text-sm">
+                        <span id="page-info-datasiswa" class="text-gray-500"></span>
+                        <div class="flex space-x-2">
+                            <button onclick="changeAdminPage('datasiswa', -1)" id="btn-prev-datasiswa" class="px-3 py-1 border rounded bg-white transition-colors">Sebelumnya</button>
+                            <button onclick="changeAdminPage('datasiswa', 1)" id="btn-next-datasiswa" class="px-3 py-1 border rounded bg-white transition-colors">Selanjutnya</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- TAB PEMASUKAN SISWA -->
@@ -343,7 +403,7 @@
                 <div class="w-full lg:w-1/3 admin-input-form">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                         <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                            <i class="ph ph-plus-circle text-blue-600 mr-2 text-xl"></i> Input Pembayaran
+                            <i class="ph ph-plus-circle text-cyan-600 mr-2 text-xl"></i> Input Pembayaran
                         </h3>
                         <form id="form-pembayaran" onsubmit="submitPembayaran(event)" class="space-y-4">
                             <input type="hidden" id="edit-id-pemasukan">
@@ -354,24 +414,24 @@
                             <input type="hidden" id="edit-lp-pemasukan">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">NIS Siswa</label>
-                                <input type="text" id="input-nis" oninput="cekNamaSiswa(this.value)" required placeholder="Ketik NIS..." autocomplete="off" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition-colors">
+                                <input type="text" id="input-nis" oninput="cekNamaSiswa(this.value)" required placeholder="Ketik NIS..." autocomplete="off" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 transition-colors">
                                 <p id="info-nama-siswa" class="text-sm mt-1.5 hidden flex items-center transition-all"></p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Pembayaran</label>
-                                <select id="input-jenis" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"></select>
+                                <select id="input-jenis" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500"></select>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Tahun Ajaran</label>
-                                <select id="input-tahun" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"></select>
+                                <select id="input-tahun" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500"></select>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Nominal (Rp)</label>
-                                <input type="number" id="input-nominal" required min="1000" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <input type="number" id="input-nominal" required min="1000" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
                             </div>
                             <div class="flex space-x-2 pt-2">
                                 <button type="button" id="btn-cancel-pemasukan" onclick="cancelEdit('pemasukan')" class="hidden w-1/3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2.5 rounded-lg transition-colors">Batal</button>
-                                <button type="submit" id="btn-submit-pemasukan" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg transition-colors">Simpan Data</button>
+                                <button type="submit" id="btn-submit-pemasukan" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-2.5 rounded-lg transition-colors">Simpan Data</button>
                             </div>
                         </form>
                     </div>
@@ -381,7 +441,7 @@
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden h-full flex flex-col">
                         <div class="p-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                             <h3 class="text-lg font-semibold text-gray-800">Riwayat Transaksi Pemasukan</h3>
-                            <input type="text" id="search-pemasukan" onkeyup="handleSearch('pemasukan')" placeholder="Cari NIS atau Jenis..." class="w-full sm:w-64 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <input type="text" id="search-pemasukan" onkeyup="handleSearch('pemasukan')" placeholder="Cari NIS atau Jenis..." class="w-full sm:w-64 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
                         </div>
                         <div class="flex-1 overflow-x-auto">
                             <table class="w-full text-left border-collapse">
@@ -408,23 +468,46 @@
                 </div>
             </div>
 
+            <!-- 3. TAB CETAK LAPORAN KELAS -->
+            <div id="admin-view-cetak" class="hidden flex-1 overflow-y-auto p-4 md:p-8 flex-col gap-4">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col md:flex-row items-end gap-4">
+                    <div class="w-full md:w-1/3"><label class="block text-sm font-medium text-gray-700 mb-1">Pilih Tahun Ajaran</label><select id="cetak-tahun" class="w-full px-3 py-2.5 border border-gray-300 rounded-lg"><option value="2025/2026">2025/2026</option></select></div>
+                    <div class="w-full md:w-1/3"><label class="block text-sm font-medium text-gray-700 mb-1">Pilih Kelas</label><select id="cetak-kelas" class="w-full px-3 py-2.5 border border-gray-300 rounded-lg"></select></div>
+                    <div class="w-full md:w-1/3 flex space-x-2"><button onclick="generateLaporanCetak()" class="w-full bg-emerald-600 text-white font-medium py-2.5 rounded-lg flex items-center justify-center"><i class="ph ph-table mr-2"></i> Tampilkan Rekap</button></div>
+                </div>
+                <!-- Area Render Hasil Rekap -->
+                <div id="cetak-result-container" class="hidden bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex-col h-full">
+                    <div class="p-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+                        <div><h3 class="text-sm font-bold text-gray-800">Preview Laporan (Horizontal)</h3><p class="text-xs text-gray-500">Akan di-generate otomatis dari perhitungan dinamis.</p></div>
+                        <button onclick="downloadLaporanImage()" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center"><i class="ph ph-image mr-2"></i> Unduh Screenshot (WA)</button>
+                    </div>
+                    <div class="p-6 overflow-x-auto w-full flex-1">
+                        <div id="capture-area" class="w-max min-w-full bg-white p-6 border border-gray-200">
+                            <div class="text-center mb-6"><h2 class="text-xl font-bold uppercase text-gray-800">LAPORAN REKAPITULASI PEMBAYARAN</h2><p id="cap-subtitle" class="text-sm font-semibold text-gray-600">KELAS: - | TAHUN AJARAN: -</p></div>
+                            <div id="cap-table-container"></div>
+                            <div class="mt-6 flex justify-between text-xs text-gray-500"><p>Sistem ERP MA Bi'rul Ulum</p><p id="cap-date">Dicetak pada: -</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- TAB PEMASUKAN DANA BANTUAN -->
             <div id="admin-view-bantuan" class="hidden flex-1 overflow-y-auto p-4 md:p-8 flex-col lg:flex-row gap-4 md:gap-8">
                 <div class="w-full lg:w-1/3 admin-input-form">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center"><i class="ph ph-bank text-blue-500 mr-2 text-xl"></i> Input Dana Bantuan</h3>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center"><i class="ph ph-bank text-teal-500 mr-2 text-xl"></i> Input Dana Bantuan</h3>
                         <form id="form-bantuan" onsubmit="submitBantuan(event)" class="space-y-4">
                             <input type="hidden" id="edit-id-bantuan">
                             <input type="hidden" id="edit-tgl-bantuan">
                             <input type="hidden" id="edit-waktu-bantuan">
-                            <div><label class="block text-sm mb-1">Tanggal Transaksi</label><input type="date" id="bantuan-tgl-transaksi" required class="w-full px-3 py-2 border rounded-lg"></div>
-                            <div><label class="block text-sm mb-1">Keterangan</label><input id="bantuan-keterangan" rows="2" required placeholder="Misal: Pencairan BOS" class="w-full px-3 py-2 border rounded-lg"></div>
-                            <div><label class="block text-sm mb-1">Jenis Dana Bantuan</label><select id="bantuan-jenis" required class="w-full px-3 py-2 border rounded-lg"></select></div>
-                            <div><label class="block text-sm mb-1">Tahun Ajaran</label><select id="bantuan-tahun" required class="w-full px-3 py-2 border rounded-lg"></select></div>
-                            <div><label class="block text-sm mb-1">Nominal (Rp)</label><input type="number" id="bantuan-nominal" required min="1000" class="w-full px-3 py-2 border rounded-lg"></div>
+                            <div><label class="block text-sm mb-1">Tanggal Transaksi</label><input type="date" id="bantuan-tgl-transaksi" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"></div>
+                            <div><label class="block text-sm mb-1">Keterangan</label><input id="bantuan-keterangan" rows="2" required placeholder="Misal: Pencairan BOS" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"></div>
+                            <div><label class="block text-sm mb-1">Jenis Dana Bantuan</label><select id="bantuan-jenis" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"></select></div>
+                            <div><label class="block text-sm mb-1">Tahun Ajaran</label><select id="bantuan-tahun" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"></select></div>
+                            <div><label class="block text-sm mb-1">Nominal (Rp)</label><input type="number" id="bantuan-nominal" required min="1000" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"></div>
                             <div class="flex space-x-2 pt-2">
                                 <button type="button" id="btn-cancel-bantuan" onclick="cancelEdit('bantuan')" class="hidden w-1/3 bg-gray-100 py-2.5 rounded-lg">Batal</button>
-                                <button type="submit" id="btn-submit-bantuan" class="w-full bg-blue-600 text-white py-2.5 rounded-lg">Simpan Data</button>
+                                <button type="submit" id="btn-submit-bantuan" class="w-full bg-teal-600 hover:bg-teal-700 text-white py-2.5 rounded-lg">Simpan Data</button>
                             </div>
                         </form>
                     </div>
@@ -433,7 +516,7 @@
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden h-full flex flex-col">
                         <div class="p-6 border-b border-gray-100 flex justify-between items-center gap-4">
                             <h3 class="text-lg font-semibold text-gray-800">Riwayat Dana Bantuan</h3>
-                            <input type="text" id="search-bantuan" onkeyup="handleSearch('bantuan')" placeholder="Cari Keterangan..." class="w-full sm:w-64 px-3 py-2 text-sm border rounded-lg">
+                            <input type="text" id="search-bantuan" onkeyup="handleSearch('bantuan')" placeholder="Cari Keterangan..." class="w-full sm:w-64 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500">
                         </div>
                         <div class="flex-1 overflow-x-auto">
                             <table class="w-full text-left border-collapse">
@@ -452,23 +535,70 @@
                 </div>
             </div>
 
+            <!-- TAB INFAQ -->
+            <div id="admin-view-infaq" class="hidden flex-1 overflow-y-auto p-4 md:p-8 flex-col lg:flex-row gap-4 md:gap-8">
+                <div class="w-full lg:w-1/3 admin-input-form">
+                    <div class="bg-emerald-50 rounded-xl shadow-sm border border-emerald-100 p-4 mb-4 text-center">
+                        <p class="text-sm text-emerald-600 font-medium mb-1">Total Saldo Infaq Saat Ini</p>
+                        <h3 id="infaq-total-saldo" class="text-3xl font-bold text-emerald-700">Rp0</h3>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center"><i class="ph ph-hand-heart text-emerald-500 mr-2 text-xl"></i> Input Kas Infaq</h3>
+                        <form id="form-infaq" onsubmit="submitInfaq(event)" class="space-y-4">
+                            <input type="hidden" id="edit-id-infaq">
+                            <input type="hidden" id="edit-tgl-infaq">
+                            <input type="hidden" id="edit-waktu-infaq">
+                            <div><label class="block text-sm mb-1">Tanggal Transaksi</label><input type="date" id="infaq-tgl-transaksi" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500"></div>
+                            <div><label class="block text-sm mb-1">Jenis Mutasi</label><select id="infaq-jenis" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500"><option value="Pemasukan">Pemasukan Infaq</option><option value="Pengeluaran">Pengeluaran Infaq</option></select></div>
+                            <div><label class="block text-sm mb-1">Keterangan</label><input id="infaq-keterangan" rows="2" required placeholder="Misal: Sedekah Jumat" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500"></div>
+                            <div><label class="block text-sm mb-1">Nominal (Rp)</label><input type="number" id="infaq-nominal" required min="1000" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500"></div>
+                            <div class="flex space-x-2 pt-2">
+                                <button type="button" id="btn-cancel-infaq" onclick="cancelEdit('infaq')" class="hidden w-1/3 bg-gray-100 py-2.5 rounded-lg">Batal</button>
+                                <button type="submit" id="btn-submit-infaq" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-lg">Simpan Data</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="w-full lg:w-2/3 admin-table-container">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden h-full flex flex-col">
+                        <div class="p-6 border-b border-gray-100 flex justify-between items-center gap-4">
+                            <h3 class="text-lg font-semibold text-gray-800">Riwayat Mutasi Infaq</h3>
+                            <input type="text" id="search-infaq" onkeyup="handleSearch('infaq')" placeholder="Cari Keterangan..." class="w-full sm:w-64 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div class="flex-1 overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead><tr class="bg-gray-50 text-gray-500 text-sm border-b"><th class="p-4">Waktu Input</th><th class="p-4">Tgl & Keterangan</th><th class="p-4 text-center">Mutasi</th><th class="p-4 text-right">Nominal</th><th class="p-4 text-center admin-action-th">Aksi</th></tr></thead>
+                                <tbody id="table-admin-infaq" class="text-sm divide-y divide-gray-100"></tbody>
+                            </table>
+                        </div>
+                        <div class="p-4 border-t border-gray-100 flex justify-between items-center bg-gray-50 text-sm">
+                            <span id="page-info-infaq" class="text-gray-500"></span>
+                            <div class="flex space-x-2">
+                                <button onclick="changeAdminPage('infaq', -1)" id="btn-prev-infaq" class="px-3 py-1 border rounded bg-white">Sebelumnya</button>
+                                <button onclick="changeAdminPage('infaq', 1)" id="btn-next-infaq" class="px-3 py-1 border rounded bg-white">Selanjutnya</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- TAB PENGELUARAN OPS -->
             <div id="admin-view-pengeluaran" class="hidden flex-1 overflow-y-auto p-4 md:p-8 flex-col lg:flex-row gap-4 md:gap-8">
                 <div class="w-full lg:w-1/3 admin-input-form">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center"><i class="ph ph-minus-circle text-red-500 mr-2 text-xl"></i> Input Pengeluaran Ops.</h3>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center"><i class="ph ph-minus-circle text-orange-500 mr-2 text-xl"></i> Input Pengeluaran Ops.</h3>
                         <form id="form-pengeluaran" onsubmit="submitPengeluaran(event)" class="space-y-4">
                             <input type="hidden" id="edit-id-pengeluaran">
                             <input type="hidden" id="edit-tgl-pengeluaran">
                             <input type="hidden" id="edit-waktu-pengeluaran">
-                            <div><label class="block text-sm mb-1">Tanggal Transaksi (Nota)</label><input type="date" id="out-tgl-transaksi" required class="w-full px-3 py-2 border rounded-lg"></div>
-                            <div><label class="block text-sm mb-1">Keterangan</label><input id="out-keterangan" rows="2" required placeholder="Misal: Beli ATK" class="w-full px-3 py-2 border rounded-lg"></div>
-                            <div><label class="block text-sm mb-1">Jenis Pengeluaran</label><select id="out-jenis" required class="w-full px-3 py-2 border rounded-lg"></select></div>
-                            <div><label class="block text-sm mb-1">Tahun Ajaran</label><select id="out-tahun" required class="w-full px-3 py-2 border rounded-lg"></select></div>
-                            <div><label class="block text-sm mb-1">Nominal (Rp)</label><input type="number" id="out-nominal" required min="1000" class="w-full px-3 py-2 border rounded-lg"></div>
+                            <div><label class="block text-sm mb-1">Tanggal Transaksi (Nota)</label><input type="date" id="out-tgl-transaksi" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"></div>
+                            <div><label class="block text-sm mb-1">Keterangan</label><input id="out-keterangan" rows="2" required placeholder="Misal: Beli ATK" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"></div>
+                            <div><label class="block text-sm mb-1">Jenis Pengeluaran</label><select id="out-jenis" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"></select></div>
+                            <div><label class="block text-sm mb-1">Tahun Ajaran</label><select id="out-tahun" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"></select></div>
+                            <div><label class="block text-sm mb-1">Nominal (Rp)</label><input type="number" id="out-nominal" required min="1000" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"></div>
                             <div class="flex space-x-2 pt-2">
                                 <button type="button" id="btn-cancel-pengeluaran" onclick="cancelEdit('pengeluaran')" class="hidden w-1/3 bg-gray-100 py-2.5 rounded-lg">Batal</button>
-                                <button type="submit" id="btn-submit-pengeluaran" class="w-full bg-slate-800 text-white py-2.5 rounded-lg">Simpan Data</button>
+                                <button type="submit" id="btn-submit-pengeluaran" class="w-full bg-orange-600 hover:bg-orange-700 text-white py-2.5 rounded-lg">Simpan Data</button>
                             </div>
                         </form>
                     </div>
@@ -477,7 +607,7 @@
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden h-full flex flex-col">
                         <div class="p-6 border-b border-gray-100 flex justify-between items-center gap-4">
                             <h3 class="text-lg font-semibold text-gray-800">Riwayat Pengeluaran Ops</h3>
-                            <input type="text" id="search-pengeluaran" onkeyup="handleSearch('pengeluaran')" placeholder="Cari Keterangan..." class="w-full sm:w-64 px-3 py-2 text-sm border rounded-lg">
+                            <input type="text" id="search-pengeluaran" onkeyup="handleSearch('pengeluaran')" placeholder="Cari Keterangan..." class="w-full sm:w-64 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500">
                         </div>
                         <div class="flex-1 overflow-x-auto">
                             <table class="w-full text-left border-collapse">
@@ -500,19 +630,19 @@
             <div id="admin-view-pengeluaran-non" class="hidden flex-1 overflow-y-auto p-4 md:p-8 flex-col lg:flex-row gap-4 md:gap-8">
                 <div class="w-full lg:w-1/3 admin-input-form">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center"><i class="ph ph-buildings text-orange-500 mr-2 text-xl"></i> Input Pengeluaran Non Ops</h3>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center"><i class="ph ph-buildings text-amber-500 mr-2 text-xl"></i> Input Pengeluaran Non Ops</h3>
                         <form id="form-pengeluaran-non" onsubmit="submitPengeluaranNon(event)" class="space-y-4">
                             <input type="hidden" id="edit-id-pengeluaran-non">
                             <input type="hidden" id="edit-tgl-pengeluaran-non">
                             <input type="hidden" id="edit-waktu-pengeluaran-non">
-                            <div><label class="block text-sm mb-1">Tanggal Transaksi (Nota)</label><input type="date" id="out-non-tgl-transaksi" required class="w-full px-3 py-2 border rounded-lg"></div>
-                            <div><label class="block text-sm mb-1">Keterangan</label><input id="out-non-keterangan" rows="2" required placeholder="Misal: Bangun Lab" class="w-full px-3 py-2 border rounded-lg"></div>
-                            <div><label class="block text-sm mb-1">Jenis Pengeluaran</label><select id="out-non-jenis" required class="w-full px-3 py-2 border rounded-lg"></select></div>
-                            <div><label class="block text-sm mb-1">Tahun Ajaran</label><select id="out-non-tahun" required class="w-full px-3 py-2 border rounded-lg"></select></div>
-                            <div><label class="block text-sm mb-1">Nominal (Rp)</label><input type="number" id="out-non-nominal" required min="1000" class="w-full px-3 py-2 border rounded-lg"></div>
+                            <div><label class="block text-sm mb-1">Tanggal Transaksi (Nota)</label><input type="date" id="out-non-tgl-transaksi" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"></div>
+                            <div><label class="block text-sm mb-1">Keterangan</label><input id="out-non-keterangan" rows="2" required placeholder="Misal: Bangun Lab" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"></div>
+                            <div><label class="block text-sm mb-1">Jenis Pengeluaran</label><select id="out-non-jenis" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"></select></div>
+                            <div><label class="block text-sm mb-1">Tahun Ajaran</label><select id="out-non-tahun" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"></select></div>
+                            <div><label class="block text-sm mb-1">Nominal (Rp)</label><input type="number" id="out-non-nominal" required min="1000" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"></div>
                             <div class="flex space-x-2 pt-2">
                                 <button type="button" id="btn-cancel-pengeluaran-non" onclick="cancelEdit('pengeluaran-non')" class="hidden w-1/3 bg-gray-100 py-2.5 rounded-lg">Batal</button>
-                                <button type="submit" id="btn-submit-pengeluaran-non" class="w-full bg-slate-800 text-white py-2.5 rounded-lg">Simpan Data</button>
+                                <button type="submit" id="btn-submit-pengeluaran-non" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2.5 rounded-lg">Simpan Data</button>
                             </div>
                         </form>
                     </div>
@@ -521,7 +651,7 @@
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden h-full flex flex-col">
                         <div class="p-6 border-b border-gray-100 flex justify-between items-center gap-4">
                             <h3 class="text-lg font-semibold text-gray-800">Riwayat Pengeluaran Non Ops</h3>
-                            <input type="text" id="search-pengeluaran-non" onkeyup="handleSearch('pengeluaran-non')" placeholder="Cari Keterangan..." class="w-full sm:w-64 px-3 py-2 text-sm border rounded-lg">
+                            <input type="text" id="search-pengeluaran-non" onkeyup="handleSearch('pengeluaran-non')" placeholder="Cari Keterangan..." class="w-full sm:w-64 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500">
                         </div>
                         <div class="flex-1 overflow-x-auto">
                             <table class="w-full text-left border-collapse">
@@ -540,97 +670,48 @@
                 </div>
             </div>
 
-            <!-- TAB INFAQ -->
-            <div id="admin-view-infaq" class="hidden flex-1 overflow-y-auto p-4 md:p-8 flex-col lg:flex-row gap-4 md:gap-8">
+            <!-- TAB MASTER TARIF -->
+            <div id="admin-view-tarif" class="hidden flex-1 overflow-y-auto p-4 md:p-8 flex-col lg:flex-row gap-4">
                 <div class="w-full lg:w-1/3 admin-input-form">
-                    <div class="bg-emerald-50 rounded-xl shadow-sm border border-emerald-100 p-4 mb-4 text-center">
-                        <p class="text-sm text-emerald-600 font-medium mb-1">Total Saldo Infaq Saat Ini</p>
-                        <h3 id="infaq-total-saldo" class="text-3xl font-bold text-emerald-700">Rp0</h3>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center"><i class="ph ph-hand-heart text-emerald-500 mr-2 text-xl"></i> Input Kas Infaq</h3>
-                        <form id="form-infaq" onsubmit="submitInfaq(event)" class="space-y-4">
-                            <input type="hidden" id="edit-id-infaq">
-                            <input type="hidden" id="edit-tgl-infaq">
-                            <input type="hidden" id="edit-waktu-infaq">
-                            <div><label class="block text-sm mb-1">Tanggal Transaksi</label><input type="date" id="infaq-tgl-transaksi" required class="w-full px-3 py-2 border rounded-lg"></div>
-                            <div><label class="block text-sm mb-1">Jenis Mutasi</label><select id="infaq-jenis" required class="w-full px-3 py-2 border rounded-lg"><option value="Pemasukan">Pemasukan Infaq</option><option value="Pengeluaran">Pengeluaran Infaq</option></select></div>
-                            <div><label class="block text-sm mb-1">Keterangan</label><input id="infaq-keterangan" rows="2" required placeholder="Misal: Sedekah Jumat" class="w-full px-3 py-2 border rounded-lg"></div>
-                            <div><label class="block text-sm mb-1">Nominal (Rp)</label><input type="number" id="infaq-nominal" required min="1000" class="w-full px-3 py-2 border rounded-lg"></div>
-                            <div class="flex space-x-2 pt-2">
-                                <button type="button" id="btn-cancel-infaq" onclick="cancelEdit('infaq')" class="hidden w-1/3 bg-gray-100 py-2.5 rounded-lg">Batal</button>
-                                <button type="submit" id="btn-submit-infaq" class="w-full bg-emerald-600 text-white py-2.5 rounded-lg">Simpan Data</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="w-full lg:w-2/3 admin-table-container">
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden h-full flex flex-col">
-                        <div class="p-6 border-b border-gray-100 flex justify-between items-center gap-4">
-                            <h3 class="text-lg font-semibold text-gray-800">Riwayat Mutasi Infaq</h3>
-                            <input type="text" id="search-infaq" onkeyup="handleSearch('infaq')" placeholder="Cari Keterangan..." class="w-full sm:w-64 px-3 py-2 text-sm border rounded-lg">
-                        </div>
-                        <div class="flex-1 overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead><tr class="bg-gray-50 text-gray-500 text-sm border-b"><th class="p-4">Waktu Input</th><th class="p-4">Tgl & Keterangan</th><th class="p-4 text-center">Mutasi</th><th class="p-4 text-right">Nominal</th><th class="p-4 text-center admin-action-th">Aksi</th></tr></thead>
-                                <tbody id="table-admin-infaq" class="text-sm divide-y divide-gray-100"></tbody>
-                            </table>
-                        </div>
-                        <div class="p-4 border-t border-gray-100 flex justify-between items-center bg-gray-50 text-sm">
-                            <span id="page-info-infaq" class="text-gray-500"></span>
-                            <div class="flex space-x-2">
-                                <button onclick="changeAdminPage('infaq', -1)" id="btn-prev-infaq" class="px-3 py-1 border rounded bg-white">Sebelumnya</button>
-                                <button onclick="changeAdminPage('infaq', 1)" id="btn-next-infaq" class="px-3 py-1 border rounded bg-white">Selanjutnya</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB MANAJEMEN USER -->
-            <div id="admin-view-user" class="hidden flex-1 overflow-y-auto p-4 md:p-8 flex-col lg:flex-row gap-4 md:gap-8">
-                <div class="w-full lg:w-1/3 admin-input-form">
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center"><i class="ph ph-user-plus text-purple-500 mr-2 text-xl"></i> Tambah / Edit User</h3>
-                        <form id="form-user" onsubmit="submitUser(event)" class="space-y-4">
-                            <input type="hidden" id="edit-id-user">
-                            <input type="hidden" id="edit-old-username">
-                            <div><label class="block text-sm mb-1">Username</label><input type="text" id="user-username" required class="w-full px-3 py-2 border rounded-lg"></div>
-                            <div><label class="block text-sm mb-1">Nama Lengkap</label><input type="text" id="user-nama" required class="w-full px-3 py-2 border rounded-lg"></div>
-                            <div><label class="block text-sm mb-1">Password</label><input type="text" id="user-password" required class="w-full px-3 py-2 border rounded-lg"></div>
+                    <div class="bg-white rounded-xl shadow-sm border border-indigo-100 p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2 flex items-center"><i class="ph ph-tag text-indigo-600 mr-2 text-xl"></i> Pengaturan Tarif</h3>
+                        <p class="text-xs text-gray-500 mb-4">Sistem tagihan dinamis. Tarif otomatis dihitung untuk siswa berdasarkan targetnya.</p>
+                        <form id="form-tarif" onsubmit="submitTarif(event)" class="space-y-4">
+                            <input type="hidden" id="edit-id-tarif">
+                            <div><label class="block text-sm mb-1 font-medium">Tahun Ajaran</label><select id="tarif-tahun" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"></select></div>
                             <div>
-                                <label class="block text-sm mb-1">Role Akses</label>
-                                <select id="user-role" required class="w-full px-3 py-2 border rounded-lg">
-                                    <option value="Super Admin">Super Admin (Full Access)</option>
-                                    <option value="Admin">Admin / Bendahara (Input & Cetak)</option>
-                                    <option value="Kepala Sekolah">Kepala Sekolah (View Only)</option>
-                                </select>
+                                <label class="block text-sm mb-1 font-medium">Target Penagihan</label>
+                                <input type="text" id="tarif-target" required placeholder="SEMUA KELAS / X IPA / NIS 1090" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 uppercase">
                             </div>
-                            <div class="flex space-x-2 pt-2">
-                                <button type="button" id="btn-cancel-user" onclick="cancelEdit('user')" class="hidden w-1/3 bg-gray-100 py-2.5 rounded-lg">Batal</button>
-                                <button type="submit" id="btn-submit-user" class="w-full bg-purple-600 text-white py-2.5 rounded-lg">Simpan Data</button>
-                            </div>
+                            <div><label class="block text-sm mb-1 font-medium">Jenis Tagihan</label><input type="text" id="tarif-jenis" required placeholder="Contoh: SPP Juli, PTS 1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"></div>
+                            <div><label class="block text-sm mb-1 font-medium">Nominal Tarif (Rp)</label><input type="number" id="tarif-nominal" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"></div>
+                            <div class="flex space-x-2 pt-2"><button type="button" id="btn-cancel-tarif" onclick="cancelEdit('tarif')" class="hidden w-1/3 bg-gray-100 text-gray-700 py-2.5 rounded-lg">Batal</button><button type="submit" id="btn-submit-tarif" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg transition-colors">Simpan Tarif</button></div>
                         </form>
                     </div>
                 </div>
                 <div class="w-full lg:w-2/3 admin-table-container">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden h-full flex flex-col">
                         <div class="p-6 border-b border-gray-100 flex justify-between items-center gap-4">
-                            <h3 class="text-lg font-semibold text-gray-800">Daftar Akun Pengguna</h3>
-                            <input type="text" id="search-user" onkeyup="handleSearch('user')" placeholder="Cari Nama/Username..." class="w-full sm:w-64 px-3 py-2 text-sm border rounded-lg">
+                            <h3 class="text-lg font-semibold text-gray-800">Daftar Master Tarif</h3>
+                            <input type="text" id="search-tarif" onkeyup="handleSearch('tarif')" placeholder="Cari Tahun/Target/Jenis..." class="w-full sm:w-64 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
                         </div>
                         <div class="flex-1 overflow-x-auto">
                             <table class="w-full text-left border-collapse">
-                                <thead><tr class="bg-gray-50 text-gray-500 text-sm border-b"><th class="p-4">Username</th><th class="p-4">Nama Lengkap</th><th class="p-4">Role</th><th class="p-4 text-center admin-action-th">Aksi</th></tr></thead>
-                                <tbody id="table-admin-user" class="text-sm divide-y divide-gray-100"></tbody>
+                                <thead>
+                                    <tr class="bg-gray-50 text-gray-500 text-sm border-b">
+                                        <th class="p-4">Tahun Ajaran</th>
+                                        <th class="p-4">Target Penagihan</th>
+                                        <th class="p-4">Jenis Tagihan</th>
+                                        <th class="p-4 text-right">Nominal Tarif</th>
+                                        <th class="p-4 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-admin-tarif" class="text-sm divide-y divide-gray-100"></tbody>
                             </table>
                         </div>
                         <div class="p-4 border-t border-gray-100 flex justify-between items-center bg-gray-50 text-sm">
-                            <span id="page-info-user" class="text-gray-500"></span>
-                            <div class="flex space-x-2">
-                                <button onclick="changeAdminPage('user', -1)" id="btn-prev-user" class="px-3 py-1 border rounded bg-white">Sebelumnya</button>
-                                <button onclick="changeAdminPage('user', 1)" id="btn-next-user" class="px-3 py-1 border rounded bg-white">Selanjutnya</button>
-                            </div>
+                            <span id="page-info-tarif" class="text-gray-500"></span>
+                            <div class="flex space-x-2"><button onclick="changeAdminPage('tarif', -1)" id="btn-prev-tarif" class="px-3 py-1 border rounded bg-white">Sebelumnya</button><button onclick="changeAdminPage('tarif', 1)" id="btn-next-tarif" class="px-3 py-1 border rounded bg-white">Selanjutnya</button></div>
                         </div>
                     </div>
                 </div>
@@ -639,28 +720,28 @@
             <!-- TAB RESTORE DATA (Khusus Super Admin) -->
             <div id="admin-view-restore" class="hidden flex-1 overflow-y-auto p-4 md:p-8 flex-col gap-4 md:gap-8">
                 <div class="w-full bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden h-full flex flex-col">
-                    <div class="p-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-red-50/50">
+                    <div class="p-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-rose-50/50">
                         <div>
-                            <h3 class="text-lg font-bold text-gray-800 flex items-center"><i class="ph ph-trash text-red-500 mr-2 text-xl"></i> Recycle Bin (Data Terhapus)</h3>
+                            <h3 class="text-lg font-bold text-gray-800 flex items-center"><i class="ph ph-trash text-rose-500 mr-2 text-xl"></i> Recycle Bin (Data Terhapus)</h3>
                             <p class="text-xs text-gray-500 mt-1">Data akan dihapus permanen oleh sistem setelah 30 hari.</p>
                         </div>
                     </div>
                     <!-- Menu Tab Internal Restore -->
                     <div class="flex border-b overflow-x-auto hide-scroll bg-gray-50">
-                        <button onclick="switchRestoreTab('pemasukan')" id="rtab-pemasukan" class="flex-none px-6 py-3 text-sm font-semibold border-b-2 border-red-500 text-red-600 transition-colors flex items-center">
-                            Pemasukan <span id="badge-res-pemasukan" class="ml-2 bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
+                        <button onclick="switchRestoreTab('pemasukan')" id="rtab-pemasukan" class="flex-none px-6 py-3 text-sm font-semibold border-b-2 border-rose-500 text-rose-600 transition-colors flex items-center">
+                            Pemasukan <span id="badge-res-pemasukan" class="ml-2 bg-rose-500 text-white text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
                         </button>
                         <button onclick="switchRestoreTab('bantuan')" id="rtab-bantuan" class="flex-none px-6 py-3 text-sm font-semibold border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors flex items-center">
-                            Bantuan <span id="badge-res-bantuan" class="ml-2 bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
+                            Bantuan <span id="badge-res-bantuan" class="ml-2 bg-rose-500 text-white text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
                         </button>
                         <button onclick="switchRestoreTab('infaq')" id="rtab-infaq" class="flex-none px-6 py-3 text-sm font-semibold border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors flex items-center">
-                            Infaq <span id="badge-res-infaq" class="ml-2 bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
+                            Infaq <span id="badge-res-infaq" class="ml-2 bg-rose-500 text-white text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
                         </button>
                         <button onclick="switchRestoreTab('pengeluaran')" id="rtab-pengeluaran" class="flex-none px-6 py-3 text-sm font-semibold border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors flex items-center">
-                            Operasional <span id="badge-res-pengeluaran" class="ml-2 bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
+                            Operasional <span id="badge-res-pengeluaran" class="ml-2 bg-rose-500 text-white text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
                         </button>
                         <button onclick="switchRestoreTab('pengeluaran-non')" id="rtab-pengeluaran-non" class="flex-none px-6 py-3 text-sm font-semibold border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors flex items-center">
-                            Non Ops <span id="badge-res-pengeluaran-non" class="ml-2 bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
+                            Non Ops <span id="badge-res-pengeluaran-non" class="ml-2 bg-rose-500 text-white text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
                         </button>
                     </div>
                     
@@ -686,6 +767,62 @@
                     </div>
                 </div>
             </div>
+
+            <!-- TAB MANAJEMEN USER -->
+            <div id="admin-view-user" class="hidden flex-1 overflow-y-auto p-4 md:p-8 flex-col lg:flex-row gap-4 md:gap-8">
+                <div class="w-full lg:w-1/3 admin-input-form">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center"><i class="ph ph-user-plus text-purple-500 mr-2 text-xl"></i> Tambah / Edit User</h3>
+                        <form id="form-user" onsubmit="submitUser(event)" class="space-y-4">
+                            <input type="hidden" id="edit-id-user">
+                            <input type="hidden" id="edit-old-username">
+                            <div><label class="block text-sm mb-1">Username</label><input type="text" id="user-username" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"></div>
+                            <div><label class="block text-sm mb-1">Nama Lengkap</label><input type="text" id="user-nama" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"></div>
+                            <div><label class="block text-sm mb-1">Password</label><input type="text" id="user-password" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"></div>
+                            <div>
+                                <label class="block text-sm mb-1">Role Akses</label>
+                                <select id="user-role" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                                    <option value="Super Admin">Super Admin (Full Access)</option>
+                                    <option value="Admin">Admin / Bendahara (Input & Cetak)</option>
+                                    <option value="Kepala Sekolah">Kepala Sekolah (View Only)</option>
+                                </select>
+                            </div>
+                            <div class="flex space-x-2 pt-2">
+                                <button type="button" id="btn-cancel-user" onclick="cancelEdit('user')" class="hidden w-1/3 bg-gray-100 py-2.5 rounded-lg">Batal</button>
+                                <button type="submit" id="btn-submit-user" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2.5 rounded-lg">Simpan Data</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="w-full lg:w-2/3 admin-table-container">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden h-full flex flex-col">
+                        <div class="p-6 border-b border-gray-100 flex justify-between items-center gap-4">
+                            <h3 class="text-lg font-semibold text-gray-800">Daftar Akun Pengguna</h3>
+                            <input type="text" id="search-user" onkeyup="handleSearch('user')" placeholder="Cari Nama/Username..." class="w-full sm:w-64 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                        </div>
+                        <div class="flex-1 overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-gray-50 text-gray-500 text-sm border-b">
+                                        <th class="p-4">Username</th>
+                                        <th class="p-4">Nama Lengkap</th>
+                                        <th class="p-4">Role</th>
+                                        <th class="p-4 text-center admin-action-th">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-admin-user" class="text-sm divide-y divide-gray-100"></tbody>
+                            </table>
+                        </div>
+                        <div class="p-4 border-t border-gray-100 flex justify-between items-center bg-gray-50 text-sm">
+                            <span id="page-info-user" class="text-gray-500"></span>
+                            <div class="flex space-x-2">
+                                <button onclick="changeAdminPage('user', -1)" id="btn-prev-user" class="px-3 py-1 border rounded bg-white">Sebelumnya</button>
+                                <button onclick="changeAdminPage('user', 1)" id="btn-next-user" class="px-3 py-1 border rounded bg-white">Selanjutnya</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -702,6 +839,24 @@
         </header>
 
         <main class="flex-1 overflow-y-auto p-4 md:p-8 w-full max-w-6xl mx-auto">
+            
+            <!-- SMART EXAM WIDGET -->
+            <div id="widget-ujian" class="hidden bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl shadow-md p-6 mb-6 text-white flex flex-col md:flex-row items-center justify-between transform transition-all duration-500 hover:scale-[1.01]">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center mr-4 shrink-0">
+                        <i class="ph ph-exam text-3xl text-white"></i>
+                    </div>
+                    <div>
+                        <p class="text-amber-100 text-sm font-medium mb-0.5 tracking-wide uppercase">Persyaratan Mengikuti Ujian</p>
+                        <h2 id="widget-exam-title" class="text-2xl font-bold">Syarat -</h2>
+                    </div>
+                </div>
+                <div class="text-center md:text-right bg-white/10 px-6 py-3 rounded-lg border border-white/20 w-full md:w-auto">
+                    <p class="text-amber-100 text-xs mb-1">Total Akumulasi Tagihan Berjalan</p>
+                    <h3 id="widget-exam-amount" class="text-3xl font-bold tracking-tight">Rp0</h3>
+                </div>
+            </div>
+
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6 flex flex-col md:flex-row items-center justify-between">
                 <div class="flex items-center mb-4 md:mb-0">
                     <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mr-6 shrink-0">
@@ -713,23 +868,26 @@
                         <p id="siswa-nis-kelas" class="text-gray-600 font-medium">NIS: - | Kelas: - | L/P: -</p>
                     </div>
                 </div>
-                <div id="box-kekurangan" class="bg-red-50 border border-red-100 rounded-lg p-4 text-center min-w-[200px]">
-                    <p id="title-kekurangan" class="text-sm text-red-600 font-medium mb-1">Total Kekurangan</p>
-                    <h3 id="siswa-total-kekurangan" class="text-2xl font-bold text-red-700">Rp0</h3>
+                
+                <div class="flex flex-col items-center md:items-end gap-3 w-full md:w-auto">
+                    <div id="box-kekurangan" class="bg-red-50 border border-red-100 rounded-lg p-4 text-center min-w-[200px] w-full">
+                        <p id="title-kekurangan" class="text-sm text-red-600 font-medium mb-1">Total Hutang Keseluruhan</p>
+                        <h3 id="siswa-total-kekurangan" class="text-2xl font-bold text-red-700">Rp0</h3>
+                    </div>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-5 border-b border-gray-100 bg-gray-50">
-                        <h3 class="text-lg font-semibold text-gray-800"><i class="ph ph-calendar-check mr-2"></i> Rekap SPP (Juli - Juni)</h3>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col max-h-[600px]">
+                    <div class="p-5 border-b border-gray-100 bg-gray-50 shrink-0">
+                        <h3 class="text-lg font-semibold text-gray-800"><i class="ph ph-calendar-check mr-2"></i> Rekap SPP Bulanan</h3>
                     </div>
-                    <div class="overflow-x-auto max-h-[500px] overflow-y-auto">
+                    <div class="overflow-x-auto overflow-y-auto flex-1">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="text-gray-500 text-sm border-b border-gray-100 bg-white sticky top-0">
-                                    <th class="p-4 font-medium">Bulan</th>
-                                    <th class="p-4 font-medium text-center">Status Pembayaran</th>
+                                    <th class="p-4 font-medium">Tagihan Bulan</th>
+                                    <th class="p-4 font-medium text-center">Status / Tunggakan</th>
                                 </tr>
                             </thead>
                             <tbody id="table-rekap-bulanan" class="text-sm divide-y divide-gray-100"></tbody>
@@ -737,23 +895,20 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden h-max">
-                    <div class="p-5 border-b border-gray-100 bg-gray-50">
-                        <h3 class="text-lg font-semibold text-gray-800"><i class="ph ph-file-text mr-2"></i> Rincian Tagihan</h3>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col max-h-[600px]">
+                    <div class="p-5 border-b border-gray-100 bg-gray-50 shrink-0">
+                        <h3 class="text-lg font-semibold text-gray-800"><i class="ph ph-file-text mr-2"></i> Rincian Tagihan Lainnya</h3>
                     </div>
-                    <div class="overflow-x-auto">
+                    <div class="overflow-x-auto overflow-y-auto flex-1">
                         <table class="w-full text-left border-collapse">
                             <thead>
-                                <tr class="text-gray-500 text-sm border-b border-gray-100">
+                                <tr class="text-gray-500 text-sm border-b border-gray-100 bg-white sticky top-0">
                                     <th class="p-4 font-medium">Jenis Tagihan</th>
                                     <th class="p-4 font-medium text-right">Kekurangan / Status</th>
                                 </tr>
                             </thead>
                             <tbody id="table-rekap-tagihan" class="text-sm divide-y divide-gray-100"></tbody>
                         </table>
-                    </div>
-                    <div class="p-4 bg-blue-50 text-sm text-blue-700 border-t border-blue-100">
-                        <i class="ph ph-info mr-1"></i> Jika tagihan tampil "Lunas", berarti tidak ada kekurangan untuk periode tersebut.
                     </div>
                 </div>
             </div>

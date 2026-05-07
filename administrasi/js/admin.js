@@ -1,13 +1,15 @@
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2BBySi5nyeyQMPQZDBTZJl9ZkTlFfBwzDDbR6Nn9Kt8F1eqSx8eKIf2LNvyAiUemw/exec';
+// const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2BBySi5nyeyQMPQZDBTZJl9ZkTlFfBwzDDbR6Nn9Kt8F1eqSx8eKIf2LNvyAiUemw/exec';
+const SCRIPT_URL = '';
 const useServer = SCRIPT_URL.startsWith('https://script.google.com');
 
 let currentUserRole = '';
 let activeRestoreTab = 'pemasukan';
 const adminTableState = {
 	datasiswa: {
-		page: 1,
+		activeTab: 'aktif',
 		query: '',
-		filterKelas: 'All'
+		filterKelas: 'All',
+		page: 1
 	},
 	pemasukan: {
 		page: 1,
@@ -36,6 +38,10 @@ const adminTableState = {
 	restore: {
 		page: 1,
 		query: ''
+	},
+	tarif: {
+		page: 1,
+		query: ''
 	}
 };
 
@@ -58,8 +64,9 @@ window.addEventListener('resize', () => {
 		loadAdminPengeluaranNonTable();
 		loadAdminInfaqTable();
 		if (currentUserRole === 'Super Admin') {
-			loadAdminUserTable();
+			loadAdminTarifTable
 			loadRestoreTable();
+			loadAdminUserTable();
 		}
 	}, 200);
 });
@@ -99,25 +106,46 @@ let dbSiswa = [],
 	dbPengeluaran = [],
 	dbPengeluaranNon = [],
 	dbInfaq = [];
+	dbMasterTarif = [];
 
 function penyebut(nilai) {
-	val = Math.abs(nilai);
-	let huruf = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
-	let temp = "";
-	if (val < 12) temp = " " + huruf[val];
-	else if (val < 20) temp = penyebut(val - 10) + " Belas";
-	else if (val < 100) temp = penyebut(Math.floor(val / 10)) + " Puluh" + penyebut(val % 10);
-	else if (val < 200) temp = " Seratus" + penyebut(val - 100);
-	else if (val < 1000) temp = penyebut(Math.floor(val / 100)) + " Ratus" + penyebut(val % 100);
-	else if (val < 2000) temp = " Seribu" + penyebut(val - 1000);
-	else if (val < 1000000) temp = penyebut(Math.floor(val / 1000)) + " Ribu" + penyebut(val % 1000);
-	else if (val < 1000000000) temp = penyebut(Math.floor(val / 1000000)) + " Juta" + penyebut(val % 1000000);
-	return temp;
+    let val = Math.floor(Math.abs(nilai));
+    let huruf = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
+    let temp = "";
+
+    if (val < 12) {
+        temp = huruf[val];
+    } else if (val < 20) {
+        temp = penyebut(val - 10) + " Belas";
+    } else if (val < 100) {
+        temp = penyebut(Math.floor(val / 10)) + " Puluh " + penyebut(val % 10);
+    } else if (val < 200) {
+        temp = "Seratus " + penyebut(val - 100);
+    } else if (val < 1000) {
+        temp = penyebut(Math.floor(val / 100)) + " Ratus " + penyebut(val % 100);
+    } else if (val < 2000) {
+        temp = "Seribu " + penyebut(val - 1000);
+    } else if (val < 1000000) {
+        temp = penyebut(Math.floor(val / 1000)) + " Ribu " + penyebut(val % 1000);
+    } else if (val < 1000000000) {
+        temp = penyebut(Math.floor(val / 1000000)) + " Juta " + penyebut(val % 1000000);
+    } else if (val < 1000000000000) {
+        temp = penyebut(Math.floor(val / 1000000000)) + " Miliar " + penyebut(val % 1000000000);
+    } else if (val < 1000000000000000) {
+        temp = penyebut(Math.floor(val / 1000000000000)) + " Triliun " + penyebut(val % 1000000000000);
+    }
+
+    return temp;
 }
 
 function terbilang(nilai) {
-	if (nilai === 0) return "Nol Rupiah";
-	return penyebut(nilai).trim() + " Rupiah";
+    if (nilai === 0) return "Nol Rupiah";
+
+    let hasil = penyebut(nilai)
+        .replace(/\s+/g, ' ') // rapikan spasi
+        .trim();
+
+    return hasil + " Rupiah";
 }
 const formatRp = (angka) => new Intl.NumberFormat('id-ID', {
 	style: 'currency',
@@ -175,6 +203,22 @@ function showToast(msg, type = 'success') {
 	setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
 }
 
+function setTabSiswa(tabName) {
+	adminTableState.datasiswa.activeTab = tabName;
+	const btnAktif = document.getElementById('tab-siswa-aktif');
+	const btnNon = document.getElementById('tab-siswa-nonaktif');
+	if (tabName === 'aktif') {
+		btnAktif.className = "text-sm font-bold border-b-2 border-blue-600 text-blue-600 pb-2 transition-colors";
+		btnNon.className = "text-sm font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700 pb-2 transition-colors";
+	} else {
+		btnNon.className = "text-sm font-bold border-b-2 border-blue-600 text-blue-600 pb-2 transition-colors";
+		btnAktif.className = "text-sm font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700 pb-2 transition-colors";
+	}
+	adminTableState.datasiswa.filterKelas = 'All';
+	initDropdowns();
+	loadAdminDataSiswaTable();
+}
+
 async function fetchAPI(action, payload = {}) {
 	const response = await fetch(SCRIPT_URL, {
 		method: 'POST',
@@ -194,7 +238,8 @@ dbMaster = {
 	jenisBantuan: ['Dana BOS Pusat'],
 	jenisPengeluaran: ['Operasional Kelas'],
 	jenisPengeluaranNon: ['Pembangunan Gedung'],
-	tahunAjaran: ['2025/2026', '2026/2027']
+	tahunAjaran: ['2025/2026', '2026/2027'],
+	jenisKelas: ['X E1', 'X IPA', 'X E2', 'X IPS', 'XI F1', 'XI IPA', 'XI F2', 'XI IPS', 'XII IPA', 'XII IPS']
 };
 dbAdmin = [{
 		id: 1,
@@ -218,19 +263,26 @@ dbAdmin = [{
 		role: 'Kepala Madrasah'
 	}
 ];
-dbSiswa = [{
-	nis: '1011',
-	nama: 'Budi Santoso',
-	lp: 'L',
-	kelas: '10-IPA',
-	rekapJuliJuni: ['LUNAS', 'LUNAS', 'LUNAS', 'LUNAS', 'LUNAS', 'LUNAS', 'LUNAS', 'LUNAS', 'LUNAS', 'LUNAS', 380000, 380000],
-	daftarUlang: 'LUNAS',
-	totalKekurangan: 1520000,
-	tagihanPTS1: 'LUNAS',
-	tagihanPAS1: 'LUNAS',
-	tagihanPTS2: 'LUNAS',
-	tagihanPAS2: 760000
-}];
+dbSiswa = [
+	// HIGHLIGHT KASUS 1: Budi. Tahun Masuk 2024. Saat ini tahun ajaran 2025.
+	// Karena sudah naik kelas, dia di-tagih SPP Penuh dari Juli meskipun kolom bulannya ditulis selain Juli.
+	{ nis: '1011', nama: 'Budi Santoso', lp: 'L', tahunMasuk: '2024/2025', kelas: 'XI IPA', bulanMulai: 'Juli' }, 
+	
+	// HIGHLIGHT KASUS 2: Joko. Anak Mutasi Baru. Tahun Masuk 2025.
+	// Karena tahun masuknya SAMA dengan tahun tagihan saat ini, dia hanya ditagih SPP mulai Januari (sesuai kolom Bulan_Mulai_Tagihan).
+	{ nis: '1090', nama: 'Joko Pindahan', lp: 'L', tahunMasuk: '2025/2026', kelas: 'X IPA', bulanMulai: 'Januari' },
+
+	// HIGHLIGHT KASUS 3: Andi (Lulus). Akan terfilter ke Tab Non-Aktif.
+	{ nis: '1001', nama: 'Andi Lulusan', lp: 'L', tahunMasuk: '2022/2023', kelas: 'LULUS 2025', bulanMulai: 'Juli' },
+
+	// Tambahan dummy untuk test pagination (agar lebih dari 5 data)
+	{ nis: '1012', nama: 'Siti Aminah', lp: 'P', tahunMasuk: '2025/2026', kelas: 'X IPA', bulanMulai: 'Juli' },
+	{ nis: '1013', nama: 'Ahmad Fauzi', lp: 'L', tahunMasuk: '2025/2026', kelas: 'X IPA', bulanMulai: 'Juli' },
+	{ nis: '1014', nama: 'Rina Wijaya', lp: 'P', tahunMasuk: '2025/2026', kelas: 'X IPA', bulanMulai: 'Juli' },
+	{ nis: '1015', nama: 'Deni Setiawan', lp: 'L', tahunMasuk: '2025/2026', kelas: 'X IPA', bulanMulai: 'Juli' },
+	{ nis: '1016', nama: 'Lina Marlina', lp: 'P', tahunMasuk: '2025/2026', kelas: 'XI IPS', bulanMulai: 'Juli' },
+	{ nis: '1017', nama: 'Eko Prasetyo', lp: 'L', tahunMasuk: '2025/2026', kelas: 'XI IPS', bulanMulai: 'Juli' }
+];
 dbPembayaran = [{
 	id: 'MABU-0867',
 	acuanBayar: '1011-SPP Juli-2025/2026-1',
@@ -282,6 +334,109 @@ dbInfaq = [{
 	keterangan: 'Sedekah Jumat',
 	nominal: 350000
 }];
+dbMasterTarif = [
+	// Tarif SPP Bulanan
+	{
+		id: 'T-1',
+		tahun: '2025/2026',
+		target: 'SEMUA KELAS',
+		jenis: 'SPP Juli',
+		nominal: 150000,
+		isDeleted: false
+	},
+	{
+		id: 'T-2',
+		tahun: '2025/2026',
+		target: 'SEMUA KELAS',
+		jenis: 'SPP Agustus',
+		nominal: 150000,
+		isDeleted: false
+	},
+	{
+		id: 'T-3',
+		tahun: '2025/2026',
+		target: 'SEMUA KELAS',
+		jenis: 'SPP September',
+		nominal: 150000,
+		isDeleted: false
+	},
+	{
+		id: 'T-4',
+		tahun: '2025/2026',
+		target: 'SEMUA KELAS',
+		jenis: 'SPP Oktober',
+		nominal: 150000,
+		isDeleted: false
+	},
+	{
+		id: 'T-5',
+		tahun: '2025/2026',
+		target: 'SEMUA KELAS',
+		jenis: 'SPP November',
+		nominal: 150000,
+		isDeleted: false
+	},
+	{
+		id: 'T-6',
+		tahun: '2025/2026',
+		target: 'SEMUA KELAS',
+		jenis: 'SPP Desember',
+		nominal: 150000,
+		isDeleted: false
+	},
+	{
+		id: 'T-7',
+		tahun: '2025/2026',
+		target: 'SEMUA KELAS',
+		jenis: 'SPP Januari',
+		nominal: 150000,
+		isDeleted: false
+	},
+	{
+		id: 'T-8',
+		tahun: '2025/2026',
+		target: 'SEMUA KELAS',
+		jenis: 'SPP Februari',
+		nominal: 150000,
+		isDeleted: false
+	},
+
+	// Tarif Khusus
+	{
+		id: 'T-9',
+		tahun: '2025/2026',
+		target: 'X IPA',
+		jenis: 'Daftar Ulang',
+		nominal: 1500000,
+		isDeleted: false
+	},
+	{
+		id: 'T-10',
+		tahun: '2025/2026',
+		target: 'NIS 1090',
+		jenis: 'Biaya Mutasi',
+		nominal: 500000,
+		isDeleted: false
+	},
+
+	// Tarif Ujian (Masuk dalam Kalkulasi Widget)
+	{
+		id: 'T-11',
+		tahun: '2025/2026',
+		target: 'SEMUA KELAS',
+		jenis: 'PTS 1',
+		nominal: 50000,
+		isDeleted: false
+	},
+	{
+		id: 'T-12',
+		tahun: '2025/2026',
+		target: 'SEMUA KELAS',
+		jenis: 'PAS 1',
+		nominal: 75000,
+		isDeleted: false
+	}
+];
 
 function initDropdowns() {
 	if (!dbMaster) return;
@@ -302,15 +457,34 @@ function initDropdowns() {
 	if (e7) e7.innerHTML = mapOpt(dbMaster.jenisBantuan);
 	const e8 = document.getElementById('bantuan-tahun');
 	if (e8) e8.innerHTML = mapOpt(dbMaster.tahunAjaran);
+	const e9 = document.getElementById('tarif-tahun');
+	if (e9) e9.innerHTML = mapOpt(dbMaster.tahunAjaran);
+	const e10 = document.getElementById('cetak-tahun');
+	if (e10) e10.innerHTML = mapOpt(dbMaster.tahunAjaran);
 
 	// Dropdown Dashboard Tahun Ajaran
 	const eDashTahun = document.getElementById('filter-dash-tahun');
 	if(eDashTahun) eDashTahun.innerHTML = '<option value="All">Semua Tahun Ajaran</option>' + mapOpt(dbMaster.tahunAjaran);
-
 	const elFilterKelas = document.getElementById('filter-kelas');
+	const elCetakKelas = document.getElementById('cetak-kelas');
+	let isAktif = adminTableState.datasiswa.activeTab === 'aktif';
+
+	let filteredList = dbSiswa.filter(s => {
+		let isNon = String(s.kelas).toUpperCase().includes('LULUS') || String(s.kelas).toUpperCase().includes('KELUAR');
+		return isAktif ? !isNon : isNon;
+	});
+
 	if (elFilterKelas && dbSiswa) {
 		let unikKelas = [...new Set(dbSiswa.map(s => s.kelas).filter(Boolean))].sort();
 		elFilterKelas.innerHTML = '<option value="All">Semua Kelas</option>' + unikKelas.map(k => `<option value="${k}">${k}</option>`).join('');
+	}
+
+	let unikKelas = [...new Set(filteredList.map(s => s.kelas).filter(Boolean))].sort();
+	if (elFilterKelas) elFilterKelas.innerHTML = `<option value="All">${isAktif ? 'Semua Kelas' : 'Semua Status'}</option>` + unikKelas.map(k => `<option value="${k}">${k}</option>`).join('');
+
+	if (elCetakKelas) {
+		let aktifOnly = [...new Set(dbSiswa.filter(s => !(String(s.kelas).toUpperCase().includes('LULUS') || String(s.kelas).toUpperCase().includes('KELUAR'))).map(s => s.kelas))].sort();
+		elCetakKelas.innerHTML = aktifOnly.map(k => `<option value="${k}">${k}</option>`).join('');
 	}
 }
 initDropdowns();
@@ -453,17 +627,19 @@ function toggleSidebar() {
 }
 
 function switchAdminTab(tab) {
-	const views = ['dashboard', 'datasiswa', 'pemasukan', 'bantuan', 'pengeluaran', 'pengeluaran-non', 'infaq', 'user', 'restore'];
+	const views = ['dashboard', 'datasiswa', 'pemasukan', 'cetak', 'bantuan', 'infaq', 'pengeluaran', 'pengeluaran-non', 'tarif', 'restore', 'user'];
 	const titles = {
 		'dashboard': 'Dashboard Utama',
 		'datasiswa': 'Direktori Data Siswa',
 		'pemasukan': 'Manajemen Pemasukan',
+		'cetak': 'Cetak Rekapitulasi Keuangan',
 		'bantuan': 'Manajemen Dana Bantuan',
 		'pengeluaran': 'Pengeluaran Operasional',
 		'pengeluaran-non': 'Pengeluaran Non Operasional',
 		'infaq': 'Manajemen Kas Infaq',
-		'user': 'Manajemen User & Akses',
+		'tarif': 'Manajemen Tarif Siswa',
 		'restore': 'Pemulihan Data (Recycle Bin)',
+		'user': 'Manajemen User & Akses',
 	};
 	views.forEach(v => {
 		const viewEl = document.getElementById(`admin-view-${v}`);
@@ -477,7 +653,29 @@ function switchAdminTab(tab) {
 	const currentView = document.getElementById(`admin-view-${tab}`);
 	currentView.classList.remove('hidden');
 	currentView.classList.add(tab === 'dashboard' ? 'block' : 'flex');
-	const btnColor = (tab === 'dashboard' ? 'bg-blue-500' : (tab === 'datasiswa' ? 'bg-sky-500' : (tab === 'pemasukan' ? 'bg-cyan-500' : (tab === 'bantuan' ? 'bg-teal-500' : (tab === 'infaq' ? 'bg-emerald-500' : (tab === 'pengeluaran' ? 'bg-orange-500' : (tab === 'pengeluaran-non' ? 'bg-amber-500' : (tab === 'user' ? 'bg-purple-600' : (tab === 'restore' ? 'bg-rose-500' : 'bg-state-500')))))))));
+
+	const warnaNav = [
+		'bg-blue-500',		//dashboard
+		'bg-sky-500', 		//data-siswa
+		'bg-cyan-500',		//pemasukan
+		'bg-green-500',		//laporan
+		'bg-teal-500',		//dana-bantuan
+		'bg-emerald-500',	//infaq
+		'bg-orange-500',	//operasional
+		'bg-amber-500',		//non-operasional
+		'bg-indigo-500',	//master-tarif
+		'bg-rose-500',		//restore
+		'bg-purple-600'		//user
+	];
+
+	const daftarTab = [
+		'dashboard', 'datasiswa', 'pemasukan', 'laporan', 'bantuan', 'infaq', 'pengeluaran', 'pengeluaran-non', 'tarif', 'restore', 'user'
+	];
+
+	const indexTab = daftarTab.indexOf(tab);
+
+	const btnColor = warnaNav[indexTab % warnaNav.length] || 'bg-gray-500';
+	// const btnColor = (tab === 'dashboard' ? 'bg-blue-500' : (tab === 'datasiswa' ? 'bg-sky-500' : (tab === 'pemasukan' ? 'bg-cyan-500' : (tab === 'bantuan' ? 'bg-teal-500' : (tab === 'infaq' ? 'bg-emerald-500' : (tab === 'pengeluaran' ? 'bg-orange-500' : (tab === 'pengeluaran-non' ? 'bg-amber-500' : (tab === 'user' ? 'bg-purple-600' : (tab === 'restore' ? 'bg-rose-500' : 'bg-state-500')))))))));
 	document.getElementById(`nav-${tab}`).className = `w-full flex items-center px-4 py-3 rounded-lg ${btnColor} text-white transition-colors`;
 	document.getElementById('admin-page-title').innerText = titles[tab];
 
@@ -543,9 +741,11 @@ function renderAdminView(admin) {
 	if (isSuperAdmin) {
 		document.getElementById('nav-user-container').classList.remove('hidden');
 		document.getElementById('nav-restore-container').classList.remove('hidden');
+		document.getElementById('nav-tarif-container').classList.remove('hidden');
 	} else {
 		document.getElementById('nav-user-container').classList.add('hidden');
 		document.getElementById('nav-restore-container').classList.add('hidden');
+		document.getElementById('nav-tarif-container').classList.add('hidden');
 	}
 
 	document.querySelectorAll('.admin-input-form').forEach(el => el.classList.toggle('hidden', isKepsek));
@@ -576,6 +776,7 @@ function renderAdminView(admin) {
 
 	if (isSuperAdmin) {
 		loadAdminUserTable();
+		loadAdminTarifTable();
 		updateRestoreBadges();
 	}
 }
@@ -596,6 +797,7 @@ function refreshAdminData() {
 				loadAdminInfaqTable();
 				if (currentUserRole === 'Super Admin') {
 					loadAdminUserTable();
+					loadAdminTarifTable();
 					updateRestoreBadges();
 					if (!document.getElementById('admin-view-restore').classList.contains('hidden')) loadRestoreTable();
 				}
@@ -660,6 +862,7 @@ function changeAdminPage(type, delta) {
 	else if (type === 'bantuan') loadAdminBantuanTable();
 	else if (type === 'pengeluaran') loadAdminPengeluaranTable();
 	else if (type === 'pengeluaran-non') loadAdminPengeluaranNonTable();
+	else if (type === 'tarif') loadAdminTarifTable();
 	else if (type === 'infaq') loadAdminInfaqTable();
 	else if (type === 'user') loadAdminUserTable();
 	else if (type === 'restore') loadRestoreTable();
@@ -686,29 +889,124 @@ function getPaginatedData(dataArray, type, filterFn) {
 	};
 }
 
-function loadAdminDataSiswaTable() {
+// function loadAdminDataSiswaTable() {
+// 	const tbody = document.getElementById('table-admin-datasiswa');
+// 	tbody.innerHTML = '';
+// 	let filteredData = dbSiswa.filter(s => {
+// 		const q = adminTableState.datasiswa.query;
+// 		const fKelas = adminTableState.datasiswa.filterKelas;
+// 		return (!q || String(s.nis).toLowerCase().includes(q) || String(s.nama).toLowerCase().includes(q)) && (fKelas === 'All' || s.kelas === fKelas);
+// 	});
+// 	const itemsPerPage = getItemsPerPage();
+// 	const tItems = filteredData.length;
+// 	const tPages = Math.ceil(tItems / itemsPerPage) || 1;
+// 	if (adminTableState.datasiswa.page > tPages) adminTableState.datasiswa.page = tPages;
+// 	if (adminTableState.datasiswa.page < 1) adminTableState.datasiswa.page = 1;
+// 	const startIdx = (adminTableState.datasiswa.page - 1) * itemsPerPage;
+// 	const pData = filteredData.slice(startIdx, startIdx + itemsPerPage);
+// 	if (pData.length === 0) {
+// 		tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-gray-500">Data siswa tidak ditemukan</td></tr>`;
+// 	} else {
+// 		pData.forEach(s => {
+// 			let lpBadge = s.lp === 'L' ? `<span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-bold">L</span>` : `<span class="bg-pink-100 text-pink-700 px-2 py-0.5 rounded text-xs font-bold">P</span>`;
+// 			tbody.innerHTML += `<tr class="hover:bg-gray-50"><td class="p-4 font-medium text-gray-600">${s.nis}</td><td class="p-4 font-bold text-gray-800">${s.nama}</td><td class="p-4 text-center">${lpBadge}</td><td class="p-4 text-gray-600"><span class="bg-gray-100 border border-gray-200 px-2.5 py-1 rounded-md text-xs font-medium">${s.kelas}</span></td></tr>`;
+// 		});
+// 	}
+// 	updatePaginationUI('datasiswa', tItems, pData.length);
+// }
+
+// --- RENDER TABLE ADMIN DENGAN PAGINATION ---
+function loadAdminDataSiswaTable() { 
 	const tbody = document.getElementById('table-admin-datasiswa');
-	tbody.innerHTML = '';
-	let filteredData = dbSiswa.filter(s => {
-		const q = adminTableState.datasiswa.query;
-		const fKelas = adminTableState.datasiswa.filterKelas;
-		return (!q || String(s.nis).toLowerCase().includes(q) || String(s.nama).toLowerCase().includes(q)) && (fKelas === 'All' || s.kelas === fKelas);
-	});
-	const itemsPerPage = getItemsPerPage();
-	const tItems = filteredData.length;
-	const tPages = Math.ceil(tItems / itemsPerPage) || 1;
-	if (adminTableState.datasiswa.page > tPages) adminTableState.datasiswa.page = tPages;
-	if (adminTableState.datasiswa.page < 1) adminTableState.datasiswa.page = 1;
-	const startIdx = (adminTableState.datasiswa.page - 1) * itemsPerPage;
-	const pData = filteredData.slice(startIdx, startIdx + itemsPerPage);
-	if (pData.length === 0) {
-		tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-gray-500">Data siswa tidak ditemukan</td></tr>`;
+	tbody.innerHTML = ''; 
+	let isAktif = adminTableState.datasiswa.activeTab === 'aktif'; 
+	
+	let { pData, tItems } = getPaginatedData(dbSiswa, 'datasiswa', s => { 
+		const q = adminTableState.datasiswa.query; const fKelas = adminTableState.datasiswa.filterKelas; 
+		let isMatchQuery = (!q || String(s.nis).toLowerCase().includes(q) || String(s.nama).toLowerCase().includes(q)); 
+		let isMatchKelas = (fKelas === 'All' || s.kelas === fKelas); 
+		let isNon = String(s.kelas).toUpperCase().includes('LULUS') || String(s.kelas).toUpperCase().includes('KELUAR'); 
+		let isMatchTab = isAktif ? !isNon : isNon; 
+		return isMatchQuery && isMatchKelas && isMatchTab; 
+	}); 
+	
+	if(pData.length === 0) { 
+		tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">Data tidak ditemukan</td></tr>`; 
 	} else {
-		pData.forEach(s => {
+		// Mapping warna bulan
+		const warnaBulan = {
+			Juli: 'bg-red-100 text-red-700',
+			Agustus: 'bg-orange-100 text-orange-700',
+			September: 'bg-amber-100 text-amber-700',
+			Oktober: 'bg-yellow-100 text-yellow-700',
+			November: 'bg-lime-100 text-lime-700',
+			Desember: 'bg-green-100 text-green-700',
+			Januari: 'bg-emerald-100 text-emerald-700',
+			Februari: 'bg-teal-100 text-teal-700',
+			Maret: 'bg-cyan-100 text-cyan-700',
+			April: 'bg-sky-100 text-sky-700',
+			Mei: 'bg-blue-100 text-blue-700',
+			Juni: 'bg-indigo-100 text-indigo-700'
+		};
+
+		const colorNames = [
+			'red','orange','amber','yellow','lime','green','emerald','teal','cyan','sky','blue','indigo','purple','pink','rose'
+		];
+		
+		pData.forEach(s => { 
 			let lpBadge = s.lp === 'L' ? `<span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-bold">L</span>` : `<span class="bg-pink-100 text-pink-700 px-2 py-0.5 rounded text-xs font-bold">P</span>`;
-			tbody.innerHTML += `<tr class="hover:bg-gray-50"><td class="p-4 font-medium text-gray-600">${s.nis}</td><td class="p-4 font-bold text-gray-800">${s.nama}</td><td class="p-4 text-center">${lpBadge}</td><td class="p-4 text-gray-600"><span class="bg-gray-100 border border-gray-200 px-2.5 py-1 rounded-md text-xs font-medium">${s.kelas}</span></td></tr>`;
-		});
+			// Ambil warna berdasarkan bulan
+			let warna = warnaBulan[s.bulanMulai] || 'bg-gray-100 text-gray-700';
+			// Badge bulan
+			let bulanBadge = `
+				<span class="${warna} px-2 py-0.5 rounded text-xs font-bold">
+					${s.bulanMulai}
+				</span>
+			`;
+			// BADGE KELAS
+			let warnaKelasBadge = '';
+			if (['X E1', 'X IPA'].includes(s.kelas)) {warnaKelasBadge = 'bg-green-100 text-green-700 border-green-200';} 
+			else if (['X E2', 'X IPS'].includes(s.kelas)) {warnaKelasBadge = 'bg-emerald-100 text-purple-700 border-purple-200';}
+			else if (['XI F1', 'XI IPA'].includes(s.kelas)) {warnaKelasBadge = 'bg-amber-100 text-amber-700 border-amber-200';}
+			else if (['XI F2', 'XI IPS'].includes(s.kelas)) {warnaKelasBadge = 'bg-yellow-100 text-yellow-700 border-yellow-200';}
+			else if (['XII IPA'].includes(s.kelas)) {warnaKelasBadge = 'bg-red-100 text-red-700 border-red-200';}
+			else if (['XII IPS'].includes(s.kelas)) {warnaKelasBadge = 'bg-rose-100 text-rose-700 border-rose-200';}
+			else {warnaKelasBadge = 'bg-gray-100 text-gray-700 border-gray-200';}
+
+			let kelasBadge = `
+				<span class="${warnaKelasBadge} border px-2.5 py-1 rounded-md text-xs font-bold">
+					${s.kelas}
+				</span>
+			`;
+
+			const uniqueTahun = [...new Set(pData.map(s => s.tahunMasuk))];
+			const warnaTahun = {};
+			uniqueTahun.forEach((tahun, index) => {
+				const color = colorNames[index % colorNames.length];
+				warnaTahun[tahun] =
+					`bg-${color}-100 text-${color}-700 border-${color}-200`;
+			});
+			let tahunClass =
+				warnaTahun[s.tahunMasuk] ||
+				'bg-gray-100 text-gray-700 border-gray-200';
+
+			let tahunBadge = `
+				<span class="${tahunClass} border px-2 py-1 rounded-md text-xs font-bold">
+					${s.tahunMasuk}
+				</span>
+			`;
+			tbody.innerHTML += 
+			`<tr class="hover:bg-gray-50">
+				<td class="p-4 font-medium text-gray-600">${s.nis}</td>
+				<td class="p-4 font-bold text-gray-800">${s.nama}</td>
+				<td class="p-4 text-center">${lpBadge}</td>
+				<td class="p-4 text-center">${tahunBadge}</td>
+				<td class="p-4 text-center">${bulanBadge}</td>
+				<td class="p-4 text-center">${kelasBadge}</td>
+			</tr>`; 
+		}); 
 	}
+	
 	updatePaginationUI('datasiswa', tItems, pData.length);
 }
 
@@ -818,6 +1116,30 @@ function loadAdminUserTable() {
 		tbody.innerHTML += `<tr class="hover:bg-gray-50"><td class="p-4 text-gray-800 font-medium flex items-center">${t.username} ${statusSync}</td><td class="p-4 text-gray-800 font-bold">${t.nama}</td><td class="p-4">${rBadge}</td><td class="p-4 text-center ${getActionClass('user')}">${btnEdit}${btnDelete}</td></tr>`;
 	});
 	updatePaginationUI('user', tItems, pData.length);
+}
+
+function loadAdminTarifTable() { 
+	const tbody = document.getElementById('table-admin-tarif');
+	tbody.innerHTML = ''; 
+	const q = adminTableState.tarif.query; 
+	
+	let { pData, tItems } = getPaginatedData(dbMasterTarif, 'tarif', t => !t.isDeleted && (!q || String(t.tahun).toLowerCase().includes(q) || String(t.target).toLowerCase().includes(q) || String(t.jenis).toLowerCase().includes(q))); 
+	
+	if(pData.length === 0) { 
+		tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">Tarif tidak ditemukan</td></tr>`; 
+	} else { 
+		pData.forEach(t => { 
+			tbody.innerHTML += 
+			`<tr class="hover:bg-gray-50">
+				<td class="p-4 text-gray-800 font-medium">${t.tahun}</td>
+				<td class="p-4"><span class="bg-purple-100 text-purple-800 px-2.5 py-1 rounded-md text-xs font-bold border border-purple-200">${t.target}</span></td>
+				<td class="p-4 text-gray-800 font-medium">${t.jenis}</td>
+				<td class="p-4 font-bold text-right text-gray-800">${formatRp(t.nominal)}</td>
+				<td class="p-4 text-center"><button onclick="deleteTarif('${t.id}')" class="text-red-500 hover:text-red-700"><i class="ph ph-trash text-lg"></i></button></td>
+			</tr>`; 
+		}); 
+	}
+	updatePaginationUI('tarif', tItems, pData.length);
 }
 
 // ==========================================
@@ -1315,6 +1637,109 @@ function confirmDelete() {
 		tipe: null,
 		id: null
 	};
+}
+
+// ==========================================
+// HIGHLIGHT: FITUR CETAK LAPORAN REKAP KELAS
+// ==========================================
+function generateLaporanCetak() {
+	const ta = document.getElementById('cetak-tahun').value;
+	const kls = document.getElementById('cetak-kelas').value;
+	if (!ta || !kls) {
+		showToast('Pilih Tahun Ajaran dan Kelas dulu!', 'error');
+		return;
+	}
+	document.getElementById('cetak-result-container').classList.remove('hidden');
+	document.getElementById('cetak-result-container').classList.add('flex');
+	document.getElementById('cap-subtitle').innerText = `KELAS: ${kls} | TAHUN AJARAN: ${ta}`;
+	document.getElementById('cap-date').innerText = `Dicetak pada: ${getNowDateIndo()}`;
+
+	let listSiswa = dbSiswa.filter(s => s.kelas === kls).sort((a, b) => a.nama.localeCompare(b.nama));
+	let applicableTarifs = dbMasterTarif.filter(t => !t.isDeleted && t.tahun === ta && (t.target === kls || t.target === 'SEMUA KELAS' || String(t.target).includes('NIS')));
+
+	let setTagihanUnik = new Set();
+	applicableTarifs.forEach(t => setTagihanUnik.add(t.jenis));
+	let headerTagihan = Array.from(setTagihanUnik);
+	if (listSiswa.length === 0) {
+		document.getElementById('cap-table-container').innerHTML = `<p class="text-center text-red-500 py-10">Tidak ada data siswa aktif di kelas ${kls}.</p>`;
+		return;
+	}
+
+	let htmlTable = `<table class="table-rekap"><thead><tr><th>No</th><th>NIS</th><th>Nama Siswa</th>`;
+	headerTagihan.forEach(th => htmlTable += `<th>${th}</th>`);
+	htmlTable += `<th>TOTAL KEKURANGAN</th></tr></thead><tbody>`;
+	let riwayatThnIni = dbPembayaran.filter(p => !p.isDeleted && p.tahun === ta);
+
+	listSiswa.forEach((siswa, idx) => {
+		htmlTable += `<tr><td class="text-center">${idx + 1}</td><td class="text-center">${siswa.nis}</td><td>${siswa.nama}</td>`;
+		let riwayatSiswa = riwayatThnIni.filter(p => String(p.nis).trim() === String(siswa.nis).trim());
+		let totalTunggakSiswa = 0;
+
+		headerTagihan.forEach(tagihan => {
+			let tarifItem = applicableTarifs.find(t => t.jenis === tagihan && (t.target === `NIS ${siswa.nis}` || t.target === kls || t.target === 'SEMUA KELAS'));
+			if (!tarifItem) {
+				htmlTable += `<td class="text-center text-gray-400">-</td>`;
+			} else {
+				let isSPP = String(tagihan).toUpperCase().includes('SPP');
+				let skipSPP = false;
+				if (isSPP) {
+					const blnArr = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
+					let thnMasukInt = parseInt(String(siswa.tahunMasuk).split('/')[0]) || 0;
+					let thnTarifInt = parseInt(ta.split('/')[0]) || 0;
+					let activeBulanMulai = 'Juli';
+					if (thnTarifInt === thnMasukInt && siswa.bulanMulai) activeBulanMulai = siswa.bulanMulai;
+
+					let startIndex = blnArr.findIndex(b => b.toLowerCase() === activeBulanMulai.toLowerCase());
+					if (startIndex === -1) startIndex = 0;
+					let monthOfSPP = blnArr.find(b => String(tagihan).toUpperCase().includes(b.toUpperCase()));
+					if (monthOfSPP) {
+						let sppIndex = blnArr.findIndex(b => b === monthOfSPP);
+						if (sppIndex < startIndex) skipSPP = true;
+					}
+				}
+
+				if (skipSPP) {
+					htmlTable += `<td class="text-center text-gray-400">-</td>`;
+				} else {
+					let totalBayarItem = riwayatSiswa.filter(r => r.jenis === tagihan).reduce((sum, r) => sum + parseInt(r.nominal), 0);
+					let sisa = parseInt(tarifItem.nominal) - totalBayarItem;
+					if (sisa <= 0) {
+						htmlTable += `<td class="bg-lunas">LUNAS</td>`;
+					} else {
+						totalTunggakSiswa += sisa;
+						htmlTable += `<td class="text-center font-semibold text-red-600">${formatRp(sisa).replace('Rp', '')}</td>`;
+					}
+				}
+			}
+		});
+		if (totalTunggakSiswa === 0) htmlTable += `<td class="bg-lunas">LUNAS</td></tr>`;
+		else htmlTable += `<td class="text-tunggak">${formatRp(totalTunggakSiswa)}</td></tr>`;
+	});
+	htmlTable += `</tbody></table>`;
+	document.getElementById('cap-table-container').innerHTML = htmlTable;
+}
+
+function downloadLaporanImage() {
+	showToast('Memproses Gambar...', 'info');
+	const targetDiv = document.getElementById("capture-area");
+	if (typeof html2canvas === 'undefined') {
+		showToast('Koneksi internet bermasalah.', 'error');
+		return;
+	}
+	html2canvas(targetDiv, {
+		scale: 2
+	}).then(canvas => {
+		const link = document.createElement("a");
+		document.body.appendChild(link);
+		link.download = `Rekap_${document.getElementById('cetak-kelas').value}.png`;
+		link.href = canvas.toDataURL("image/png");
+		link.target = '_blank';
+		link.click();
+		link.remove();
+		showToast('Gambar WA siap!');
+	}).catch(err => {
+		showToast('Gagal memproses.', 'error');
+	});
 }
 
 // --- DASHBOARD & GRAFIK LOGIC ---
