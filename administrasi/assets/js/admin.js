@@ -510,7 +510,6 @@ function populateLocalData(data) {
 	dbPengeluaran = data.pengeluaran;
 	dbPengeluaranNon = data.pengeluaranNon;
 	dbInfaq = data.infaq;
-	// dbMasterTarif = data.mastertarif;
 	dbMasterTarif = data.masterTarif || [];
 	initDropdowns();
 }
@@ -1601,9 +1600,6 @@ function generateLaporanCetak() {
 		return isTarifTargetMatch(t.target, ta, dummyL) || isTarifTargetMatch(t.target, ta, dummyP) || String(t.target).includes('NIS');
 	});
 
-	// let setTagihanUnik = new Set();
-	// applicableTarifs.forEach(t => setTagihanUnik.add(t.jenis));
-	// let headerTagihan = Array.from(setTagihanUnik);
 	let setTagihanUnik = new Set(); 
 	applicableTarifsToClass.forEach(t => setTagihanUnik.add(t.jenis)); 
 	let headerTagihan = Array.from(setTagihanUnik);
@@ -1666,8 +1662,6 @@ function generateLaporanCetak() {
 				}
 			}
 		});
-		// if (totalTunggakSiswa === 0) htmlTable += `<td class="bg-lunas">LUNAS</td></tr>`;
-		// else htmlTable += `<td class="text-tunggak">${formatRp(totalTunggakSiswa)}</td></tr>`;
 
 		// Cek Tunggakan Masa Lalu
 		let thnTargetInt = parseInt(ta.split('/')[0]);
@@ -1705,29 +1699,6 @@ function generateLaporanCetak() {
 	htmlTable += `</tbody></table>`;
 	document.getElementById('cap-table-container').innerHTML = htmlTable;
 }
-
-// function downloadLaporanImage() {
-// 	showToast('Memproses Gambar...', 'info');
-// 	const targetDiv = document.getElementById("capture-area");
-// 	if (typeof html2canvas === 'undefined') {
-// 		showToast('Koneksi internet bermasalah.', 'error');
-// 		return;
-// 	}
-// 	html2canvas(targetDiv, {
-// 		scale: 2
-// 	}).then(canvas => {
-// 		const link = document.createElement("a");
-// 		document.body.appendChild(link);
-// 		link.download = `Rekap_${document.getElementById('cetak-kelas').value}.png`;
-// 		link.href = canvas.toDataURL("image/png");
-// 		link.target = '_blank';
-// 		link.click();
-// 		link.remove();
-// 		showToast('Gambar WA siap!');
-// 	}).catch(err => {
-// 		showToast('Gagal memproses.', 'error');
-// 	});
-// }
 
 function downloadLaporanImage() {
     showToast('Memproses Gambar...', 'info');
@@ -2148,28 +2119,6 @@ function renderSiswaView(siswaProfile, billingData) {
 	} else { selTahun.innerHTML = `<option value="All">Belum Ada Tagihan</option>`; }
 
 	renderSiswaTables(billingData.riwayatTahun[0] || 'All');
-
-	// const formatCell = (val) => {
-	// 	if (val === 'LUNAS' || val === 0) {
-	// 		return `<span class="px-3 py-1 text-xs rounded-full font-bold bg-emerald-100 text-emerald-700 tracking-wide"><i class="ph ph-check mr-1"></i> LUNAS</span>`;
-	// 	} else {
-	// 		return `<span class="px-3 py-1 text-xs rounded-full font-bold bg-red-100 text-red-700">${formatRp(val)}</span>`;
-	// 	}
-	// };
-
-	// const tbodyBulan = document.getElementById('table-rekap-bulanan');
-	// tbodyBulan.innerHTML = '';
-	// if (billingData.bulanan.length === 0) tbodyBulan.innerHTML = '<tr><td colspan="2" class="p-4 text-center text-gray-500">Bebas Tagihan SPP / Belum ada tagihan</td></tr>';
-	// billingData.bulanan.forEach(item => {
-	// 	tbodyBulan.innerHTML += `<tr class="hover:bg-gray-50"><td class="p-4 font-medium text-gray-700">${item.jenis} <span class="text-xs text-gray-400">(${item.tahun})</span></td><td class="p-4 text-center">${formatCell(item.sisa)}</td></tr>`;
-	// });
-
-	// const tbodyTagihan = document.getElementById('table-rekap-tagihan');
-	// tbodyTagihan.innerHTML = '';
-	// if (billingData.lainnya.length === 0) tbodyTagihan.innerHTML = '<tr><td colspan="2" class="p-4 text-center text-gray-500">Belum ada tagihan lainnya</td></tr>';
-	// billingData.lainnya.forEach(item => {
-	// 	tbodyTagihan.innerHTML += `<tr class="hover:bg-gray-50"><td class="p-4 font-bold text-gray-700">${item.jenis} <span class="text-xs text-gray-400">(${item.tahun})</span></td><td class="p-4 font-medium text-right">${formatCell(item.sisa)}</td></tr>`;
-	// });
 }
 
 function renderSiswaTables(targetTahun) {
@@ -2247,8 +2196,9 @@ function startStudentRefreshCooldown() {
 }
 
 function refreshButtonDataSiswa() {
-	const rawText = document.getElementById('siswa-nis-kelas').innerText;
-	const nis = rawText.split('|')[0].replace('NIS:', '').trim();
+	const rawText = document.getElementById('siswa-nis-text').innerText;
+	// const nis = rawText.split('|')[0].replace('NIS:', '').trim();
+	const nis = rawText.includes('|') ? rawText.split('|')[0].replace('NIS:', '').trim() : rawText.trim();
 	if (!nis || nis === '-') return;
 	showLoading("Memperbarui data Anda...");
 	document.getElementById('btn-refresh-siswa').querySelector('i').classList.add('animate-spin');
@@ -2261,7 +2211,6 @@ function refreshButtonDataSiswa() {
 				// Harus hitung ulang tagihan dengan data mentah terbaru dari server
 				let billing = calculateSiswaBilling(res.data.profil, res.data.tarif, res.data.riwayat);
 				renderSiswaView(res.data.profil, billing);
-				renderSiswaView(res.data);
 				showToast('Data berhasil diperbarui dari server!', 'success');
 				startStudentRefreshCooldown();
 			} else {
@@ -2345,127 +2294,6 @@ function getHistoricalClass(siswaProfile, taTarget) {
 	// Fallback: Jika di luar jangkauan, gunakan kelas saat ini (aman untuk sistem berjalan)
 	return String(siswaProfile.kelas).trim(); 
 }
-
-// ==========================================
-// ALGORITMA UTAMA SISWA (SMART LOGIC FINAL)
-// ==========================================
-// function calculateSiswaBilling(siswaProfile, tarifList, bayarList) {
-// 	let thnMasukInt = parseInt(String(siswaProfile.tahunMasuk).split('/')[0]) || 0;
-	
-// 	// 1. Dapatkan tarif yang cocok untuk Target
-// 	let rawApplicableTarifs = tarifList.filter(t => !t.isDeleted && isTarifTargetMatch(t.target, t.tahun, siswaProfile));
-
-// 	// Buang tarif ganda, wajib menangkan yang spesifik "NIS"
-// 	let uniqueTarifsMap = {};
-// 	rawApplicableTarifs.forEach(t => {
-// 		let isNisTarget = String(t.target).toUpperCase().includes('NIS');
-// 		if (!uniqueTarifsMap[t.jenis] || isNisTarget) {
-// 			uniqueTarifsMap[t.jenis] = t;
-// 		}
-// 	});
-// 	let applicableTarifs = Object.values(uniqueTarifsMap);
-
-// 	const blnArr = ['Juli','Agustus','September','Oktober','November','Desember','Januari','Februari','Maret','April','Mei','Juni'];
-	
-// 	// 2. Terapkan Logika Diskon Bulan untuk Anak Mutasi
-// 	let finalTarifs = [];
-// 	applicableTarifs.forEach(t => {
-// 		let thnTarifInt = parseInt(String(t.tahun).split('/')[0]) || 0;
-// 		let isSPP = String(t.jenis).toUpperCase().includes('SPP');
-		
-// 		let activeBulanMulai = 'Juli'; 
-// 		if(thnTarifInt === thnMasukInt && siswaProfile.bulanMulai) {
-// 			activeBulanMulai = siswaProfile.bulanMulai;
-// 		}
-
-// 		if(isSPP) {
-// 			let monthOfSPP = blnArr.find(b => String(t.jenis).toUpperCase().includes(b.toUpperCase()));
-// 			if(monthOfSPP) {
-// 				let startIndex = blnArr.findIndex(b => b.toLowerCase() === activeBulanMulai.toLowerCase());
-// 				if(startIndex === -1) startIndex = 0;
-// 				let sppIndex = blnArr.findIndex(b => b === monthOfSPP);
-				
-// 				if(sppIndex >= startIndex) finalTarifs.push(t); 
-// 			} else finalTarifs.push(t);
-// 		} else finalTarifs.push(t);
-// 	});
-
-// 	// 3. Kalkulasi Pembayaran yang masuk
-// 	let bulanan = []; 
-// 	let lainnya = []; 
-// 	let rawSisaList = []; 
-// 	let trueGlobalDebt = 0; // HIGHLIGHT: Menyimpan total hutang murni
-
-// 	finalTarifs.forEach(t => {
-// 		let bayarItem = bayarList.filter(b => !b.isDeleted && b.jenis === t.jenis && b.tahun === t.tahun).reduce((sum, b) => sum + parseInt(b.nominal || 0), 0);
-
-// 		let sisa = parseInt(t.nominal || 0) - bayarItem;
-// 		let status = sisa <= 0 ? 'LUNAS' : sisa;
-
-// 		// Masukkan ke daftar tabel UI
-// 		if(String(t.jenis).toUpperCase().includes('SPP')) {
-// 			bulanan.push({ jenis: t.jenis, tahun: t.tahun, sisa: status, nominalAwal: t.nominal });
-// 		} else {
-// 			lainnya.push({ jenis: t.jenis, tahun: t.tahun, sisa: status, nominalAwal: t.nominal });
-// 		}
-
-// 		// HIGHLIGHT: Jika ada hutang nyata, akumulasikan ke Kotak Merah & Widget
-// 		if(sisa > 0) {
-// 			trueGlobalDebt += sisa;
-// 			rawSisaList.push({ jenis: t.jenis, sisa: sisa, tahun: t.tahun });
-// 		}
-// 	});
-
-// 	// Urutkan array SPP bulanan berdasarkan kalender akademik
-// 	bulanan.sort((a,b) => { 
-// 		let mA = blnArr.findIndex(m => String(a.jenis).toUpperCase().includes(m.toUpperCase())); 
-// 		let mB = blnArr.findIndex(m => String(b.jenis).toUpperCase().includes(m.toUpperCase())); 
-// 		return mA - mB; 
-// 	});
-
-// 	// 4. SMART EXAM WIDGET LOGIC
-// 	let currentMonth = new Date().getMonth(); 
-// 	let examName = ""; let maxSppIndex = 0; let excludeKeywords = [];
-
-// 	if(currentMonth >= 6 && currentMonth <= 9) { 
-// 		examName = "PTS 1 (Semester Ganjil)"; maxSppIndex = 3; excludeKeywords = ['PAS 1', 'PTS 2', 'PAS 2'];
-// 	} else if(currentMonth >= 10 && currentMonth <= 11) { 
-// 		examName = "PAS 1 (Semester Ganjil)"; maxSppIndex = 5; excludeKeywords = ['PTS 2', 'PAS 2']; 
-// 	} else if(currentMonth >= 0 && currentMonth <= 2) { 
-// 		examName = "PTS 2 (Semester Genap)"; maxSppIndex = 8; excludeKeywords = ['PAS 2'];
-// 	} else { 
-// 		examName = "PAS 2 / Kenaikan Kelas"; maxSppIndex = 11; excludeKeywords = []; 
-// 	}
-
-// 	let examReqAmount = 0;
-// 	let activeThnAjaran = rawSisaList.length > 0 ? rawSisaList.map(r => r.tahun).sort().reverse()[0] : ""; 
-
-// 	rawSisaList.filter(r => r.tahun === activeThnAjaran).forEach(r => {
-// 		let isSPP = String(r.jenis).toUpperCase().includes('SPP');
-// 		if(isSPP) {
-// 			let m = blnArr.find(b => String(r.jenis).toUpperCase().includes(b.toUpperCase()));
-// 			let sppIndex = blnArr.findIndex(b => b === m);
-// 			if(sppIndex <= maxSppIndex) examReqAmount += r.sisa;
-// 		} else {
-// 			let shouldInclude = true;
-// 			excludeKeywords.forEach(kw => { if(String(r.jenis).toUpperCase().includes(kw)) shouldInclude = false; });
-// 			if(shouldInclude) examReqAmount += r.sisa;
-// 		}
-// 	});
-
-// 	let uniqueTahunBilling = [...new Set(finalTarifs.map(t => t.tahun))].sort().reverse();
-
-// 	return { 
-// 		bulanan: bulanan, 
-// 		lainnya: lainnya, 
-// 		// HIGHLIGHT: Kotak Merah kini menggunakan data hutang murni tanpa terkontaminasi overpayment
-// 		totalTunggakan: trueGlobalDebt, 
-// 		// examWidget: { name: examName, amount: examReqAmount, isLunas: examReqAmount === 0 },
-// 		// riwayatTahun: [...new Set(finalTarifs.map(t => t.tahun))].sort().reverse()
-// 		riwayatTahun: uniqueTahunBilling,
-// 		hutangLamaMurni: rawSisaList.filter(r => r.tahun !== activeThnAjaran).reduce((sum, r) => sum + r.sisa, 0)
-// 	};
-// }
 
 // ==========================================
 // HIGHLIGHT: ENGINE KALKULASI TAGIHAN V5
@@ -2585,8 +2413,6 @@ function calculateSiswaBilling(siswaProfile, tarifList, bayarList) {
 			if (shouldInclude) examReqAmount += r.sisa;
 		}
 	});
-
-	// let uniqueTahunBilling = [...new Set(finalTarifs.map(t => t.tahun))].sort().reverse();
 
 	// HIGHLIGHT FIX: Pastikan examWidget di-return dengan struktur yang benar di sini!
 	return {
