@@ -1870,8 +1870,23 @@ function downloadLaporanImage() {
         }
     })
     .then(function (dataUrl) {
+		const now = new Date();
+
+		// FORMAT: 20260519
+		const tanggal =
+			now.getFullYear() +
+			String(now.getMonth() + 1).padStart(2, '0') +
+			String(now.getDate()).padStart(2, '0');
+
+		// FORMAT: 141603
+		const jam =
+			String(now.getHours()).padStart(2, '0') +
+			String(now.getMinutes()).padStart(2, '0') +
+			String(now.getSeconds()).padStart(2, '0');
+
+		const kelas = document.getElementById('cetak-kelas').value;
         const link = document.createElement("a");
-        link.download = `Rekap_${document.getElementById('cetak-kelas').value}.png`;
+        link.download = `${tanggal}_${jam}_REKAP_${kelas}.png`;
         link.href = dataUrl;
         link.click();
         showToast('Gambar WA siap!', 'success');
