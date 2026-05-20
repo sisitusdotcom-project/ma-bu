@@ -51,6 +51,7 @@ const statusSubtitle = document.getElementById('status-subtitle');
 // Kontainer Konten (Untuk menyembunyikan biodata)
 const biodataContent = document.getElementById('biodata-content');
 const adminFailedContent = document.getElementById('admin-failed-content');
+const examAdminFailedContent = document.getElementById('exam-admin-failed-content');
 const examFailedContent = document.getElementById('exam-failed-content');
 
 // Elemen Data Diri
@@ -195,13 +196,14 @@ function tampilkanHasil(siswa) {
     // Kembalikan visibilitas kontainer ke setelan awal
     biodataContent.classList.remove('hidden');
     adminFailedContent.classList.add('hidden');
+    examAdminFailedContent.classList.add('hidden');
     examFailedContent.classList.add('hidden');
 
     // Reset semua class warna bawaan terlebih dahulu (Reset State)
     resultCard.className = "bg-white rounded-2xl shadow-xl overflow-hidden border-t-8";
     resultHeader.className = "p-6 text-center";
 
-    // LOGIKA WARNA (BIRU UNTUK LULUS, MERAH UNTUK TIDAK LULUS)
+    // LOGIKA WARNA
     if (siswa.status === "LULUS") {
         // Tema Biru (Lulus)
         resultCard.classList.add("border-blue-500");
@@ -210,11 +212,11 @@ function tampilkanHasil(siswa) {
         statusTitle.innerText = "DINYATAKAN LULUS";
         statusTitle.className = "text-3xl font-extrabold text-blue-800 mb-1 tracking-wider uppercase";
         
-        statusSubtitle.innerText = "Selamat atas pencapaian ini. Semoga ilmu yang diperoleh menjadi bekal yang bermanfaat untuk jenjang pendidikan selanjutnya";
+        statusSubtitle.innerText = "Selamat atas pencapaian ini. Semoga ilmu yang diperoleh menjadi bekal yang bermanfaat untuk jenjang pendidikan selanjutnya.";
         statusSubtitle.className = "text-sm text-blue-600 font-medium";
         
-    } else if (siswa.status === "TIDAK LULUS") {
-        // Tema Merah (Tidak Lulus)
+    } else if (siswa.status === "UJIAN-ADMINISTRASI") {
+        // Tema Merah (Belum Tuntas Ujian dan Administrasi)
         resultCard.classList.add("border-red-500");
         resultHeader.classList.add("bg-red-100");
         
@@ -226,10 +228,10 @@ function tampilkanHasil(siswa) {
 
         // Sembunyikan biodata, munculkan pesan peringatan
         biodataContent.classList.add('hidden');
-        examFailedContent.classList.remove('hidden');
+        examAdminFailedContent.classList.remove('hidden');
 
-    } else if (siswa.status === "BELUM LOLOS") {
-        // Tema Oranye (Belum Lolos Administrasi)
+    } else if (siswa.status === "ADMINISTRASI") {
+        // Tema Oranye (Belum Tuntas Administrasi)
         resultCard.classList.add("border-orange-500");
         resultHeader.classList.add("bg-orange-100");
         
@@ -242,6 +244,21 @@ function tampilkanHasil(siswa) {
         // Sembunyikan biodata, munculkan pesan peringatan
         biodataContent.classList.add('hidden');
         adminFailedContent.classList.remove('hidden');
+
+    } else if (siswa.status === "UJIAN") {
+        // Tema Purple (Belum Tuntas Ujian)
+        resultCard.classList.add("border-purple-500");
+        resultHeader.classList.add("bg-purple-100");
+        
+        statusTitle.innerText = "BELUM TUNTAS UJIAN";
+        statusTitle.className = "text-xl md:text-2xl font-extrabold text-purple-800 mb-1 tracking-wider uppercase";
+        
+        statusSubtitle.innerText = "Silakan hubungi pihak Madrasah";
+        statusSubtitle.className = "text-sm text-purple-600 font-medium";
+
+        // Sembunyikan biodata, munculkan pesan peringatan
+        biodataContent.classList.add('hidden');
+        examFailedContent.classList.remove('hidden');
     }
 
     // Ganti Halaman dengan Animasi CSS

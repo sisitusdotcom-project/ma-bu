@@ -142,7 +142,7 @@
                             <!-- Detail Data -->
                             <div class="space-y-3 text-sm md:text-base w-full">
                                 <div class="grid grid-cols-3">
-                                    <span class="font-medium text-gray-500">Nama Lengkap</span>
+                                    <span class="font-medium text-gray-500">Nama</span>
                                     <span class="col-span-2 font-bold text-gray-800" id="res-nama">: -</span>
                                 </div>
                                 <div class="grid grid-cols-3">
@@ -150,7 +150,7 @@
                                     <span class="col-span-2 font-semibold text-gray-800" id="res-induk">: -</span>
                                 </div>
                                 <div class="grid grid-cols-3">
-                                    <span class="font-medium text-gray-500">Kelas / Jurusan</span>
+                                    <span class="font-medium text-gray-500">Kelas</span>
                                     <span class="col-span-2 font-semibold text-gray-800" id="res-kelas">: -</span>
                                 </div>
                                 <div class="grid grid-cols-3">
@@ -174,11 +174,19 @@
                     </div>
 
                     <!-- Kontainer Khusus Gagal Ujian & Administrasi (Disembunyikan secara default) -->
-                    <div id="exam-failed-content" class="hidden text-center py-6 mb-6">
+                    <div id="exam-admin-failed-content" class="hidden text-center py-6 mb-6">
                         <svg class="w-20 h-20 mx-auto text-red-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
                         </svg>
                         <p class="text-gray-600 font-medium text-sm md:text-base">Mohon maaf, Anda belum dapat melihat hasil kelulusan karena belum lolos verifikasi ujian & administrasi madrasah.</p>
+                    </div>
+
+                     <!-- Kontainer Khusus Gagal Ujian (Disembunyikan secara default) -->
+                    <div id="exam-failed-content" class="hidden text-center py-6 mb-6">
+                        <svg class="w-20 h-20 mx-auto text-purple-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                        <p class="text-gray-600 font-medium text-sm md:text-base">Mohon maaf, Anda belum dapat melihat hasil kelulusan karena belum lolos verifikasi ujian.</p>
                     </div>
 
                     <!-- Tombol Kembali -->
