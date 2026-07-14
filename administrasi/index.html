@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem Administrasi | MA Bi'rul Ulum</title>
+  
+  <link rel="stylesheet" href="../assets/css/variables.css">
+  <link rel="stylesheet" href="../assets/css/reset.css">
+  <link rel="stylesheet" href="../assets/css/layout.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/animations.css">
+
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <img src="https://res.cloudinary.com/dkfcuwuas/image/upload/q_auto,f_auto/icon-mabu_yuwogg.png" alt="Logo MA Bi'rul Ulum">
+        <span>MA Bi'rul Ulum</span>
+      </a>
+      <div class="nav-menu">
+        <a href="../index.html" class="nav-link">Beranda</a>
+        <a href="../profil.html" class="nav-link">Profil</a>
+        <a href="../berita.html" class="nav-link">Berita</a>
+        <a href="../ppdb.html" class="nav-link">PPDB</a>
+        <a href="index.html" class="nav-link" style="color: var(--primary); font-weight: 700;">Sistem</a>
+      </div>
+    </div>
+  </nav>
+
+  <main style="padding-top: 100px; min-height: 70vh; display: flex; align-items: center; justify-content: center; background-color: var(--gray-50);">
+    
+    <div class="container">
+      <!-- Navigasi Internal Sistem -->
+      <div class="d-flex justify-center gap-2 mb-8 flex-wrap">
+        <a href="index.html" class="btn btn-primary">Cek Tagihan</a>
+        <a href="kelulusan.html" class="btn btn-outline">Cek Kelulusan</a>
+        <a href="presensi.html" class="btn btn-outline">Presensi Guru</a>
+      </div>
+
+      <div class="card" style="max-width: 600px; margin: 0 auto;">
+        <div class="text-center mb-8">
+          <i class="ph ph-wallet text-primary" style="font-size: 4rem; margin-bottom: var(--space-4);"></i>
+          <h2 style="color: var(--primary); font-size: 2rem;">Sistem Administrasi</h2>
+          <p>Cek Status Tagihan & Pembayaran Terkini</p>
+        </div>
+        
+        <form id="form-cek-tagihan">
+          <div class="form-group">
+            <label class="form-label" for="nis">Nomor Induk Siswa (NIS)</label>
+            <input type="text" id="nis" class="form-input" placeholder="Masukkan NIS Anda" required>
+          </div>
+          <button type="submit" class="btn btn-primary mt-4" style="width: 100%;">
+            <i class="ph ph-magnifying-glass"></i> Cek Tagihan
+          </button>
+        </form>
+
+        <div id="loading" style="display: none; text-align: center; margin-top: var(--space-6);">
+          <i class="ph ph-spinner animate-pulse-glow" style="font-size: 2rem; color: var(--primary);"></i>
+          <p class="mt-2">Memuat data dari server (Google Sheets)...</p>
+        </div>
+
+        <div id="hasil" style="display: none; margin-top: var(--space-6); padding-top: var(--space-6); border-top: 1px solid var(--gray-200);">
+          <!-- Hasil Data Tagihan (Dibuat Dinamis oleh api-gas.js nanti) -->
+          <h4 style="margin-bottom: var(--space-2);">Profil Siswa</h4>
+          <p style="margin: 0;"><strong>Nama:</strong> <span id="res-nama">-</span></p>
+          <p style="margin: 0;"><strong>Kelas:</strong> <span id="res-kelas">-</span></p>
+          
+          <h4 style="margin-top: var(--space-4); margin-bottom: var(--space-2);">Rincian Tagihan</h4>
+          <div style="background-color: var(--gray-100); padding: var(--space-4); border-radius: var(--radius-md);">
+            <p style="margin: 0; font-weight: 600; color: #dc2626;">Sisa Tagihan: Rp <span id="res-tagihan">0</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/api-gas.js"></script>
+</body>
+</html>

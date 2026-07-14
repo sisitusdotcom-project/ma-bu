@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Live Server (Chrome)",
+      "url": "http://localhost:5500",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "msedge",
+      "request": "launch",
+      "name": "Live Server (Edge)",
+      "url": "http://localhost:5500",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Buka index.html (Langsung dari File)",
+      "file": "${workspaceFolder}/index.html"
+    }
+  ]
+}

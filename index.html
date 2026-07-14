@@ -1,758 +1,192 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MA Bi'rul Ulum (MA Birul Ulum) | Website Resmi Madrasah</title>
-    <!-- Open Graph -->
-    <!-- HTML Meta Tags -->
-    <meta name="description" content="MA Bi'rul Ulum atau MA Birul Ulum adalah Madrasah Aliyah di bawah naungan Yayasan Pendidikan Islam Bi'rul Ulum. Website resmi berisi informasi sekolah, program, dan pendaftaran.">
-    <meta name="google-site-verification" content="M6vZYhRJ30dMCAMGu2gD8UNov_Kdcsku6pcai8gGknI" />
-    <!-- Facebook Meta Tags -->
-    <meta property="og:url" content="https://mabirululum.github.io/">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Madrasah Aliyah Bi'rul Ulum">
-    <meta property="og:description" content="MA Bi'rul Ulum atau MA Birul Ulum adalah Madrasah Aliyah di bawah naungan Yayasan Pendidikan Islam Bi'rul Ulum. Website resmi berisi informasi sekolah, program, dan pendaftaran.">
-    <meta property="og:image" content="https://res.cloudinary.com/dkfcuwuas/image/upload/q_auto,f_auto/img-meta_ysxamu.jpg">
-    
-    <!-- Twitter Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta property="twitter:domain" content="mabirululum.github.io">
-    <meta property="twitter:url" content="https://mabirululum.github.io/">
-    <meta name="twitter:title" content="Madrasah Aliyah Bi'rul Ulum">
-    <meta name="twitter:description" content="MA Bi'rul Ulum atau MA Birul Ulum adalah Madrasah Aliyah di bawah naungan Yayasan Pendidikan Islam Bi'rul Ulum. Website resmi berisi informasi sekolah, program, dan pendaftaran.">
-    <meta name="twitter:image" content="https://res.cloudinary.com/dkfcuwuas/image/upload/q_auto,f_auto/img-meta_ysxamu.jpg">
-    
-    <!-- Meta Tags Generated via https://www.opengraph.xyz -->
-    <!-- Menggunakan Tailwind CSS untuk styling yang cepat dan responsif (Modern UI) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Menggunakan FontAwesome untuk ikon-ikon yang menarik -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Menggunakan Google Fonts: Poppins untuk tampilan yang bersih dan edukatif -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MA Bi'rul Ulum | Website Resmi Madrasah</title>
+  <meta name="description" content="Pendidikan karakter, fasilitas modern, dan tenaga pendidik profesional untuk mencetak generasi berprestasi dan berakhlak mulia.">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/reset.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/animations.css">
+  <link rel="stylesheet" href="assets/css/pages/home.css">
 
-    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
-    <link rel="shortcut icon" href="/favicon/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="MA Bi'rul Ulum" />
-    <link rel="manifest" href="/favicon/site.webmanifest" />
-
-    <!-- Import CSS -->
-    <link rel="stylesheet" href="css/style.css">
-
-    <!-- Konfigurasi Tema Tailwind CSS (Warna Akademik Biru & Putih) -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Poppins', 'sans-serif'],
-                    },
-                    colors: {
-                        sekolah: {
-                            biru: '#1e3a8a', // Biru tua akademik
-                            birumuda: '#3b82f6',
-                            abu: '#f8fafc',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "School",
-            "name": "MA Bi'rul Ulum",
-            "alternateName": "MA Birul Ulum",
-            "url": "https://mabirululum.github.io/"
-        }
-    </script>
+  <!-- Phosphor Icons (Optional for icons, using CDN for now since it's just a font) -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
-    
-    <!-- Sumber audio dummy (bebas hak cipta/lo-fi), Anda bisa menggantinya nanti -->
-    <audio id="bg-music" loop>
-        <source src="assets/audio/mars-mabu.mpeg" type="audio/mpeg">
-        Browser Anda tidak mendukung elemen audio.
-    </audio>
+<body>
 
-    <!-- Tombol Mengontrol Musik Melayang di Kanan Bawah -->
-    <button id="btn-music" onclick="toggleMusic()" class="fixed bottom-6 right-6 z-50 bg-white text-sekolah-biru w-14 h-14 rounded-full shadow-2xl border-2 border-sekolah-biru flex items-center justify-center hover:bg-blue-50 transition-all transform hover:scale-110 focus:outline-none">
-        <i id="ikon-music" class="fa-solid fa-music text-xl"></i>
-        <!-- Indikator dot merah (menandakan belum dimainkan) -->
-        <span id="indikator-music" class="absolute top-0 right-0 flex h-3 w-3">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-        </span>
-    </button>
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-brand">
+        <img src="https://res.cloudinary.com/dkfcuwuas/image/upload/q_auto,f_auto/icon-mabu_yuwogg.png" alt="Logo MA Bi'rul Ulum">
+        <span>MA Bi'rul Ulum</span>
+      </a>
+      <div class="nav-menu">
+        <a href="index.html" class="nav-link">Beranda</a>
+        <a href="profil.html" class="nav-link">Profil</a>
+        <a href="berita.html" class="nav-link">Berita</a>
+        <a href="ppdb.html" class="nav-link">PPDB</a>
+        <a href="administrasi/index.html" class="nav-link">Sistem</a>
+      </div>
+    </div>
+  </nav>
 
-    <!-- ==================== HEADER & NAVBAR ==================== -->
-    <!-- Navigasi lengket (sticky) di bagian atas -->
-    <nav class="bg-white shadow-md fixed w-full z-50 top-0 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20">
-                
-                <!-- Logo Sekolah -->
-                <div class="flex items-center cursor-pointer" onclick="gantiHalaman('beranda')">
-                    <div class="flex-shrink-0 flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                            <!-- <i class="fa-solid fa-graduation-cap"></i> -->
-                            <img src="https://res.cloudinary.com/dkfcuwuas/image/upload/q_auto,f_auto/icon-mabu_yuwogg.png" alt="Logo" class="w-full h-full object-cover">
-                        </div>
-                        <div>
-                            <span class="font-bold text-xl text-sekolah-biru tracking-tight">Madrasah Aliyah Bi'rul Ulum</span>
-                            <p class="text-xs text-slate-500 hidden sm:block">Gemurung Gedangan Sidoarjo</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Menu Desktop -->
-                <div class="hidden md:flex items-center space-x-1 lg:space-x-4">
-                    <button onclick="gantiHalaman('beranda')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-sekolah-biru hover:bg-blue-50 transition-colors">Beranda</button>
-                    <button onclick="gantiHalaman('profil')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-sekolah-biru hover:bg-blue-50 transition-colors">Profil</button>
-                    <button onclick="gantiHalaman('visimisi')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-sekolah-biru hover:bg-blue-50 transition-colors">Visi Misi</button>
-                    <button onclick="gantiHalaman('guru')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-sekolah-biru hover:bg-blue-50 transition-colors">Guru</button>
-                    <button onclick="gantiHalaman('berita')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-sekolah-biru hover:bg-blue-50 transition-colors">Berita</button>
-                    <button onclick="gantiHalaman('kontak')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-sekolah-biru hover:bg-blue-50 transition-colors">Kontak</button>
-                    <!-- <button onclick="gantiHalaman('galeri')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-sekolah-biru hover:bg-blue-50 transition-colors">Galeri</button> -->
-                    <a href="https://res.cloudinary.com/dkfcuwuas/image/upload/v1776181419/BROSUR-PPDB-MABU-FULL_pylthb.jpg" target="_blank" class="ml-2 bg-yellow-400 text-slate-900 px-5 py-2 rounded-full text-sm font-bold hover:bg-yellow-300 transition-colors shadow-lg shadow-yellow-500/30 flex items-center">
-                        <i class="fa-solid fa-download mr-2"></i> Brosur
-                    </a>
-                    <button onclick="gantiHalaman('ppdb')" class="ml-4 bg-sekolah-biru text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-blue-800 transition-colors shadow-lg shadow-blue-500/30">
-                        <i class="fa-solid fa-user-plus mr-2"></i> SPMB
-                    </button>
-                </div>
-
-                <!-- Tombol Menu Mobile -->
-                <div class="flex items-center md:hidden">
-                    <button type="button" onclick="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-sekolah-biru hover:bg-slate-100 focus:outline-none">
-                        <i class="fa-solid fa-bars text-2xl" id="ikon-menu"></i>
-                    </button>
-                </div>
-            </div>
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero section section-dark hero-bg-animate" style="background-image: linear-gradient(rgba(30,58,138,0.9), rgba(30,58,138,0.8)), url('https://res.cloudinary.com/dkfcuwuas/image/upload/q_auto,f_auto/bg-school_mbrtla.jpg'); background-size: cover; padding-top: calc(var(--space-16) + 80px); min-height: 80vh; display: flex; align-items: center; justify-content: center; text-align: center;">
+      <div class="container animate-fade-up">
+        <div class="badge badge-glass mb-4">PENDAFTARAN 2026 TELAH DIBUKA</div>
+        <h1 style="font-size: 3.5rem; margin-bottom: var(--space-6);">Wujudkan Masa Depan Bersama <br><span class="text-secondary">Madrasah Aliyah Bi'rul Ulum</span></h1>
+        <p style="font-size: 1.25rem; max-width: 800px; margin: 0 auto var(--space-8); opacity: 0.9;">Pendidikan karakter, fasilitas modern, dan tenaga pendidik profesional untuk mencetak generasi berprestasi dan berakhlak mulia.</p>
+        <div class="d-flex justify-center gap-2">
+          <a href="ppdb.html" class="btn btn-secondary">Daftar Sekarang</a>
+          <a href="profil.html" class="btn btn-outline-white">Pelajari Lebih Lanjut</a>
         </div>
+      </div>
+    </section>
 
-        <!-- Menu Mobile (Tersembunyi secara default) -->
-        <div class="md:hidden hidden bg-white border-t border-slate-100" id="menu-mobile">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 shadow-lg">
-                <button onclick="gantiHalaman('beranda'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-sekolah-biru bg-blue-50">Beranda</button>
-                <button onclick="gantiHalaman('profil'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:text-sekolah-biru hover:bg-blue-50">Profil Sekolah</button>
-                <button onclick="gantiHalaman('visimisi'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:text-sekolah-biru hover:bg-blue-50">Visi Misi</button>
-                <button onclick="gantiHalaman('guru'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:text-sekolah-biru hover:bg-blue-50">Data Guru</button>
-                <button onclick="gantiHalaman('berita'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:text-sekolah-biru hover:bg-blue-50">Berita</button>
-                <button onclick="gantiHalaman('kontak'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:text-sekolah-biru hover:bg-blue-50">Kontak</button>
-                <div class="mt-6 pt-4 border-t border-slate-100 space-y-3">
-                    <a href="https://drive.google.com/file/d/1jH0X-2yWYa816c_l5fRN2RQ6boKgUioU/view?usp=sharing" target="_blank" class="block w-full text-center bg-yellow-400 text-slate-900 px-3 py-3 rounded-md text-base font-bold hover:bg-yellow-300 transition-colors shadow-md shadow-yellow-500/20">
-                        <i class="fa-solid fa-download mr-2"></i> Download Brosur
-                    </a>
-                    <button onclick="gantiHalaman('ppdb'); toggleMobileMenu()" class="block w-full text-center bg-sekolah-biru text-white px-3 py-3 rounded-md text-base font-medium hover:bg-blue-800 transition-colors shadow-md shadow-blue-500/20">
-                        <i class="fa-solid fa-user-plus mr-2"></i> Daftar PPDB
-                    </button>
-                </div>
-            </div>
+    <!-- COUNTDOWN SECTION -->
+    <section class="section" style="background-color: var(--primary-dark); color: white; padding: var(--space-6) 0; border-bottom: 4px solid var(--secondary);">
+      <div class="container d-flex align-center justify-between" style="flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <h3 style="color: white; margin-bottom: var(--space-2);"><i class="ph ph-bell-ringing text-secondary"></i> Batas Waktu Pendaftaran Gelombang 2</h3>
+          <p style="margin: 0; color: var(--gray-300);">Segera daftarkan putra/putri Anda sebelum <span class="text-secondary">11 Juli 2026</span>.</p>
         </div>
-    </nav>
-
-    <!-- Kontainer Utama dengan margin-top agar tidak tertutup navbar lengket -->
-    <main class="mt-20 min-h-screen">
-
-        <!-- ==================== HALAMAN BERANDA ==================== -->
-        <section id="beranda" class="halaman-konten fade-in block">
-            <!-- Hero Section -->
-            <div class="relative bg-sekolah-biru overflow-hidden">
-                <div class="absolute inset-0">
-                    <img src="https://res.cloudinary.com/dkfcuwuas/image/upload/q_auto,f_auto/bg-school_mbrtla.jpg" loading="lazy" alt="Sekolah Background" class="w-full h-full object-cover opacity-10">
-                </div>
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-20 lg:py-32 flex flex-col items-center text-center">
-                    <span class="px-4 py-1 rounded-full bg-blue-500/30 text-blue-100 text-sm font-semibold tracking-wider mb-6 border border-blue-400/30 backdrop-blur-sm">PENDAFTARAN <span id="tahun-ppdb"></span> TELAH DIBUKA</span>
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                        Wujudkan Masa Depan Bersama <br class="hidden md:block"><span class="text-yellow-400">Madrasah Aliyah Bi'rul Ulum</span>
-                    </h1>
-                    <p class="mt-4 text-xl text-blue-100 max-w-2xl mb-10">
-                        Pendidikan karakter, fasilitas modern, dan tenaga pendidik profesional untuk mencetak generasi berprestasi dan berakhlak mulia.
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <button onclick="gantiHalaman('ppdb')" class="bg-yellow-400 text-slate-900 px-8 py-3 rounded-full font-bold hover:bg-yellow-300 transition-all transform hover:scale-105 shadow-lg">
-                            Daftar Sekarang
-                        </button>
-                        <button onclick="gantiHalaman('profil')" class="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-sekolah-biru transition-all">
-                            Pelajari Lebih Lanjut
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Banner Hitung Mundur (Countdown) -->
-            <div class="bg-gradient-to-r from-blue-900 to-sekolah-biru py-8 border-b-4 border-yellow-400 shadow-lg relative z-20">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between">
-                    <div class="text-white text-center md:text-left mb-6 md:mb-0">
-                        <h3 class="text-2xl font-bold mb-1 flex items-center justify-center md:justify-start">
-                            <i class="fa-solid fa-bell text-yellow-400 animate-pulse mr-3"></i> Batas Waktu Pendaftaran Gelombang 2
-                        </h3>
-                        <p class="text-blue-200">Segera daftarkan putra/putri Anda sebelum <span class="font-bold text-yellow-400">11 Juli 2026.</span></p>
-                    </div>
-                    
-                    <div class="flex gap-4 sm:gap-6 text-center">
-                        <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3 sm:p-4 w-20 sm:w-24 shadow-inner">
-                            <span id="hitung-hari" class="block text-3xl sm:text-4xl font-bold text-yellow-400">00</span>
-                            <span class="text-xs sm:text-sm text-blue-100 font-medium mt-1 block">Hari</span>
-                        </div>
-                        <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3 sm:p-4 w-20 sm:w-24 shadow-inner">
-                            <span id="hitung-jam" class="block text-3xl sm:text-4xl font-bold text-white">00</span>
-                            <span class="text-xs sm:text-sm text-blue-100 font-medium mt-1 block">Jam</span>
-                        </div>
-                        <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3 sm:p-4 w-20 sm:w-24 shadow-inner">
-                            <span id="hitung-menit" class="block text-3xl sm:text-4xl font-bold text-white">00</span>
-                            <span class="text-xs sm:text-sm text-blue-100 font-medium mt-1 block">Menit</span>
-                        </div>
-                        <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3 sm:p-4 w-20 sm:w-24 shadow-inner">
-                            <span id="hitung-detik" class="block text-3xl sm:text-4xl font-bold text-yellow-400">00</span>
-                            <span class="text-xs sm:text-sm text-blue-100 font-medium mt-1 block">Detik</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sarana dan Prasarana (Auto Slider) -->
-            <div class="bg-white py-12 border-t border-b border-slate-100">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="text-center mb-12">
-                        <h2 class="text-3xl font-bold text-sekolah-biru mb-4">Sarana & Prasarana</h2>
-                        <div class="w-20 h-1 bg-yellow-400 mx-auto rounded-full"></div>
-                        <p class="text-slate-600 mt-4 max-w-2xl mx-auto">Fasilitas unggulan yang dirancang untuk mendukung kenyamanan dan optimalisasi proses belajar mengajar.</p>
-                    </div>
-                    
-                    <div class="relative w-full overflow-hidden pb-6">
-                        <!-- Kontainer Infinity Slider -->
-                        <div id="track-sarana" class="flex gap-6 w-max animate-scroll-infinity hover-pause">
-                            <!-- Diisi oleh JS -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Info Cepat -->
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Kartu Info 1 -->
-                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 kartu-hover text-center">
-                        <div class="w-16 h-16 bg-blue-50 text-sekolah-birumuda rounded-full flex items-center justify-center text-3xl mx-auto mb-6">
-                            <i class="fa-solid fa-trophy"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-800 mb-3">Akreditasi A</h3>
-                        <p class="text-slate-600">Terakreditasi A dengan standar pendidikan nasional.</p>
-                    </div>
-                    <!-- Kartu Info 2 -->
-                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 kartu-hover text-center">
-                        <div class="w-16 h-16 bg-blue-50 text-sekolah-birumuda rounded-full flex items-center justify-center text-3xl mx-auto mb-6">
-                            <i class="fa-solid fa-chalkboard-user"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-800 mb-3">Guru Profesional</h3>
-                        <p class="text-slate-600">Didukung oleh tenaga pengajar yang kompeten dan bersertifikasi di bidangnya.</p>
-                    </div>
-                    <!-- Kartu Info 3 -->
-                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 kartu-hover text-center">
-                        <div class="w-16 h-16 bg-blue-50 text-sekolah-birumuda rounded-full flex items-center justify-center text-3xl mx-auto mb-6">
-                            <i class="fa-solid fa-laptop-code"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-800 mb-3">Fasilitas Modern</h3>
-                        <p class="text-slate-600">Kelas ber-AC, laboratorium komputer, laboratorium ipa, lapangan olahraga.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Statistik Sekolah (Angka Berjalan) -->
-            <div id="section-statistik" class="bg-white py-12 border-t border-b border-slate-100">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-slate-100">
-                        <div class="text-center px-4">
-                            <div class="text-sekolah-birumuda mb-3 text-3xl"><i class="fa-solid fa-users"></i></div>
-                            <h4 class="text-4xl md:text-5xl font-bold text-slate-800 mb-2 counter-angka" data-target="1250">0</h4>
-                            <p class="text-slate-500 font-medium">Siswa Aktif</p>
-                        </div>
-                        <div class="text-center px-4">
-                            <div class="text-sekolah-birumuda mb-3 text-3xl"><i class="fa-solid fa-chalkboard-teacher"></i></div>
-                            <h4 class="text-4xl md:text-5xl font-bold text-slate-800 mb-2 counter-angka" data-target="85">0</h4>
-                            <p class="text-slate-500 font-medium">Guru Pengajar</p>
-                        </div>
-                        <div class="text-center px-4">
-                            <div class="text-sekolah-birumuda mb-3 text-3xl"><i class="fa-solid fa-award"></i></div>
-                            <h4 class="text-4xl md:text-5xl font-bold text-slate-800 mb-2 counter-angka" data-target="320">0</h4>
-                            <p class="text-slate-500 font-medium">Penghargaan</p>
-                        </div>
-                        <div class="text-center px-4">
-                            <div class="text-sekolah-birumuda mb-3 text-3xl"><i class="fa-solid fa-user-graduate"></i></div>
-                            <h4 class="text-4xl md:text-5xl font-bold text-slate-800 mb-2 counter-angka" data-target="5400">0</h4>
-                            <p class="text-slate-500 font-medium">Lulusan Alumni</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4 Program Unggulan -->
-            <div class="bg-slate-100 py-16">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="text-center mb-12">
-                        <h2 class="text-3xl font-bold text-sekolah-biru mb-4">Program Unggulan</h2>
-                        <div class="w-20 h-1 bg-yellow-400 mx-auto rounded-full"></div>
-                        <p class="text-slate-600 mt-4 max-w-2xl mx-auto">Kami menyediakan kurikulum khusus untuk mempersiapkan siswa bersaing di tingkat global dengan keimanan yang teguh.</p>
-                    </div>
-                    <div id="program-unggulan" class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                        <!-- Diisi oleh JS -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Ekstrakurikuler -->
-            <div class="bg-white py-16 border-b border-slate-100">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h2 class="text-3xl font-bold text-sekolah-biru mb-4">Ekstrakurikuler</h2>
-                    <p class="text-slate-600 mb-12 max-w-2xl mx-auto">Wadah bagi para siswa untuk menyalurkan dan mengembangkan bakat, minat, serta kepemimpinan di luar jam pelajaran kelas.</p>
-                    
-                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
-                        <!-- Ekskul Items -->
-                        <div class="flex flex-col items-center group cursor-pointer">
-                            <div class="w-20 h-20 bg-slate-50 border border-slate-200 rounded-full flex items-center justify-center text-3xl text-slate-600 group-hover:bg-sekolah-biru group-hover:text-white group-hover:border-sekolah-biru transition-all duration-300 shadow-sm mb-3">
-                                <i class="fa-solid fa-campground"></i>
-                            </div>
-                            <span class="font-medium text-slate-700 group-hover:text-sekolah-biru transition-colors">Pramuka</span>
-                        </div>
-                        <div class="flex flex-col items-center group cursor-pointer">
-                            <div class="w-20 h-20 bg-slate-50 border border-slate-200 rounded-full flex items-center justify-center text-3xl text-slate-600 group-hover:bg-red-500 group-hover:text-white group-hover:border-red-500 transition-all duration-300 shadow-sm mb-3">
-                                <i class="fa-solid fa-flag"></i>
-                            </div>
-                            <span class="font-medium text-slate-700 group-hover:text-red-500 transition-colors">Paskibra</span>
-                        </div>
-                        <div class="flex flex-col items-center group cursor-pointer">
-                            <div class="w-20 h-20 bg-slate-50 border border-slate-200 rounded-full flex items-center justify-center text-3xl text-slate-600 group-hover:bg-yellow-500 group-hover:text-white group-hover:border-yellow-500 transition-all duration-300 shadow-sm mb-3">
-                                <i class="fa-solid fa-book-quran"></i>
-                            </div>
-                            <span class="font-medium text-slate-700 group-hover:text-yellow-500 transition-colors">BBQS</span>
-                        </div>
-                        <div class="flex flex-col items-center group cursor-pointer">
-                            <div class="w-20 h-20 bg-slate-50 border border-slate-200 rounded-full flex items-center justify-center text-3xl text-slate-600 group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-500 transition-all duration-300 shadow-sm mb-3">
-                                <i class="fa-solid fa-futbol"></i>
-                            </div>
-                            <span class="font-medium text-slate-700 group-hover:text-orange-500 transition-colors">Futsal</span>
-                        </div>
-                        <div class="flex flex-col items-center group cursor-pointer">
-                            <div class="w-20 h-20 bg-slate-50 border border-slate-200 rounded-full flex items-center justify-center text-3xl text-slate-600 group-hover:bg-pink-500 group-hover:text-white group-hover:border-pink-500 transition-all duration-300 shadow-sm mb-3">
-                                <i class="fa-solid fa-book-open-reader"></i>
-                            </div>
-                            <span class="font-medium text-slate-700 group-hover:text-pink-500 transition-colors">English Club</span>
-                        </div>
-                        <div class="flex flex-col items-center group cursor-pointer">
-                            <div class="w-20 h-20 bg-slate-50 border border-slate-200 rounded-full flex items-center justify-center text-3xl text-slate-600 group-hover:bg-green-500 group-hover:text-white group-hover:border-green-500 transition-all duration-300 shadow-sm mb-3">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </div>
-                            <span class="font-medium text-slate-700 group-hover:text-green-500 transition-colors">Badminton</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slider Berita Terbaru -->
-            <div class="bg-slate-100 py-16">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex justify-between items-end mb-8">
-                        <div>
-                            <h2 class="text-3xl font-bold text-sekolah-biru">Berita Terbaru</h2>
-                            <p class="text-slate-600 mt-2">Geser untuk melihat kabar terkini dari Madrasah Aliyah Bi'rul Ulum.</p>
-                        </div>
-                        <button onclick="gantiHalaman('berita')" class="text-sekolah-birumuda font-semibold hover:text-sekolah-biru hidden sm:block">Lihat Semua <i class="fa-solid fa-arrow-right ml-1"></i></button>
-                    </div>
-                    
-                    <!-- Kontainer Slider -->
-                    <div class="relative group">
-                        <button onclick="scrollSlider('slider-beranda-berita', 'left')" class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 p-3 rounded-full shadow-lg text-sekolah-biru hover:bg-sekolah-biru hover:text-white transition-all -ml-5 opacity-0 group-hover:opacity-100 focus:outline-none hidden md:block">
-                            <i class="fa-solid fa-chevron-left"></i>
-                        </button>
-                        
-                        <div id="slider-beranda-berita" class="flex gap-6 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-4 pt-2 px-2">
-                            <!-- Diisi oleh JS -->
-                        </div>
-
-                        <button onclick="scrollSlider('slider-beranda-berita', 'right')" class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 p-3 rounded-full shadow-lg text-sekolah-biru hover:bg-sekolah-biru hover:text-white transition-all -mr-5 opacity-0 group-hover:opacity-100 focus:outline-none hidden md:block">
-                            <i class="fa-solid fa-chevron-right"></i>
-                        </button>
-                    </div>
-
-                    <div class="sm:hidden text-center mt-6">
-                        <button onclick="gantiHalaman('berita')" class="text-sekolah-biru font-semibold border border-sekolah-biru px-6 py-2 rounded-full hover:bg-sekolah-biru hover:text-white transition-colors">Lihat Semua Berita</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Ulasan Alumni (Infinity Slider) -->
-            <div class="bg-sekolah-biru py-16 relative overflow-hidden">
-                <div class="absolute top-0 right-0 opacity-10">
-                    <i class="fa-solid fa-quote-right text-[15rem]"></i>
-                </div>
-                
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div class="text-center mb-12">
-                        <h2 class="text-3xl font-bold text-white mb-4">Kata Alumni Kami</h2>
-                        <div class="w-20 h-1 bg-yellow-400 mx-auto rounded-full"></div>
-                        <p class="text-blue-200 mt-4 max-w-2xl mx-auto">Kisah sukses dan kesan-pesan dari mereka yang pernah menjadi bagian dari keluarga besar Madrasah Aliyah Bi'rul Ulum.</p>
-                    </div>
-                    
-                    <div class="relative w-full overflow-hidden pb-4">
-                        <div id="track-alumni" class="flex gap-6 w-max animate-scroll-ulasan hover-pause">
-                            <!-- Kartu Alumni Di-generate JS -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==================== HALAMAN PROFIL SEKOLAH ==================== -->
-        <section id="profil" class="halaman-konten hidden py-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-sekolah-biru mb-4">Profil Sekolah</h2>
-                    <div class="w-20 h-1 bg-yellow-400 mx-auto rounded-full"></div>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
-                    <div>
-                        <img src="https://res.cloudinary.com/dkfcuwuas/image/upload/q_auto,f_auto/img-profil1_hqa1p6.jpg" loading="lazy" alt="Gedung Sekolah" class="rounded-2xl shadow-xl w-full">
-                    </div>
-                    <div>
-                        <h3 class="text-2xl font-bold text-slate-800 mb-4">Sejarah Singkat</h3>
-                        <p class="text-slate-600 mb-4 leading-relaxed">
-                            Madrasah Aliyah Bi'rul Ulum Adalah salah satu unit dibawah naungan Yayasan Pendidikan Islam Bi'rul Ulum. Merupakan salah satu Madrasah Aliyah di Kecamatan Gedangan Sidoarjo didirikan atas dasar niat ikhlas untuk berperan serta mencerdaskan kehidupan bangsa dan bentuk ikhtiar untuk membangun akhlaqul karimah pada umat melalui penyelenggaraan pendidikan tingkat atas yang berbasis ke islaman dan teknologi informasi.
-                        </p>
-                        <p class="text-slate-600 leading-relaxed">
-                            Kami percaya bahwa pendidikan bukan hanya tentang mentransfer ilmu, tetapi juga membentuk karakter, kedisiplinan, dan kreativitas siswa agar siap menghadapi tantangan global.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden">
-                    <!-- Ornamen -->
-                    <i class="fa-solid fa-quote-right absolute top-8 right-8 text-6xl text-slate-100"></i>
-                    
-                    <div class="flex flex-col md:flex-row gap-8 items-center relative z-10">
-                        <img src="https://res.cloudinary.com/dkfcuwuas/image/upload/q_auto,f_auto/yusuf_j2by6a.jpg" alt="Kepala Sekolah" class="w-32 h-32 rounded-full object-cover border-4 border-blue-50 shadow-md">
-                        <div>
-                            <h4 class="text-xl font-bold text-slate-800">Bpk. Yusuf Muzaidi, S.Pd.</h4>
-                            <p class="text-sekolah-birumuda font-medium mb-3">Kepala Madrasah Aliyah Bi'rul Ulum</p>
-                            <p class="text-slate-600 italic">"Pendidikan adalah paspor untuk masa depan, karena hari esok adalah milik mereka yang mempersiapkannya hari ini. Kami berkomitmen memberikan ekosistem belajar terbaik bagi putra-putri Anda."</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==================== HALAMAN VISI MISI ==================== -->
-        <section id="visimisi" class="halaman-konten hidden py-16 bg-slate-100">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-sekolah-biru mb-4">Visi & Misi</h2>
-                    <div class="w-20 h-1 bg-yellow-400 mx-auto rounded-full"></div>
-                </div>
-
-                <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden">
-                    <div class="bg-sekolah-biru text-white p-10 text-center">
-                        <i class="fa-solid fa-eye text-4xl text-yellow-400 mb-4"></i>
-                        <h3 class="text-2xl font-bold mb-4">Visi Kami</h3>
-                        <p class="text-xl leading-relaxed font-light">"Luhur Dalam Budi, Unggul Dalam Prestasi."</p>
-                    </div>
-                    <div class="p-10 md:p-12">
-                        <div class="flex items-center gap-3 mb-8">
-                            <i class="fa-solid fa-bullseye text-2xl text-sekolah-birumuda"></i>
-                            <h3 class="text-2xl font-bold text-slate-800">Misi Kami</h3>
-                        </div>
-                        <ul class="space-y-4">
-                            <li class="flex items-start">
-                                <i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i>
-                                <span class="text-slate-700 leading-relaxed">Meningkatkan kualitas dan kuantitas SDM Tenaga Pendidik, Kependidikan dan Siswa.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i>
-                                <span class="text-slate-700 leading-relaxed">Menanamkan nilai nilai agama yang terintegrasi dalam masalah Thoriqoti Ahli Sunnah Wal Jama'ah.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i>
-                                <span class="text-slate-700 leading-relaxed">Melaksanakan Pembelajaran yang Aktif Inovatif Kreatif dan Menyenangkan (PAIKEM) dengan nuansa Islami.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i>
-                                <span class="text-slate-700 leading-relaxed">Berusaha menanamkan pengalaman keilmuan dalam kehidupan sehari-hari oleh segenap warga madrasah.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i>
-                                <span class="text-slate-700 leading-relaxed">Mengembangkan kepribadian dalam kurikulum akhlaqul karimah sebagai character building dan multiple intelegent dalam kegiatan pembelajaran.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i>
-                                <span class="text-slate-700 leading-relaxed">Merealisasikan falsafah " Pendidikan Yang Unggul dan Bermutu Tidak Harus Mahal.</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==================== HALAMAN DATA GURU ==================== -->
-        <section id="guru" class="halaman-konten hidden py-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-sekolah-biru mb-4">Tenaga Pendidik</h2>
-                    <p class="text-slate-600 max-w-2xl mx-auto">Mengenal lebih dekat pahlawan tanpa tanda jasa kami yang siap membimbing dan menginspirasi siswa-siswi Madrasah Aliyah Bi'rul Ulum.</p>
-                    <div class="w-20 h-1 bg-yellow-400 mx-auto rounded-full mt-6"></div>
-                </div>
-
-                <!-- Kontainer Kartu Guru (Data akan diisi oleh JavaScript) -->
-                <div id="kontainer-guru" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <!-- Kartu di-generate oleh JS -->
-                </div>
-            </div>
-        </section>
-
-        <!-- ==================== HALAMAN BERITA ==================== -->
-        <section id="berita" class="halaman-konten hidden py-16 bg-slate-100">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-sekolah-biru mb-4">Berita & Informasi</h2>
-                    <p class="text-slate-600 max-w-2xl mx-auto">Kabar terbaru, prestasi, dan pengumuman seputar kegiatan di Madrasah Aliyah Bi'rul Ulum.</p>
-                    <div class="w-20 h-1 bg-yellow-400 mx-auto rounded-full mt-6"></div>
-                </div>
-
-                <!-- Kontainer Kartu Berita (Data akan diisi oleh JavaScript) -->
-                <div id="kontainer-berita" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Kartu di-generate oleh JS -->
-                </div>
-
-                <!-- Kontrol Paginasi Berita -->
-                <div id="pagination-berita" class="flex justify-center mt-12 gap-2">
-                    <!-- Diisi JS -->
-                </div>
-            </div>
-        </section>
-
-        <!-- ==================== HALAMAN GALERI ==================== -->
-        <section id="galeri" class="halaman-konten hidden py-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-sekolah-biru mb-4">Galeri Kegiatan</h2>
-                    <p class="text-slate-600 max-w-2xl mx-auto">Dokumentasi berbagai aktivitas belajar mengajar, ekstrakurikuler, dan acara sekolah.</p>
-                    <div class="w-20 h-1 bg-yellow-400 mx-auto rounded-full mt-6"></div>
-                </div>
-
-                <!-- Kontainer Galeri -->
-                <div id="kontainer-galeri" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    <!-- Gambar di-generate oleh JS -->
-                </div>
-
-                <!-- Kontrol Paginasi Galeri -->
-                <div id="pagination-galeri" class="flex justify-center mt-12 gap-2">
-                    <!-- Diisi JS -->
-                </div>
-            </div>
-        </section>
-
-        <!-- ==================== HALAMAN PPDB ==================== -->
-        <section id="ppdb" class="halaman-konten hidden py-16 bg-blue-50">
-            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
-                    <div class="bg-sekolah-biru p-8 text-center text-white">
-                        <i class="fa-solid fa-file-pen text-5xl text-yellow-400 mb-4"></i>
-                        <h2 class="text-3xl font-bold mb-2">Pendaftaran Siswa Baru</h2>
-                        <p class="text-blue-100">Hubungi kami cepat via WhatsApp</p>
-                    </div>
-                    
-                    <div class="p-8 md:p-10">
-                        <div class="bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3 rounded-lg mb-6 flex items-start">
-                            <i class="fa-solid fa-circle-info text-xl mr-3 mt-0.5"></i>
-                            <div>
-                                <p class="text-sm">Silakan isi data diri singkat di bawah ini. Anda akan langsung terhubung ke WhatsApp Admin Sekolah untuk panduan pendaftaran selanjutnya.</p>
-                            </div>
-                        </div>
-
-                        <!-- Pesan Sukses (Tersembunyi Awalnya) -->
-                        <div id="pesan-sukses" class="hidden bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6 flex items-center">
-                            <i class="fa-solid fa-circle-check text-xl mr-3"></i>
-                            <div>
-                                <p class="font-bold">Pendaftaran Berhasil!</p>
-                                <p class="text-sm">Data Anda telah kami terima. Panitia akan menghubungi Anda melalui WhatsApp.</p>
-                            </div>
-                        </div>
-
-                        <form id="form-ppdb" onsubmit="prosesPPDB(event)">
-                            <div class="space-y-5">
-                                <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Nama Lengkap Siswa</label>
-                                    <input type="text" id="ppdb-nama" required class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-sekolah-birumuda focus:border-sekolah-birumuda outline-none transition-colors" placeholder="Masukkan nama lengkap">
-                                </div>
-                                
-                                <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Asal Sekolah (SMP/MTs)</label>
-                                    <input type="text" id="ppdb-asal" required class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-sekolah-birumuda focus:border-sekolah-birumuda outline-none transition-colors" placeholder="Contoh: SMPN 1 xxxxxxxxxxxx">
-                                </div>
-                                
-                                <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Nomor WhatsApp Aktif</label>
-                                    <input type="tel" id="ppdb-wa" required class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-sekolah-birumuda focus:border-sekolah-birumuda outline-none transition-colors" placeholder="08xxxxxxxxxx">
-                                </div>
-
-                                <button type="submit" class="w-full bg-[#25D366] text-white font-bold py-3.5 px-4 rounded-xl hover:bg-[#1ebd5c] transition-colors shadow-lg shadow-green-500/30 flex justify-center items-center mt-4 text-lg">
-                                    <i class="fa-brands fa-whatsapp text-2xl mr-2"></i> Lanjutkan ke WhatsApp Admin
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==================== HALAMAN KONTAK ==================== -->
-        <section id="kontak" class="halaman-konten hidden py-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-sekolah-biru mb-4">Hubungi Kami</h2>
-                    <p class="text-slate-600 max-w-2xl mx-auto">Kami siap melayani pertanyaan dan memberikan informasi lebih lanjut.</p>
-                    <div class="w-20 h-1 bg-yellow-400 mx-auto rounded-full mt-6"></div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                    <!-- Info Kontak -->
-                    <div class="space-y-8">
-                        <div class="flex items-start">
-                            <div class="w-12 h-12 bg-blue-50 text-sekolah-birumuda rounded-full flex items-center justify-center text-xl flex-shrink-0">
-                                <i class="fa-solid fa-location-dot"></i>
-                            </div>
-                            <div class="ml-4">
-                                <h4 class="text-lg font-bold text-slate-800">Alamat Madrasah</h4>
-                                <p class="text-slate-600 mt-1">Jl. KH. Sulaiman No. 150, Dusun Gemurung Kidul, Gemurung, Kec. Gedangan, Kabupaten Sidoarjo, Provinsi Jawa Timur, 61254</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start">
-                            <div class="w-12 h-12 bg-blue-50 text-sekolah-birumuda rounded-full flex items-center justify-center text-xl flex-shrink-0">
-                                <i class="fa-solid fa-phone"></i>
-                            </div>
-                            <div class="ml-4">
-                                <h4 class="text-lg font-bold text-slate-800">WhatsApp</h4>
-                                <p class="text-slate-600"><a class="hover:text-blue-600 transition-colors" href="http://wa.me/6283832515321">0838-3313-3913</a> (WA Admin PPDB)</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start">
-                            <div class="w-12 h-12 bg-blue-50 text-sekolah-birumuda rounded-full flex items-center justify-center text-xl flex-shrink-0">
-                                <i class="fa-solid fa-envelope"></i>
-                            </div>
-                            <div class="ml-4">
-                                <h4 class="text-lg font-bold text-slate-800">Email</h4>
-                                <p class="text-slate-600 mt-1">madrasahaliyahbu@gmail.com</p>
-                            </div>
-                        </div>
-
-                        <!-- Sosial Media -->
-                        <div class="pt-6 border-t border-slate-200">
-                            <h4 class="text-lg font-bold text-slate-800 mb-4">Media Sosial</h4>
-                            <div class="flex gap-4">
-                                <a href="https://www.facebook.com/MadrasahAliyahBirulUlum/" class="w-10 h-10 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center hover:bg-sekolah-biru hover:text-white transition-colors">
-                                    <i class="fa-brands fa-facebook-f"></i>
-                                </a>
-                                <a href="https://www.instagram.com/ma.birululum_official/" class="w-10 h-10 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center hover:bg-pink-600 hover:text-white transition-colors">
-                                    <i class="fa-brands fa-instagram"></i>
-                                </a>
-                                <a href="https://www.youtube.com/@ma.birululum_official" class="w-10 h-10 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center hover:bg-red-600 hover:text-white transition-colors">
-                                    <i class="fa-brands fa-youtube"></i>
-                                </a>
-                                <a href="https://www.tiktok.com/@ma.birululum" class="w-10 h-10 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center hover:bg-gray-600 hover:text-white transition-colors">
-                                    <i class="fa-brands fa-tiktok"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Peta Placeholder -->
-                    <div class="h-96 bg-slate-200 rounded-2xl overflow-hidden relative border border-slate-300">
-                        <!-- Menggunakan iframe google maps sebagai ilustrasi peta -->
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.5678390824705!2d112.74553207400312!3d-7.402222092607809!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e5b84dfb82f1%3A0x59296112fe971289!2sMA%20Bi&#39;rul%20Ulum%20Gedangan!5e0!3m2!1sid!2sid!4v1776064594348!5m2!1sid!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==================== MODAL BERITA ==================== -->
-        <div id="modal-berita" class="fixed inset-0 z-[100] hidden items-center justify-center overflow-y-auto overflow-x-hidden bg-slate-900/70 p-4 backdrop-blur-sm transition-opacity">
-            <div class="relative w-full max-w-3xl rounded-2xl bg-white shadow-2xl max-h-[90vh] flex flex-col">
-                <!-- Header Modal -->
-                <div class="flex items-center justify-between border-b border-slate-100 p-5 flex-shrink-0">
-                    <h3 class="text-xl font-bold text-sekolah-biru">Detail Berita</h3>
-                    <button type="button" onclick="tutupModalBerita()" class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-slate-400 hover:bg-slate-200 hover:text-slate-900 transition-colors">
-                        <i class="fa-solid fa-xmark text-xl"></i>
-                    </button>
-                </div>
-                <!-- Body Modal -->
-                <div id="modal-body-scroll" class="p-6 overflow-y-auto" onscroll="cekScrollModal()">
-                    <img id="modal-berita-gambar" src="" alt="Gambar Berita" class="mb-6 h-64 md:h-80 w-full rounded-xl object-cover">
-                    <div class="mb-4 flex items-center text-sm text-sekolah-birumuda font-medium">
-                        <i class="fa-regular fa-calendar mr-2"></i> <span id="modal-berita-tanggal"></span>
-                    </div>
-                    <h4 id="modal-berita-judul" class="mb-6 text-2xl md:text-3xl font-bold text-slate-800 leading-tight"></h4>
-                    <div id="modal-berita-konten" class="text-slate-600 leading-relaxed space-y-4"></div>
-                </div>
-                <!-- Indikator Animasi Scroll -->
-                <div id="indikator-scroll" class="absolute bottom-6 w-full pointer-events-none flex justify-center z-20 transition-opacity duration-500">
-                    <div class="flex flex-col items-center text-white bg-sekolah-biru/90 px-4 py-2 rounded-full animate-bounce shadow-lg border border-white/20">
-                        <span class="text-xs font-medium mb-1 text-center">Geser ke Bawah</span>
-                        <i class="fa-solid fa-angles-down"></i>
-                    </div>
-                </div>
-                <!-- Footer Modal -->
-                <div class="flex items-center justify-end border-t border-slate-100 p-5 flex-shrink-0">
-                    <button onclick="tutupModalBerita()" class="rounded-lg bg-sekolah-biru px-6 py-2.5 text-sm font-medium text-white hover:bg-blue-800 transition-colors shadow-md">Tutup Berita</button>
-                </div>
-            </div>
+        <div class="d-flex gap-2">
+          <div style="background: var(--glass-bg-dark); padding: var(--space-3) var(--space-4); border-radius: var(--radius-xl); text-align: center; border: 1px solid var(--glass-border);">
+            <div style="font-size: 2rem; font-weight: bold; color: var(--secondary);">14</div>
+            <div style="font-size: 0.8rem; text-transform: uppercase;">Hari</div>
+          </div>
+          <!-- Additional countdown blocks can be added via JS -->
         </div>
-    </main>
+      </div>
+    </section>
 
-    <!-- ==================== FOOTER ==================== -->
-    <footer class="bg-slate-900 text-slate-300 py-10 mt-auto border-t-4 border-yellow-400">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div>
-                    <div class="flex items-center gap-2 mb-4">
-                        <!-- <i class="fa-solid fa-graduation-cap text-yellow-400 text-2xl"></i> -->
-                        <span class="font-bold text-xl text-yellow-400">Madrasah Aliyah Bi'rul Ulum</span>
-                    </div>
-                    <p class="text-sm leading-relaxed mb-4">Pendidikan Yang Unggul dan Bermutu Tidak Harus Mahal.</p>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-4 text-yellow-400">Tautan Cepat</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" onclick="gantiHalaman('profil'); return false;" class="hover:text-yellow-400 transition-colors">Profil Sekolah</a></li>
-                        <li><a href="#" onclick="gantiHalaman('ppdb'); return false;" class="hover:text-yellow-400 transition-colors">Pendaftaran (PPDB)</a></li>
-                        <li><a href="#" onclick="gantiHalaman('berita'); return false;" class="hover:text-yellow-400 transition-colors">Berita Terkini</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-4 text-yellow-400">Jam Operasional</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li>Senin - Kamis: 06.30 - 14.30 WIB</li>
-                        <li>Jum'at: 06.30 - 11.00 WIB</li>
-                        <li>Sabtu: 06.30 - 10.20 WIB</li>
-                        <li>Minggu: Libur</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-slate-800 mt-8 pt-8 text-sm text-center">
-                <p>&copy; <span id="tahun"></span> Madrasah Aliyah Bi'rul Ulum. All rights reserved. | Dikembangkan oleh
-                    <a href="https://www.instagram.com/aflah.design/" target="_blank" class="text-blue-400 hover:underline">Aflah Design</a>
-                </p>
-            </div>
+    <!-- INFO CEPAT -->
+    <section class="section section-light">
+      <div class="container text-center">
+        <h2 style="font-size: 2.5rem; margin-bottom: var(--space-2);">Keunggulan Kami</h2>
+        <div class="separator"></div>
+        <p style="margin-bottom: var(--space-8); max-width: 600px; margin-left: auto; margin-right: auto;">Fasilitas unggulan yang dirancang untuk mendukung kenyamanan dan optimalisasi proses belajar mengajar.</p>
+        
+        <div class="grid grid-cols-3 gap-4 mt-8">
+          <div class="card">
+            <div class="card-icon mx-auto"><i class="ph ph-medal"></i></div>
+            <h3 class="card-title text-primary">Akreditasi A</h3>
+            <p>Terakreditasi A dengan standar pendidikan nasional.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon mx-auto"><i class="ph ph-chalkboard-teacher"></i></div>
+            <h3 class="card-title text-primary">Guru Profesional</h3>
+            <p>Didukung oleh tenaga pengajar yang kompeten dan bersertifikasi di bidangnya.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon mx-auto"><i class="ph ph-desktop"></i></div>
+            <h3 class="card-title text-primary">Fasilitas Modern</h3>
+            <p>Kelas ber-AC, lab komputer, lab IPA, dan lapangan olahraga.</p>
+          </div>
         </div>
-    </footer>
+      </div>
+    </section>
 
-    <script src="js/app.js"></script>
+    <!-- STATISTIK -->
+    <section class="section" style="background-color: var(--gray-100);">
+      <div class="container">
+        <div class="grid grid-cols-4 gap-4 text-center">
+          <div>
+            <i class="ph ph-users-three text-primary" style="font-size: 2.5rem;"></i>
+            <h3 style="font-size: 3rem; margin-bottom: 0;">1250</h3>
+            <p style="font-weight: 500;">Siswa Aktif</p>
+          </div>
+          <div>
+            <i class="ph ph-chalkboard-teacher text-primary" style="font-size: 2.5rem;"></i>
+            <h3 style="font-size: 3rem; margin-bottom: 0;">85</h3>
+            <p style="font-weight: 500;">Guru Pengajar</p>
+          </div>
+          <div>
+            <i class="ph ph-trophy text-primary" style="font-size: 2.5rem;"></i>
+            <h3 style="font-size: 3rem; margin-bottom: 0;">320</h3>
+            <p style="font-weight: 500;">Penghargaan</p>
+          </div>
+          <div>
+            <i class="ph ph-student text-primary" style="font-size: 2.5rem;"></i>
+            <h3 style="font-size: 3rem; margin-bottom: 0;">5400</h3>
+            <p style="font-weight: 500;">Lulusan Alumni</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EKSKUL -->
+    <section class="section section-light">
+      <div class="container text-center">
+        <h2 style="font-size: 2.5rem; margin-bottom: var(--space-2);">Ekstrakurikuler</h2>
+        <div class="separator"></div>
+        <p style="margin-bottom: var(--space-8); max-width: 600px; margin-left: auto; margin-right: auto;">Wadah bagi para siswa untuk menyalurkan dan mengembangkan bakat, minat, serta kepemimpinan di luar jam pelajaran kelas.</p>
+        
+        <div class="grid grid-cols-3 gap-4" style="max-width: 800px; margin: 0 auto;">
+          <div class="card text-center" style="padding: var(--space-4);">
+            <h4 class="text-primary">Pramuka</h4>
+          </div>
+          <div class="card text-center" style="padding: var(--space-4);">
+            <h4 class="text-primary">Paskibra</h4>
+          </div>
+          <div class="card text-center" style="padding: var(--space-4);">
+            <h4 class="text-primary">BBQS</h4>
+          </div>
+          <div class="card text-center" style="padding: var(--space-4);">
+            <h4 class="text-primary">Futsal</h4>
+          </div>
+          <div class="card text-center" style="padding: var(--space-4);">
+            <h4 class="text-primary">English Club</h4>
+          </div>
+          <div class="card text-center" style="padding: var(--space-4);">
+            <h4 class="text-primary">Badminton</h4>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4 class="footer-heading" style="display: flex; align-items: center; gap: 8px;">
+            <img src="https://res.cloudinary.com/dkfcuwuas/image/upload/q_auto,f_auto/icon-mabu_yuwogg.png" alt="Logo" style="width: 30px;"> MA Bi'rul Ulum
+          </h4>
+          <p style="color: var(--gray-400);">Pendidikan Yang Unggul dan Bermutu Tidak Harus Mahal.</p>
+        </div>
+        <div>
+          <h4 class="footer-heading">Tautan Cepat</h4>
+          <ul class="footer-links">
+            <li><a href="profil.html">Profil Sekolah</a></li>
+            <li><a href="ppdb.html">Pendaftaran (PPDB)</a></li>
+            <li><a href="berita.html">Berita Terkini</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Jam Operasional</h4>
+          <ul class="footer-links">
+            <li><span style="color: var(--gray-400);">Senin - Kamis: 06.30 - 14.30 WIB</span></li>
+            <li><span style="color: var(--gray-400);">Jum'at: 06.30 - 11.00 WIB</span></li>
+            <li><span style="color: var(--gray-400);">Sabtu: 06.30 - 10.20 WIB</span></li>
+            <li><span style="color: var(--gray-400);">Minggu: Libur</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p style="margin: 0;">&copy; 2026 Madrasah Aliyah Bi'rul Ulum. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/core.js"></script>
 </body>
 </html>

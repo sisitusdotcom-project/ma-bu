@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Berita & Informasi | MA Bi'rul Ulum</title>
+  
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/reset.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/animations.css">
+
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-brand">
+        <img src="https://res.cloudinary.com/dkfcuwuas/image/upload/q_auto,f_auto/icon-mabu_yuwogg.png" alt="Logo MA Bi'rul Ulum">
+        <span>MA Bi'rul Ulum</span>
+      </a>
+      <div class="nav-menu">
+        <a href="index.html" class="nav-link">Beranda</a>
+        <a href="profil.html" class="nav-link">Profil</a>
+        <a href="berita.html" class="nav-link" style="color: var(--primary); font-weight: 700;">Berita</a>
+        <a href="ppdb.html" class="nav-link">PPDB</a>
+        <a href="administrasi/index.html" class="nav-link">Sistem</a>
+      </div>
+    </div>
+  </nav>
+
+  <main style="padding-top: 100px; min-height: 70vh;">
+    <!-- BERITA SECTION -->
+    <section class="section">
+      <div class="container">
+        <div class="text-center">
+          <h2 style="font-size: 2.5rem; color: var(--primary);">Berita & Informasi</h2>
+          <div class="separator"></div>
+          <p style="margin-bottom: var(--space-8); max-width: 600px; margin-left: auto; margin-right: auto;">Kabar terbaru, prestasi, dan pengumuman seputar kegiatan di Madrasah Aliyah Bi'rul Ulum.</p>
+        </div>
+        
+        <!-- Placeholder untuk berita (bisa diisi via GAS/Spreadsheet atau Statis) -->
+        <div class="grid grid-cols-3 gap-4">
+          <!-- Card Berita 1 -->
+          <div class="card" style="padding: 0;">
+            <div style="height: 200px; background-color: var(--gray-200); display: flex; align-items: center; justify-content: center;">
+              <i class="ph ph-image text-gray-400" style="font-size: 3rem;"></i>
+            </div>
+            <div style="padding: var(--space-4);">
+              <span class="badge" style="background-color: var(--primary-light); color: white; margin-bottom: var(--space-2);">Prestasi</span>
+              <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Juara 1 Lomba Pramuka Tingkat Kabupaten</h3>
+              <p style="font-size: 0.875rem;">Tim Pramuka MA Bi'rul Ulum berhasil meraih juara pertama pada lomba kemah bakti tahun ini.</p>
+              <a href="#" style="font-size: 0.875rem; font-weight: 600;">Baca Selengkapnya &rarr;</a>
+            </div>
+          </div>
+
+          <!-- Card Berita 2 -->
+          <div class="card" style="padding: 0;">
+            <div style="height: 200px; background-color: var(--gray-200); display: flex; align-items: center; justify-content: center;">
+              <i class="ph ph-image text-gray-400" style="font-size: 3rem;"></i>
+            </div>
+            <div style="padding: var(--space-4);">
+              <span class="badge" style="background-color: var(--secondary); color: var(--gray-900); margin-bottom: var(--space-2);">Pengumuman</span>
+              <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Jadwal Penilaian Akhir Semester</h3>
+              <p style="font-size: 0.875rem;">Informasi lengkap mengenai jadwal PAS dan syarat administrasi bagi seluruh siswa.</p>
+              <a href="#" style="font-size: 0.875rem; font-weight: 600;">Baca Selengkapnya &rarr;</a>
+            </div>
+          </div>
+          
+          <!-- Card Berita 3 -->
+          <div class="card" style="padding: 0;">
+            <div style="height: 200px; background-color: var(--gray-200); display: flex; align-items: center; justify-content: center;">
+              <i class="ph ph-image text-gray-400" style="font-size: 3rem;"></i>
+            </div>
+            <div style="padding: var(--space-4);">
+              <span class="badge" style="background-color: var(--gray-500); color: white; margin-bottom: var(--space-2);">Kegiatan</span>
+              <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Kunjungan Industri Siswa Kelas XII</h3>
+              <p style="font-size: 0.875rem;">Siswa-siswi kelas XII melakukan kunjungan industri untuk persiapan masuk dunia kerja dan perkuliahan.</p>
+              <a href="#" style="font-size: 0.875rem; font-weight: 600;">Baca Selengkapnya &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4 class="footer-heading" style="display: flex; align-items: center; gap: 8px;">
+            <img src="https://res.cloudinary.com/dkfcuwuas/image/upload/q_auto,f_auto/icon-mabu_yuwogg.png" alt="Logo" style="width: 30px;"> MA Bi'rul Ulum
+          </h4>
+          <p style="color: var(--gray-400);">Pendidikan Yang Unggul dan Bermutu Tidak Harus Mahal.</p>
+        </div>
+        <div>
+          <h4 class="footer-heading">Tautan Cepat</h4>
+          <ul class="footer-links">
+            <li><a href="profil.html">Profil Sekolah</a></li>
+            <li><a href="ppdb.html">Pendaftaran (PPDB)</a></li>
+            <li><a href="berita.html">Berita Terkini</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Jam Operasional</h4>
+          <ul class="footer-links">
+            <li><span style="color: var(--gray-400);">Senin - Kamis: 06.30 - 14.30 WIB</span></li>
+            <li><span style="color: var(--gray-400);">Jum'at: 06.30 - 11.00 WIB</span></li>
+            <li><span style="color: var(--gray-400);">Sabtu: 06.30 - 10.20 WIB</span></li>
+            <li><span style="color: var(--gray-400);">Minggu: Libur</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p style="margin: 0;">&copy; 2026 Madrasah Aliyah Bi'rul Ulum. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/core.js"></script>
+</body>
+</html>

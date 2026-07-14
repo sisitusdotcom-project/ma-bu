@@ -1,0 +1,73 @@
+/* =========================================
+   ANIMATIONS (Keyframes, Micro-interactions)
+   ========================================= */
+
+/* Fade In Up */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+
+/* Pulse */
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s infinite;
+}
+
+/* Float */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Scroll Infinity (Marquee) */
+@keyframes scrollInfinity {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-250px * 7)); } /* Asumsi lebar item 250px x 7 logo */
+}
+
+.animate-scroll {
+  animation: scrollInfinity 30s linear infinite;
+  display: flex;
+  width: max-content;
+}
+
+.animate-scroll:hover {
+  animation-play-state: paused;
+}
+
+/* Hero Background Pan */
+@keyframes panBg {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.hero-bg-animate {
+  background-size: 200% 200%;
+  animation: panBg 15s ease infinite;
+}

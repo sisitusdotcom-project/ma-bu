@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PPDB & Kontak | MA Bi'rul Ulum</title>
+  
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/reset.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/animations.css">
+
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-brand">
+        <img src="https://res.cloudinary.com/dkfcuwuas/image/upload/q_auto,f_auto/icon-mabu_yuwogg.png" alt="Logo MA Bi'rul Ulum">
+        <span>MA Bi'rul Ulum</span>
+      </a>
+      <div class="nav-menu">
+        <a href="index.html" class="nav-link">Beranda</a>
+        <a href="profil.html" class="nav-link">Profil</a>
+        <a href="berita.html" class="nav-link">Berita</a>
+        <a href="ppdb.html" class="nav-link" style="color: var(--primary); font-weight: 700;">PPDB</a>
+        <a href="administrasi/index.html" class="nav-link">Sistem</a>
+      </div>
+    </div>
+  </nav>
+
+  <main style="padding-top: 100px;">
+    
+    <!-- PPDB SECTION -->
+    <section class="section">
+      <div class="container">
+        <div class="card" style="max-width: 600px; margin: 0 auto; padding: 0;">
+          <div style="background-color: var(--primary); color: white; padding: var(--space-6); text-align: center;">
+            <i class="ph ph-file-text text-secondary" style="font-size: 3rem; margin-bottom: var(--space-2);"></i>
+            <h2 style="color: white; margin-bottom: var(--space-2);">Pendaftaran Siswa Baru</h2>
+            <p style="margin: 0; color: var(--gray-300);">Hubungi kami cepat via WhatsApp</p>
+          </div>
+          
+          <div style="padding: var(--space-8);">
+            <div style="background-color: var(--gray-50); border: 1px solid var(--gray-200); padding: var(--space-4); border-radius: var(--radius-md); margin-bottom: var(--space-6); display: flex; gap: var(--space-3); align-items: flex-start;">
+              <i class="ph ph-info text-primary" style="font-size: 1.5rem; flex-shrink: 0;"></i>
+              <p style="margin: 0; font-size: 0.875rem;">Silakan isi data diri singkat di bawah ini. Anda akan langsung terhubung ke WhatsApp Admin Sekolah untuk panduan pendaftaran selanjutnya.</p>
+            </div>
+
+            <form id="ppdb-form" onsubmit="event.preventDefault(); window.open('https://wa.me/6283832515321?text=' + encodeURIComponent('Halo Admin, saya ingin mendaftar PPDB. \nNama: ' + document.getElementById('nama').value + '\nAsal Sekolah: ' + document.getElementById('asal').value + '\nNo WA: ' + document.getElementById('wa').value), '_blank');">
+              <div class="form-group">
+                <label class="form-label" for="nama">Nama Lengkap Siswa</label>
+                <input type="text" id="nama" class="form-input" placeholder="Masukkan nama lengkap" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="asal">Asal Sekolah (SMP/MTs)</label>
+                <input type="text" id="asal" class="form-input" placeholder="Contoh: SMPN 1 ..." required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="wa">Nomor WhatsApp Aktif</label>
+                <input type="tel" id="wa" class="form-input" placeholder="08xxxxxxxxxx" required>
+              </div>
+              <button type="submit" class="btn" style="width: 100%; background-color: #25D366; color: white; margin-top: var(--space-4); box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);">
+                <i class="ph ph-whatsapp-logo" style="font-size: 1.5rem;"></i> Lanjutkan ke WhatsApp Admin
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KONTAK SECTION -->
+    <section class="section section-light">
+      <div class="container">
+        <div class="text-center">
+          <h2 style="font-size: 2.5rem; color: var(--primary);">Hubungi Kami</h2>
+          <div class="separator"></div>
+          <p style="margin-bottom: var(--space-8); max-width: 600px; margin-left: auto; margin-right: auto;">Kami siap melayani pertanyaan dan memberikan informasi lebih lanjut.</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div style="display: flex; flex-direction: column; gap: var(--space-6);">
+            <div style="display: flex; align-items: flex-start; gap: var(--space-4);">
+              <div class="card-icon" style="margin: 0; flex-shrink: 0; width: 3rem; height: 3rem; font-size: 1.5rem;"><i class="ph ph-map-pin"></i></div>
+              <div>
+                <h4 style="margin-bottom: var(--space-1);">Alamat Madrasah</h4>
+                <p style="margin: 0;">Jl. KH. Sulaiman No. 150, Dusun Gemurung Kidul, Gemurung, Kec. Gedangan, Kabupaten Sidoarjo, Provinsi Jawa Timur, 61254</p>
+              </div>
+            </div>
+            
+            <div style="display: flex; align-items: flex-start; gap: var(--space-4);">
+              <div class="card-icon" style="margin: 0; flex-shrink: 0; width: 3rem; height: 3rem; font-size: 1.5rem;"><i class="ph ph-phone"></i></div>
+              <div>
+                <h4 style="margin-bottom: var(--space-1);">WhatsApp</h4>
+                <p style="margin: 0;"><a href="https://wa.me/6283832515321">0838-3313-3913</a> (WA Admin PPDB)</p>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: flex-start; gap: var(--space-4);">
+              <div class="card-icon" style="margin: 0; flex-shrink: 0; width: 3rem; height: 3rem; font-size: 1.5rem;"><i class="ph ph-envelope"></i></div>
+              <div>
+                <h4 style="margin-bottom: var(--space-1);">Email</h4>
+                <p style="margin: 0;">madrasahaliyahbu@gmail.com</p>
+              </div>
+            </div>
+
+            <div style="margin-top: var(--space-4); border-top: 1px solid var(--gray-200); padding-top: var(--space-4);">
+              <h4 style="margin-bottom: var(--space-4);">Media Sosial</h4>
+              <div class="d-flex gap-2">
+                <a href="#" style="font-size: 2rem; color: var(--gray-500);"><i class="ph ph-facebook-logo"></i></a>
+                <a href="#" style="font-size: 2rem; color: var(--gray-500);"><i class="ph ph-instagram-logo"></i></a>
+                <a href="#" style="font-size: 2rem; color: var(--gray-500);"><i class="ph ph-youtube-logo"></i></a>
+                <a href="#" style="font-size: 2rem; color: var(--gray-500);"><i class="ph ph-tiktok-logo"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Maps Placeholder -->
+          <div style="border-radius: var(--radius-2xl); overflow: hidden; border: 1px solid var(--gray-200);">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.5678390824705!2d112.74553207400312!3d-7.402222092607809!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e5b84dfb82f1%3A0x59296112fe971289!2sMA%20Bi&#39;rul%20Ulum%20Gedangan!5e0!3m2!1sid!2sid!4v1776064594348!5m2!1sid!2sid" width="100%" height="100%" style="border:0; min-height: 400px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4 class="footer-heading" style="display: flex; align-items: center; gap: 8px;">
+            <img src="https://res.cloudinary.com/dkfcuwuas/image/upload/q_auto,f_auto/icon-mabu_yuwogg.png" alt="Logo" style="width: 30px;"> MA Bi'rul Ulum
+          </h4>
+          <p style="color: var(--gray-400);">Pendidikan Yang Unggul dan Bermutu Tidak Harus Mahal.</p>
+        </div>
+        <div>
+          <h4 class="footer-heading">Tautan Cepat</h4>
+          <ul class="footer-links">
+            <li><a href="profil.html">Profil Sekolah</a></li>
+            <li><a href="ppdb.html">Pendaftaran (PPDB)</a></li>
+            <li><a href="berita.html">Berita Terkini</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Jam Operasional</h4>
+          <ul class="footer-links">
+            <li><span style="color: var(--gray-400);">Senin - Kamis: 06.30 - 14.30 WIB</span></li>
+            <li><span style="color: var(--gray-400);">Jum'at: 06.30 - 11.00 WIB</span></li>
+            <li><span style="color: var(--gray-400);">Sabtu: 06.30 - 10.20 WIB</span></li>
+            <li><span style="color: var(--gray-400);">Minggu: Libur</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p style="margin: 0;">&copy; 2026 Madrasah Aliyah Bi'rul Ulum. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/core.js"></script>
+</body>
+</html>

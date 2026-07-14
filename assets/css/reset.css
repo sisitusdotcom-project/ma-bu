@@ -1,0 +1,73 @@
+/* =========================================
+   CSS RESET & BASE STYLES
+   ========================================= */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--gray-800);
+  background-color: var(--bg-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography Base */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--gray-900);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: var(--space-4);
+}
+
+p {
+  margin-bottom: var(--space-4);
+  color: var(--gray-600);
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--primary-light);
+}
+
+ul, ol {
+  list-style: none;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+  border: none;
+  background: transparent;
+}
+
+button {
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}

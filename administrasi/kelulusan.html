@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cek Kelulusan | MA Bi'rul Ulum</title>
+  
+  <link rel="stylesheet" href="../assets/css/variables.css">
+  <link rel="stylesheet" href="../assets/css/reset.css">
+  <link rel="stylesheet" href="../assets/css/layout.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/animations.css">
+
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <img src="https://res.cloudinary.com/dkfcuwuas/image/upload/q_auto,f_auto/icon-mabu_yuwogg.png" alt="Logo MA Bi'rul Ulum">
+        <span>MA Bi'rul Ulum</span>
+      </a>
+      <div class="nav-menu">
+        <a href="../index.html" class="nav-link">Beranda</a>
+        <a href="../profil.html" class="nav-link">Profil</a>
+        <a href="../berita.html" class="nav-link">Berita</a>
+        <a href="../ppdb.html" class="nav-link">PPDB</a>
+        <a href="index.html" class="nav-link" style="color: var(--primary); font-weight: 700;">Sistem</a>
+      </div>
+    </div>
+  </nav>
+
+  <main style="padding-top: 100px; min-height: 70vh; display: flex; align-items: center; justify-content: center; background-color: var(--gray-50);">
+    
+    <div class="container">
+      <!-- Navigasi Internal Sistem -->
+      <div class="d-flex justify-center gap-2 mb-8 flex-wrap">
+        <a href="index.html" class="btn btn-outline">Cek Tagihan</a>
+        <a href="kelulusan.html" class="btn btn-primary">Cek Kelulusan</a>
+        <a href="presensi.html" class="btn btn-outline">Presensi Guru</a>
+      </div>
+
+      <div class="card" style="max-width: 600px; margin: 0 auto;">
+        <div class="text-center mb-8">
+          <i class="ph ph-graduation-cap text-primary" style="font-size: 4rem; margin-bottom: var(--space-4);"></i>
+          <h2 style="color: var(--primary); font-size: 2rem;">Cek Kelulusan</h2>
+          <p>Silakan masukkan Kode Unik Siswa untuk melihat hasil kelulusan tahun ajaran ini.</p>
+        </div>
+        
+        <form id="form-cek-kelulusan">
+          <div class="form-group">
+            <label class="form-label" for="kode-unik">Kode Unik Siswa</label>
+            <input type="text" id="kode-unik" class="form-input" placeholder="Contoh: KLS-12345" required>
+          </div>
+          <button type="submit" class="btn btn-primary mt-4" style="width: 100%;">
+            <i class="ph ph-magnifying-glass"></i> Verifikasi Kelulusan
+          </button>
+        </form>
+
+        <p class="text-center mt-4" style="font-size: 0.8rem; color: var(--gray-500);">*Gunakan informasi ini dengan bijak. Hasil ini adalah keputusan final dari pihak sekolah.</p>
+
+        <div id="loading" style="display: none; text-align: center; margin-top: var(--space-6);">
+          <i class="ph ph-spinner animate-pulse-glow" style="font-size: 2rem; color: var(--primary);"></i>
+          <p class="mt-2">Memproses Data... Sistem sedang memverifikasi kode Anda.</p>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/api-gas.js"></script>
+</body>
+</html>
