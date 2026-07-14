@@ -1,0 +1,22 @@
+Aturan terbaru Google Apps Script 2026
+
+MASALAH GAGAL POST: mengirim POST JSON → browser kirim preflight → GAS tidak mendukung → CORS error.
+
+HARUS diganti ke:
+application/x-www-form-urlencoded
+e.parameter.xxx
+Semua work normal✅
+
+KESIMPULAN:
+GAS tidak bisa menerima POST JSON dari browser tanpa CORS error.
+Gunakan form-urlencoded untuk menghindari preflight.
+
+CONTOH KODE YANG SALAH:
+Jika kode memakai:
+
+fetch(..., { 
+   method: "POST", 
+   headers: { "Content-Type": "application/json" }
+})
+
+Maka semua akan mengalami masalah yang sama.
