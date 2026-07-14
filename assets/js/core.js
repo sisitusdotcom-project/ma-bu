@@ -32,4 +32,22 @@ document.addEventListener('DOMContentLoaded', () => {
     el.style.animationPlayState = 'paused'; // pause until visible
     observer.observe(el);
   });
+
+  // Mobile Menu Toggle
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const navMenu = document.querySelector('.nav-menu');
+
+  if (mobileMenuBtn && navMenu) {
+    mobileMenuBtn.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+      const icon = mobileMenuBtn.querySelector('i');
+      if (navMenu.classList.contains('active')) {
+        icon.classList.remove('ph-list');
+        icon.classList.add('ph-x');
+      } else {
+        icon.classList.remove('ph-x');
+        icon.classList.add('ph-list');
+      }
+    });
+  }
 });
