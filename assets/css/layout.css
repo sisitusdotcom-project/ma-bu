@@ -13,6 +13,7 @@
 /* Flexbox Utilities */
 .d-flex { display: flex; }
 .flex-col { flex-direction: column; }
+.flex-wrap { flex-wrap: wrap; }
 .align-center { align-items: center; }
 .justify-center { justify-content: center; }
 .justify-between { justify-content: space-between; }
@@ -34,6 +35,12 @@
   }
   .section {
     padding: var(--space-8) 0;
+  }
+  .flex-col-mobile {
+    flex-direction: column !important;
+  }
+  .w-full-mobile {
+    width: 100% !important;
   }
 }
 

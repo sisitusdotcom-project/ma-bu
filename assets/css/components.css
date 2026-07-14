@@ -74,6 +74,12 @@
   overflow: hidden;
 }
 
+@media (max-width: 768px) {
+  .card {
+    padding: var(--space-4);
+  }
+}
+
 .card:hover {
   box-shadow: var(--shadow-xl);
   transform: translateY(-5px);
