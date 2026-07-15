@@ -2,39 +2,40 @@
    CSS VARIABLES (DESIGN TOKENS)
    ========================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
 
 :root {
   /* Colors */
-  --primary: #1e3a8a; /* Deep Blue */
-  --primary-light: #3b82f6; 
-  --primary-dark: #172554;
-  --secondary: #fbbf24; /* Amber/Yellow */
-  --secondary-hover: #f59e0b;
+  --primary: #0F7A3D; /* Deep Green */
+  --primary-light: #16A353; /* Lighter Green */
+  --primary-dark: #085C2C;
+  --secondary: #3AAE63; /* Secondary Green */
+  --secondary-hover: #2F8E51;
+  --accent: #F5B301; /* Yellow/Gold Accent */
   
   /* Neutral / Gray */
   --gray-50: #f8fafc;
-  --gray-100: #f1f5f9;
+  --gray-100: #E5E7EB; /* Border */
   --gray-200: #e2e8f0;
   --gray-300: #cbd5e1;
   --gray-400: #94a3b8;
   --gray-500: #64748b;
   --gray-600: #475569;
   --gray-700: #334155;
-  --gray-800: #1e293b;
-  --gray-900: #0f172a;
+  --gray-800: #1F2937; /* Text */
+  --gray-900: #111827;
 
   /* Backgrounds */
-  --bg-main: var(--gray-50);
-  --bg-surface: #ffffff;
+  --bg-main: #F7F8FA; /* Surface */
+  --bg-surface: #FFFFFF; /* Background */
   
   /* Glassmorphism */
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(255, 255, 255, 0.3);
-  --glass-bg-dark: rgba(30, 58, 138, 0.7); /* Primary colored glass */
+  --glass-bg-dark: rgba(15, 122, 61, 0.7); /* Primary colored glass */
   
   /* Typography */
-  --font-heading: 'Outfit', sans-serif;
+  --font-heading: 'Poppins', sans-serif;
   --font-body: 'Inter', sans-serif;
   
   /* Spacing */
@@ -56,12 +57,18 @@
   --radius-2xl: 1.5rem;
   --radius-full: 9999px;
   
+  /* Specific Component Radius */
+  --radius-btn: 12px;
+  --radius-card: 16px;
+  --radius-input: 10px;
+  
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --shadow-colored: 0 10px 25px -5px rgba(30, 58, 138, 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+  --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-colored: 0 10px 25px -5px rgba(15, 122, 61, 0.3);
   
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
