@@ -104,19 +104,40 @@ function doPost(e) {
       throw new Error("Sheet 'Pendaftar' tidak ditemukan.");
     }
     
+    let studentFolder = null;
+
     // Fungsi untuk menyimpan file ke Google Drive
     function saveFileToDrive(fileData, prefix) {
       if (!fileData || !fileData.base64) return '';
       
-      const folderId = '18qsid-kWI1hWDGwVEfIFUBLIL_X2IqP7'; // Folder ID yang diminta
-      const folder = DriveApp.getFolderById(folderId);
+      // Buat subfolder khusus untuk pendaftar jika belum dibuat
+      if (!studentFolder) {
+        const parentFolderId = '18qsid-kWI1hWDGwVEfIFUBLIL_X2IqP7'; // Folder ID utama PPDB
+        const parentFolder = DriveApp.getFolderById(parentFolderId);
+        
+        // Buat nama folder berdasarkan Nama + NIK (atau timestamp)
+        const safeName = (data.nama || 'TanpaNama').replace(/[^a-zA-Z0-9]/g, '_');
+        const uniqueId = data.nik || new Date().getTime();
+        const folderName = safeName + '_' + uniqueId;
+        
+        studentFolder = parentFolder.createFolder(folderName);
+        
+        // Set folder agar bisa dilihat publik (menurun ke file)
+        try {
+          studentFolder.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+        } catch (e) {
+          console.warn("Gagal mengubah permission folder: " + e.toString());
+        }
+      }
       
       // Decode base64
       const decodedData = Utilities.base64Decode(fileData.base64);
-      const blob = Utilities.newBlob(decodedData, fileData.mimeType, prefix + '_' + data.nama.replace(/\s+/g, '_') + '_' + fileData.filename);
+      const safeFileName = (data.nama || 'TanpaNama').replace(/[^a-zA-Z0-9]/g, '_');
+      const blob = Utilities.newBlob(decodedData, fileData.mimeType, prefix + '_' + safeFileName + '_' + fileData.filename);
       
-      const file = folder.createFile(blob);
-      // Set agar siapa saja yang memiliki link bisa melihat file (dibungkus try-catch agar tidak crash jika diblokir admin Workspace)
+      const file = studentFolder.createFile(blob);
+      
+      // Fallback set permission file
       try {
         file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
       } catch (e) {
