@@ -22,14 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.style.animationPlayState = 'running';
+        entry.target.classList.add('is-visible');
         observer.unobserve(entry.target);
       }
     });
   }, { threshold: 0.1 });
 
   animatedElements.forEach(el => {
-    el.style.animationPlayState = 'paused'; // pause until visible
     observer.observe(el);
   });
 
