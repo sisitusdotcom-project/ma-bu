@@ -51,23 +51,76 @@
               <p style="margin: 0; font-size: 0.875rem;">Silakan isi data diri singkat di bawah ini. Anda akan langsung terhubung ke WhatsApp Admin Sekolah untuk panduan pendaftaran selanjutnya.</p>
             </div>
 
-            <form id="ppdb-form" onsubmit="event.preventDefault(); window.open('https://wa.me/6283832515321?text=' + encodeURIComponent('Halo Admin, saya ingin mendaftar PPDB. \nNama: ' + document.getElementById('nama').value + '\nAsal Sekolah: ' + document.getElementById('asal').value + '\nNo WA: ' + document.getElementById('wa').value), '_blank');">
+            <form id="ppdb-form">
               <div class="form-group">
-                <label class="form-label" for="nama">Nama Lengkap Siswa</label>
-                <input type="text" id="nama" class="form-input" placeholder="Masukkan nama lengkap" required>
+                <label class="form-label" for="nama">1. Nama Lengkap Siswa</label>
+                <input type="text" id="nama" class="form-input" placeholder="Masukan Nama Lengkap Siswa" required>
               </div>
               <div class="form-group">
-                <label class="form-label" for="asal">Asal Sekolah (SMP/MTs)</label>
-                <input type="text" id="asal" class="form-input" placeholder="Contoh: SMPN 1 ..." required>
+                <label class="form-label" for="tempat_lahir">2. Tempat Lahir</label>
+                <input type="text" id="tempat_lahir" class="form-input" placeholder="Masukan Tempat Lahir" required>
               </div>
               <div class="form-group">
-                <label class="form-label" for="wa">Nomor WhatsApp Aktif</label>
+                <label class="form-label" for="tanggal_lahir">3. Tanggal Lahir</label>
+                <input type="date" id="tanggal_lahir" class="form-input" placeholder="yyyy-mm-dd" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="jenis_kelamin">4. Jenis Kelamin</label>
+                <select id="jenis_kelamin" class="form-input" required>
+                  <option value="" disabled selected>Pilih Jenis Kelamin</option>
+                  <option value="Laki-laki">Laki-laki</option>
+                  <option value="Perempuan">Perempuan</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="nik">5. NIK</label>
+                <input type="text" id="nik" class="form-input" placeholder="Masukkan Nik 16 angka" minlength="16" maxlength="16" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="nama_ibu">6. Nama Ibu Kandung</label>
+                <input type="text" id="nama_ibu" class="form-input" placeholder="Masukan Nama Ibu Kandung" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="foto">7. Upload Foto 3x4 Background Merah</label>
+                <small style="display: block; margin-bottom: var(--space-2); color: var(--gray-500);">Berdasi, seragam rapi atau pakai seragam sekolah sebelumnya</small>
+                <input type="file" id="foto" class="form-input" accept="image/*">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="kk">8. Upload KK</label>
+                <input type="file" id="kk" class="form-input" accept="image/*,.pdf">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="akte">9. Upload Akte</label>
+                <input type="file" id="akte" class="form-input" accept="image/*,.pdf">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ijazah">10. Upload Ijazah Terakhir</label>
+                <input type="file" id="ijazah" class="form-input" accept="image/*,.pdf">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="asal">11. Sekolah Asal</label>
+                <input type="text" id="asal" class="form-input" placeholder="Masukkan Sekolah Asal" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="wa">12. Nomor WhatsApp</label>
                 <input type="tel" id="wa" class="form-input" placeholder="08xxxxxxxxxx" required>
               </div>
-              <button type="submit" class="btn" style="width: 100%; background-color: #25D366; color: white; margin-top: var(--space-4); box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);">
-                <i class="ph ph-whatsapp-logo" style="font-size: 1.5rem;"></i> Lanjutkan ke WhatsApp Admin
+              
+              <button type="submit" id="btn-submit-ppdb" class="btn btn-primary" style="width: 100%; margin-top: var(--space-4);">
+                <i class="ph ph-paper-plane-right" style="font-size: 1.5rem;"></i> Kirim Data Pendaftaran
               </button>
             </form>
+            
+            <div id="ppdb-loading" style="display: none; text-align: center; margin-top: var(--space-6);">
+              <i class="ph ph-spinner animate-pulse-glow" style="font-size: 2rem; color: var(--primary);"></i>
+              <p class="mt-2">Mengirim data dan mengunggah file... Mohon tunggu, ini bisa memakan waktu.</p>
+            </div>
+            
+            <div id="ppdb-success" style="display: none; text-align: center; margin-top: var(--space-6); background-color: #dcfce7; padding: var(--space-6); border-radius: var(--radius-md);">
+              <i class="ph ph-check-circle" style="font-size: 4rem; color: #22c55e;"></i>
+              <h3 style="color: #166534; margin-top: var(--space-2);">Pendaftaran Berhasil!</h3>
+              <p style="color: #166534; margin-bottom: 0;">Data Anda beserta dokumen telah berhasil dikirim. Silakan tunggu informasi selanjutnya dari Admin.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -163,6 +216,7 @@
     </div>
   </footer>
 
+  <script src="assets/js/config.js"></script>
   <script src="assets/js/core.js"></script>
 </body>
 </html>

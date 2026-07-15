@@ -1,7 +1,6 @@
 {
-  "liveServer.settings.port": 5500,
-  "liveServer.settings.root": "/",
-  "liveServer.settings.CustomBrowser": "chrome",
-  "liveServer.settings.donotShowInfoMsg": true,
-  "editor.formatOnSave": true
+    "liveServer.settings.port": 5500,
+    "liveServer.settings.root": "/",
+    "livePreview.port": 3000,
+    "livePreview.defaultPreviewPath": "/index.html"
 }

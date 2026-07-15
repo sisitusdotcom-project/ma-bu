@@ -67,10 +67,20 @@
           <p class="mt-2">Memproses Data... Sistem sedang memverifikasi kode Anda.</p>
         </div>
 
+        <div id="hasil" style="display: none; margin-top: var(--space-6); padding-top: var(--space-6); border-top: 1px solid var(--gray-200);">
+          <h4 style="margin-bottom: var(--space-2);">Data Kelulusan</h4>
+          <p style="margin: 0;"><strong>Nama:</strong> <span id="res-nama-lulus">-</span></p>
+          <div style="background-color: var(--gray-100); padding: var(--space-4); border-radius: var(--radius-md); margin-top: var(--space-4); text-align: center;">
+            <p style="margin: 0; font-weight: 700; font-size: 1.5rem;" id="res-status">-</p>
+            <p style="margin-top: var(--space-2); color: var(--gray-600); font-size: 0.9rem;" id="res-keterangan">-</p>
+          </div>
+        </div>
+
       </div>
     </div>
   </main>
 
+  <script src="../assets/js/config.js"></script>
   <script src="../assets/js/core.js"></script>
   <script src="../assets/js/api-gas.js"></script>
 </body>

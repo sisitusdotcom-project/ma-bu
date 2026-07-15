@@ -1,0 +1,25 @@
+[Sheet: Statistik]
+Kategori	Nilai	Ikon	Deskripsi
+Siswa Aktif	1250	ph-users-three	Jumlah seluruh siswa
+Guru Pengajar	85	ph-chalkboard-teacher	Jumlah guru
+Penghargaan	320	ph-trophy	Total penghargaan
+Lulusan Alumni	5400	ph-student	Total alumni
+
+
+[Sheet: Alumni]
+ID	Nama_Alumni	Angkatan_Jurusan	Kutipan_Testimoni	Foto_URL
+1	Budi Santoso	Alumni 2020	Sangat bangga!	https://via.placeholder.com/80
+
+[Sheet: Pendaftar]
+Timestamp	Nama Lengkap	Tempat Lahir	Tanggal Lahir	Jenis Kelamin	NIK	Nama Ibu	Link Foto	Link KK	Link Akte	Link Ijazah	Sekolah Asal	No WA
+
+[Sheet: Tagihan]
+NIS	Nama_Siswa	Kelas	Sisa_Tagihan
+12345	Ahmad Zaki	XII IPA	500000
+
+[Sheet: Kelulusan]
+Kode_Unik	Nama_Siswa	Status_Lulus	Keterangan
+KLS-123	Siti Aisyah	LULUS	Selamat Anda diterima di PTN!
+
+[Sheet: Presensi]
+Timestamp	QR_Data	Keterangan_Waktu
